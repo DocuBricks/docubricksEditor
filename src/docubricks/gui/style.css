@@ -1,0 +1,65 @@
+QLineEdit,QGroupBox,QWidget#form {
+	background-color: white
+}
+
+TabUnit,TabProject {
+	background-color: white
+}
+
+/*
+facsanadu.gui.HeaderLabel {
+	background-color: blue;
+	color: white;
+	font-size: 16pt
+}*/
+
+QGroupBox {
+	border: 1px solid lightgray;
+	margin-left: 1px;
+	margin-right: 1px;
+	margin-top: 1px;
+	margin-bottom: 1px
+}
+
+QLineEdit {
+	border: 1px solid #AAAAAA;
+	font: 10pt; 
+	background-color: #F0F0F0
+}
+
+QLineEdit:read-only {
+	border: none;
+	background-color: white;
+	font: 10pt
+}
+
+QTextEdit {
+	border: 1px solid #AAAAAA
+}
+
+QGraphicsView {
+	border: 1px solid #AAAAAA;
+	background: white
+}
+
+
+facsanadu.gui.MediaSetPane {
+	border: 0px;
+}
+
+QTableView::item {
+	margin: 0px;
+	padding: 0px
+}
+
+QHeaderView {
+	margin: 0px;
+	padding: 0px
+}
+
+QLabel {
+	font: 10pt
+}
+
+
+

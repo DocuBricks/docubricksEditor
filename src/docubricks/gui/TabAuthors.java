@@ -14,14 +14,14 @@ import docubricks.data.DocubricksProject;
  * @author Johan Henriksson
  *
  */
-public class TabProject extends QWidget
+public class TabAuthors extends QWidget
 	{
 	public Signal0 signalUpdated=new Signal0();
 	private QScrollArea scroll=new QScrollArea();
-	private PanePhysicalParts parts;
+	private PaneAuthorData parts;
 	
 
-	public TabProject(DocubricksProject proj)
+	public TabAuthors(DocubricksProject proj)
 		{
 		QVBoxLayout laytot=new QVBoxLayout();
 		laytot.addWidget(scroll);
@@ -38,7 +38,7 @@ public class TabProject extends QWidget
 		scrollwid.setLayout(lay);
 		scroll.setWidget(scrollwid);
 		
-		parts=new PanePhysicalParts(proj);
+		parts=new PaneAuthorData(proj);
 		lay.addLayout(parts);
 		lay.addStretch();
 		
@@ -49,7 +49,6 @@ public class TabProject extends QWidget
 	public void storevalues()
 		{
 		parts.storevalues();
-		
 		}
 
 

@@ -24,7 +24,7 @@ import docubricks.data.MediaSet;
  * @author Johan Henriksson
  *
  */
-public class MediaSetPane extends QWidget
+public class PaneMediaSet extends QWidget
 	{
 	private QHBoxLayout laymedia=new QHBoxLayout();
 	private QScrollArea scroll=new QScrollArea();
@@ -33,7 +33,7 @@ public class MediaSetPane extends QWidget
 	QPushButton bAdd=new QPushButton("Add media");
 	MediaSet mediaset;
 	
-	public MediaSetPane(MediaSet mediaset)
+	public PaneMediaSet(MediaSet mediaset)
 		{
 		this.mediaset=mediaset;
 		
@@ -88,7 +88,7 @@ public class MediaSetPane extends QWidget
 
 	private void addMediaWidget(MediaFile mf)
 		{
-		MediaFilePane mp=new MediaFilePane(mf);
+		PaneMediaFile mp=new PaneMediaFile(mf);
 		laymedia.removeWidget(bAdd);
 		laymedia.addWidget(mp);
 		laymedia.addWidget(bAdd);

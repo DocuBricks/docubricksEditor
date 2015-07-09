@@ -21,10 +21,11 @@ import org.jdom2.output.XMLOutputter;
  * @author Johan Henriksson
  *
  */
-public class UsefulSourceProject
+public class DocubricksProject
 	{
 	public ArrayList<Unit> units=new ArrayList<Unit>();
 	public ArrayList<PhysicalPart> physicalParts=new ArrayList<PhysicalPart>();
+	public ArrayList<Author> authors=new ArrayList<Author>();
 	
 	/**
 	 * Find a free ID for a unit
@@ -62,7 +63,22 @@ public class UsefulSourceProject
 		}
 
 	
-
+	/**
+	 * Find a free ID for a physical part
+	 */
+	private String findFreeAuthorID()
+		{
+		String id;
+		for(;;)
+			{
+			id=""+(int)(Math.random()*Integer.MAX_VALUE);
+			for(Author p:authors)
+				if(p.id.equals(id))
+					continue;
+			break;
+			}
+		return id;
+		}
 	
 	
 	
@@ -82,6 +98,11 @@ public class UsefulSourceProject
 			Element eu=u.toXML(basepath);
 			eroot.addContent(eu);
 			}
+		for(Author a:authors)
+			{
+			Element eu=a.toXML(basepath);
+			eroot.addContent(eu);
+			}
 		return eroot;
 		}
 
@@ -89,9 +110,17 @@ public class UsefulSourceProject
 	/**
 	 * Read from XML
 	 */
-	public static UsefulSourceProject fromXML(File basepath, Element e)
+	public static DocubricksProject fromXML(File basepath, Element e)
 		{
-		UsefulSourceProject p=new UsefulSourceProject();
+		DocubricksProject p=new DocubricksProject();
+		for(Element c:e.getChildren())
+			{
+			if(c.getName().equals("author"))
+				{
+				Author a=Author.fromXML(basepath, c);
+				p.authors.add(a);
+				}
+			}
 		for(Element c:e.getChildren())
 			{
 			if(c.getName().equals("physical_part"))
@@ -125,14 +154,14 @@ public class UsefulSourceProject
 	/**
 	 * Load XML file
 	 */
-	public static UsefulSourceProject loadXML(File f) throws IOException
+	public static DocubricksProject loadXML(File f) throws IOException
 		{
 		try
 			{
 			FileInputStream is=new FileInputStream(f);
 			SAXBuilder sax = new SAXBuilder();
 			Document doc = sax.build(is);
-			UsefulSourceProject proj=fromXML(f.getParentFile(), doc.getRootElement());
+			DocubricksProject proj=fromXML(f.getParentFile(), doc.getRootElement());
 			is.close();
 			return proj;
 			}
@@ -191,6 +220,25 @@ public class UsefulSourceProject
 		p.id=findFreePhysPartID();
 		physicalParts.add(p);
 		return p;
+		}
+
+
+	public Author createAuthor()
+		{
+		System.out.println("creat "+authors);
+		Author p=new Author();
+		p.id=findFreeAuthorID();
+		authors.add(p);
+		return p;
+		}
+
+
+	public Author getAuthor(String id)
+		{
+		for(Author p:authors)
+			if(p.id.equals(id))
+				return p;
+		throw new RuntimeException("Missing author: "+id);
 		}
 
 

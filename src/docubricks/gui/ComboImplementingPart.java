@@ -13,7 +13,7 @@ import docubricks.data.LogicalPartImplementationPhysical;
 import docubricks.data.LogicalPartImplementationUnit;
 import docubricks.data.PhysicalPart;
 import docubricks.data.Unit;
-import docubricks.data.UsefulSourceProject;
+import docubricks.data.DocubricksProject;
 import docubricks.gui.resource.ImgResource;
 
 
@@ -25,7 +25,7 @@ import docubricks.gui.resource.ImgResource;
  */
 public class ComboImplementingPart extends QWidget //later on it will be a more complex type. including delete!
 	{
-	public UsefulSourceProject project;
+	public DocubricksProject project;
 	public LogicalPart logpart;
 	public Signal1<ComboImplementingPart> sigUpdated=new Signal1<ComboImplementingPart>();
 	public Signal1<ComboImplementingPart> sigDeleted=new Signal1<ComboImplementingPart>();
@@ -34,7 +34,7 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 	QComboBox thecombo=new QComboBox();
 	QPushButton bDelete=new QPushButton(new QIcon(ImgResource.delete),"");  //Could also be a special entry in list. but non-standard
 	
-	public ComboImplementingPart(UsefulSourceProject project, LogicalPart logpart, LogicalPartImplementation imp)
+	public ComboImplementingPart(DocubricksProject project, LogicalPart logpart, LogicalPartImplementation imp)
 		{
 		this.project=project;
 		this.logpart=logpart;

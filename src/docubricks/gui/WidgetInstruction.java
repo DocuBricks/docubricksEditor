@@ -43,7 +43,7 @@ public class WidgetInstruction extends QWidget
 		private QTextEdit tfText=new QTextEdit();
 		private QPushButton bMenu=new QPushButton(tr("Options"));
 
-		MediaSetPane mediapane;
+		PaneMediaSet mediapane;
 		
 		private QMenu mOptions=new QMenu();
 		
@@ -51,7 +51,7 @@ public class WidgetInstruction extends QWidget
 		public WidgetStep(AssemblyStep step)
 			{
 			this.step=step;
-			mediapane=new MediaSetPane(step.media);
+			mediapane=new PaneMediaSet(step.media);
 			
 			QVBoxLayout layr=new QVBoxLayout();
 			layr.addWidget(tfText);

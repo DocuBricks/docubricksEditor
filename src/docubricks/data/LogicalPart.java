@@ -88,7 +88,7 @@ public class LogicalPart
 	/**
 	 * Deserialize from XML
 	 */
-	public static LogicalPart fromXML(File basepath, UsefulSourceProject proj, Element root)
+	public static LogicalPart fromXML(File basepath, DocubricksProject proj, Element root)
 		{
 		LogicalPart part=new LogicalPart();
 		part.id=root.getAttributeValue("id");

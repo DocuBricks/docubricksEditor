@@ -1,7 +1,6 @@
 package docubricks.gui;
 
 import com.trolltech.qt.core.Qt.ScrollBarPolicy;
-import com.trolltech.qt.gui.QComboBox;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QIcon;
@@ -14,7 +13,7 @@ import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 
 import docubricks.data.Unit;
-import docubricks.data.UsefulSourceProject;
+import docubricks.data.DocubricksProject;
 import docubricks.gui.resource.ImgResource;
 
 
@@ -34,33 +33,33 @@ public class TabUnit extends QWidget
 	private QTextEdit tfWhy=new QTextEdit();
 	private QTextEdit tfHow=new QTextEdit();
 	private QTextEdit tfWhat=new QTextEdit();
-	private QTextEdit tfAuthor=new QTextEdit();
-	private QComboBox tfLicense=new QComboBox(); //Default alternatives todo
+	//private QTextEdit tfAuthor=new QTextEdit();
+	
 	
 	private QScrollArea scroll=new QScrollArea();
 	private WidgetInstruction wins;
 	private PaneLogicalParts parts;
-	private MediaSetPane mediapane;
+	PaneCopyright copyright;
+	private PaneMediaSet mediapane;
 	private QPushButton bRemove=new QPushButton(new QIcon(ImgResource.delete),"");
 
 	public Unit unit;
-	public UsefulSourceProject project;
+	public DocubricksProject project;
 
 	public Signal1<TabUnit> sigNameChanged=new Signal1<TabUnit>();
 	public Signal1<TabUnit> sigRemove=new Signal1<TabUnit>();
 	
 
 	
- 
 
 	
-	public TabUnit(UsefulSourceProject project, Unit unit)
+	public TabUnit(DocubricksProject project, Unit unit)
 		{
 		this.project=project;
 		this.unit=unit;	
 
 
-		mediapane=new MediaSetPane(unit.media);
+		mediapane=new PaneMediaSet(unit.media);
 		
 		QVBoxLayout laytot=new QVBoxLayout();
 		laytot.addWidget(scroll);
@@ -108,14 +107,12 @@ public class TabUnit extends QWidget
 		//row++;
 		layGrid.addWidget(mediapane,row,0,1,2);
 		row++;
-		layGrid.addWidget(new HeaderLabel(tr("Copyright")),row,0,1,2);
+
+		//List all copyrights
+		copyright=new PaneCopyright(project, unit);
+		layGrid.addLayout(copyright,row,0,1,2);
 		row++;
-		layGrid.addWidget(new QLabel(tr("Authors:")),row,0);
-		layGrid.addWidget(tfAuthor,row,1);
-		row++;
-		layGrid.addWidget(new QLabel(tr("License:")),row,0);
-		layGrid.addWidget(tfLicense,row,1);
-		row++;
+		
 
 		//List all subunits here
 		parts=new PaneLogicalParts(project, unit);
@@ -126,28 +123,12 @@ public class TabUnit extends QWidget
 		layGrid.addWidget(wins,row,0,1,2);
 		row++;
 
-		//Set list of licenses
-		tfLicense.addItem("");
-		for(String s:Licenses.licenses)
-			tfLicense.addItem(s);
-		tfLicense.setEditable(true);
 	
 		loadvalues();
 
-		/*
-		tfName.editingFinished.connect(this,"storevalues()");
-		tfAbstract.editingFinished.connect(this,"storevalues()");
-		tfLongDesc.textChanged.connect(this,"storevalues()");
-		tfWhy.textChanged.connect(this,"storevalues()");
-		tfHow.textChanged.connect(this,"storevalues()");
-		tfWhat.textChanged.connect(this,"storevalues()");
-		tfLicense.currentStringChanged.connect(this,"storevalues()");
-		tfAuthor.textChanged.connect(this,"storevalues()");*/
 		
 		tfName.textChanged.connect(this,"actionNameChanged()");
 		bRemove.clicked.connect(this,"actionRemove()");
-		
-
 		}
 	
 
@@ -173,11 +154,13 @@ public class TabUnit extends QWidget
 		tfWhy.setText(unit.getWhy());
 		tfHow.setText(unit.getHow());
 		tfWhat.setText(unit.getWhat());
-		tfLicense.setEditText(unit.getLicense());   //TODO not working
-		tfAuthor.setText(unit.authors);
+//		tfAuthor.setText(unit.authors);
+
+		
 		}
 
-	
+
+
 	public void storevalues()
 		{
 		unit.setName(tfName.text());
@@ -186,15 +169,16 @@ public class TabUnit extends QWidget
 		unit.setWhy(tfWhy.toPlainText());
 		unit.setHow(tfHow.toPlainText());
 		unit.setWhat(tfWhat.toPlainText());
-		unit.setLicense(tfLicense.currentText());
-		unit.authors=tfAuthor.toPlainText();
+//		unit.authors=tfAuthor.toPlainText();
 		wins.storevalues();
+		copyright.storevalues();
 		}
 	
 
 	public void updateAllCombos()
 		{
 		parts.updateAllCombos();
+		copyright.updateAllCombos();
 		}
 	
 	

@@ -9,7 +9,7 @@ import java.util.LinkedList;
  * @author Johan Henriksson
  *
  */
-public class Licenses
+public class LicensesUtil
 	{
 	public static LinkedList<String> licenses=new LinkedList<String>();
 	

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import com.trolltech.qt.core.QCoreApplication;
 import com.trolltech.qt.core.QUrl;
@@ -23,7 +24,7 @@ import com.trolltech.qt.gui.QSizePolicy.Policy;
 import com.trolltech.qt.gui.QWidget;
 
 import docubricks.data.Unit;
-import docubricks.data.UsefulSourceProject;
+import docubricks.data.DocubricksProject;
 import docubricks.gui.qt.QTutil;
 import docubricks.gui.resource.ImgResource;
 
@@ -36,16 +37,18 @@ import docubricks.gui.resource.ImgResource;
  */
 public class MainWindow extends QMainWindow
 	{
-	public UsefulSourceProject project=new UsefulSourceProject();
+	public DocubricksProject project=new DocubricksProject();
 
 	public static File lastDirectory=new File(".");
 
-	private PaneTree tree;
+	private PaneProjectTree tree;
 	private QMenuBar menubar=new QMenuBar();
 	private TabProject tabProject;
+	private TabAuthors tabAuthors;
 	private QPushButton bAddUnit=new QPushButton(tr("New unit"));	
 	private QHBoxLayout laytab=new QHBoxLayout();
 	
+	private LinkedList<QWidget> listTab=new LinkedList<QWidget>();
 	private HashMap<Unit, QWidget> mapUnitTab=new HashMap<Unit, QWidget>();
 	
 	private File currentProjectFile=null;
@@ -86,8 +89,8 @@ public class MainWindow extends QMainWindow
 		mHelp.addAction(tr("About"), this, "actionAbout()");
 		mHelp.addAction(tr("Website"), this, "actionWebsite()");
 
-		tree=new PaneTree();
-		tree.sigSel.connect(this,"actionSelTab(Unit)");
+		tree=new PaneProjectTree();
+		tree.sigSel.connect(this,"actionSelTab(TreeSelection,Unit)");
 		tree.setSizePolicy(Policy.Fixed, Policy.Expanding);
 		
 		laytab.setMargin(0);
@@ -106,7 +109,7 @@ public class MainWindow extends QMainWindow
 		cent.setLayout(laytot);
 		setCentralWidget(cent);
 
-		setProject(new UsefulSourceProject());
+		setProject(new DocubricksProject());
 		actionNewUnit();
 		
 		setMinimumSize(800, 480);
@@ -116,14 +119,16 @@ public class MainWindow extends QMainWindow
 	/**
 	 * Action: one tab was selected
 	 */
-	public void actionSelTab(Unit u)
+	public void actionSelTab(TreeSelection sel, Unit u)
 		{
 		//hide all tabs
-		for(QWidget t:mapUnitTab.values())
+		for(QWidget t:listTab)
 			t.setVisible(false);
 		
-		if(u==null)
+		if(sel==TreeSelection.PHYS)
 			tabProject.setVisible(true);
+		else if(sel==TreeSelection.AUTHORS)
+			tabAuthors.setVisible(true);
 		else
 			mapUnitTab.get(u).setVisible(true);
 		}
@@ -137,7 +142,7 @@ public class MainWindow extends QMainWindow
 		Unit nu=project.createUnit();
 		nu.setName("Unnamed");
 		addUnitTab(nu);
-		actionSelTab(nu);
+		actionSelTab(TreeSelection.UNIT, nu);
 		}
 	
 	
@@ -152,6 +157,7 @@ public class MainWindow extends QMainWindow
 		laytab.addWidget(tabUnit);
 		tabUnit.setVisible(false);
 		mapUnitTab.put(nu, tabUnit);
+		listTab.add(tabUnit);
 		tabUnit.actionNameChanged();
 		}
 
@@ -172,6 +178,7 @@ public class MainWindow extends QMainWindow
 		nu.setVisible(false);
 		tabProject.setVisible(true);
 		mapUnitTab.remove(nu.unit);
+		listTab.remove(nu);
 		project.units.remove(nu.unit);
 		tree.setProject(project);
 		}
@@ -194,9 +201,11 @@ public class MainWindow extends QMainWindow
 	 */
 	public void actionNewProject()
 		{
-		setProject(new UsefulSourceProject());
+		setProject(new DocubricksProject());
 		}
 	
+	
+	public String fileExtension="docubricks.xml";
 	
 	/**
 	 * Open a project
@@ -206,7 +215,7 @@ public class MainWindow extends QMainWindow
 		QFileDialog dia=new QFileDialog();
 		dia.setFileMode(FileMode.ExistingFile);
 		dia.setDirectory(lastDirectory.getAbsolutePath());
-		dia.setNameFilter(tr("Project files")+" (*.docubricks.xml)");
+		dia.setNameFilter(tr("Project files")+" (*."+fileExtension+")");
 		if(dia.exec()!=0)
 			{
 			File f=new File(dia.selectedFiles().get(0));
@@ -214,7 +223,7 @@ public class MainWindow extends QMainWindow
 			
 			try
 				{
-				setProject(UsefulSourceProject.loadXML(f));
+				setProject(DocubricksProject.loadXML(f));
 				currentProjectFile=f;
 				}
 			catch (IOException e)
@@ -226,25 +235,35 @@ public class MainWindow extends QMainWindow
 		}
 	
 	
-	private void setProject(UsefulSourceProject proj)
+	private void setProject(DocubricksProject proj)
 		{
 		this.project=proj;
 
 		//Remove all tabs
-		for(QWidget t:mapUnitTab.values())
+		for(QWidget t:listTab)
 			{
 			t.setVisible(false);
 			laytab.removeWidget(t);
 			}
 		mapUnitTab.clear();
-
+		listTab.clear();
+		
 		//Update project tab
 		tabProject=new TabProject(project);
+		tabAuthors=new TabAuthors(proj);
 		//tabwidget.addTab(tabProject, tr("Project"));
 		mapUnitTab.put(null, tabProject);
+		listTab.add(tabProject);
 		laytab.addWidget(tabProject);
+		
+		mapUnitTab.put(null, tabAuthors);
+		listTab.add(tabAuthors);
+		laytab.addWidget(tabAuthors);
+		tabAuthors.setVisible(false);
+		
 		//tabProject.setVisible(false);
 		tabProject.signalUpdated.connect(this,"updatedvalues()");
+		tabAuthors.signalUpdated.connect(this,"updatedvalues()");
 		tree.setProject(project);
 		
 		//Add all new unit tabs
@@ -275,6 +294,7 @@ public class MainWindow extends QMainWindow
 			{
 			//Serialize everything
 			tabProject.storevalues();
+			tabAuthors.storevalues();
 			for(Unit u:project.units)
 				{
 				TabUnit tu=getUnitTab(u);
@@ -304,8 +324,8 @@ public class MainWindow extends QMainWindow
 		dia.setFileMode(FileMode.AnyFile);
 		dia.setAcceptMode(AcceptMode.AcceptSave);
 		dia.setDirectory(lastDirectory.getAbsolutePath());
-		dia.setDefaultSuffix("docubricks.xml");
-		dia.setNameFilter(tr("Project files")+" (*.docubricks.xml)");
+		dia.setDefaultSuffix(fileExtension);
+		dia.setNameFilter(tr("Project files")+" (*."+fileExtension+")");
 		if(dia.exec()!=0)
 			{
 			File f=new File(dia.selectedFiles().get(0));

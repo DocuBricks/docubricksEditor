@@ -15,7 +15,7 @@ import com.trolltech.qt.gui.QVBoxLayout;
 
 import docubricks.data.MaterialUnit;
 import docubricks.data.PhysicalPart;
-import docubricks.data.UsefulSourceProject;
+import docubricks.data.DocubricksProject;
 import docubricks.gui.resource.ImgResource;
 
 /**
@@ -27,7 +27,7 @@ import docubricks.gui.resource.ImgResource;
  */
 public class PanePhysicalParts extends QVBoxLayout
 	{
-	private UsefulSourceProject proj;
+	private DocubricksProject proj;
 	
 	public Signal0 signalUpdated=new Signal0();
 	
@@ -57,7 +57,7 @@ public class PanePhysicalParts extends QVBoxLayout
 		private QVBoxLayout lay=new QVBoxLayout();
 		private QHBoxLayout laybuttons=new QHBoxLayout();
 
-		private MediaSetPane mediapane;
+		private PaneMediaSet mediapane;
 		
 		private TreeMap<String, MaterialUnit> mapMaterialUnitFWD=new TreeMap<String, MaterialUnit>();
 		
@@ -82,7 +82,7 @@ public class PanePhysicalParts extends QVBoxLayout
 			
 			setLayout(lay);
 			
-			mediapane=new MediaSetPane(part.media);
+			mediapane=new PaneMediaSet(part.media);
 		
 			
 			QHBoxLayout layMaterial=new QHBoxLayout();
@@ -187,7 +187,7 @@ public class PanePhysicalParts extends QVBoxLayout
 	/**
 	 * Constructor for list of logical parts
 	 */
-	public PanePhysicalParts(UsefulSourceProject proj)
+	public PanePhysicalParts(DocubricksProject proj)
 		{
 		this.proj=proj;
 //		this.part=part;

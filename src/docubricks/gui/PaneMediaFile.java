@@ -21,7 +21,7 @@ import docubricks.data.MediaFile;
  * @author Johan Henriksson
  *
  */
-public class MediaFilePane extends QWidget
+public class PaneMediaFile extends QWidget
 	{
 	MediaFile mf;
 	
@@ -84,7 +84,7 @@ public class MediaFilePane extends QWidget
 		
 		}
 	
-	public MediaFilePane(MediaFile mf)
+	public PaneMediaFile(MediaFile mf)
 		{
 		this.mf=mf;
 		

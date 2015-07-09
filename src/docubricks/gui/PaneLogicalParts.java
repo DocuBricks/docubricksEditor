@@ -15,7 +15,7 @@ import com.trolltech.qt.gui.QVBoxLayout;
 import docubricks.data.LogicalPart;
 import docubricks.data.LogicalPartImplementation;
 import docubricks.data.Unit;
-import docubricks.data.UsefulSourceProject;
+import docubricks.data.DocubricksProject;
 import docubricks.gui.resource.ImgResource;
 
 /**
@@ -27,7 +27,7 @@ import docubricks.gui.resource.ImgResource;
  */
 public class PaneLogicalParts extends QVBoxLayout
 	{
-	private UsefulSourceProject proj;
+	private DocubricksProject proj;
 	private Unit unit;
 	
 	private HeaderLabel header=new HeaderLabel(tr("Logical parts"));
@@ -41,7 +41,7 @@ public class PaneLogicalParts extends QVBoxLayout
 	/**
 	 * Constructor for list of logical parts
 	 */
-	public PaneLogicalParts(UsefulSourceProject proj, Unit unit)
+	public PaneLogicalParts(DocubricksProject proj, Unit unit)
 		{
 		this.proj=proj;
 		this.unit=unit;
@@ -129,7 +129,7 @@ public class PaneLogicalParts extends QVBoxLayout
 
 		private QVBoxLayout laylistImp=new QVBoxLayout();
 
-		private MediaSetPane mediapane;
+		private PaneMediaSet mediapane;
 		
 		/**
 		 * Constructor for one logical part pane
@@ -144,7 +144,7 @@ public class PaneLogicalParts extends QVBoxLayout
 			layName.addWidget(tfDescription);
 			layName.addWidget(bRemoveLogPart);
 
-			mediapane=new MediaSetPane(part.media);
+			mediapane=new PaneMediaSet(part.media);
 			
 			QGridLayout layGrid=new QGridLayout();
 			

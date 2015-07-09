@@ -23,8 +23,8 @@ public class Unit
 	private String why="";
 	private String how="";
 	private String license="";
-	public String authors="";
-
+	
+	public ArrayList<Author> authors=new ArrayList<Author>();
 	public AssemblyInstruction asmInstruction=new AssemblyInstruction();
 	public ArrayList<LogicalPart> logicalParts=new ArrayList<LogicalPart>();
 	
@@ -148,11 +148,21 @@ public class Unit
 		eroot.addContent(media.toXML(basepath));
 		
 		eroot.addContent(asmInstruction.toXML(basepath));
+		for(Author a:authors)
+			if(a!=null)
+				{
+				Element e=new Element("author");
+				e.setAttribute("id",a.id);
+				eroot.addContent(e);
+				}
 		for(LogicalPart p:logicalParts)
-			eroot.addContent(p.toXML(basepath));
+			if(p!=null)
+				eroot.addContent(p.toXML(basepath));
 		
 		return eroot;
 		}
+	
+	
 	
 	private static Element elWithContent(String el, String content)
 		{
@@ -162,7 +172,7 @@ public class Unit
 		}
 	
 	
-	public static Unit fromXML(File basepath, UsefulSourceProject proj, Element root)
+	public static Unit fromXML(File basepath, DocubricksProject proj, Element root)
 		{
 		Unit u=new Unit();
 		u.id=root.getAttributeValue("id");
@@ -180,20 +190,16 @@ public class Unit
 		u.media=MediaSet.fromXML(basepath, root.getChild("media"));
 
 		for(Element child:root.getChildren())
+			if(child.getName().equals("author"))
+				{
+				String id=child.getAttributeValue("id");
+				u.authors.add(proj.getAuthor(id));
+				}
+		for(Element child:root.getChildren())
 			if(child.getName().equals("logical_part"))
 				u.logicalParts.add(LogicalPart.fromXML(basepath, proj, child));
 		
 		return u;
 		}
-	
-	//I think we can abstract over media type
-	/*
-	public void addVideo(Video s);
-	public void addImage(Image s);
-	
-	
-	public void addPart(LogicalPart p);
-	*/
-	
-	
+
 	}

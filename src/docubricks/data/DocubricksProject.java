@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -239,6 +242,25 @@ public class DocubricksProject
 			if(p.id.equals(id))
 				return p;
 		throw new RuntimeException("Missing author: "+id);
+		}
+
+
+	/**
+	 * Get root-level units
+	 */
+	public Collection<Unit> getRootUnits()
+		{
+		LinkedList<Unit> ret=new LinkedList<Unit>();
+		HashSet<Unit> hasparent=new HashSet<Unit>();
+		for(Unit u:units)
+			for(LogicalPart lp:u.logicalParts)
+				for(LogicalPartImplementation imp:lp.implementingPart)
+					if(imp instanceof LogicalPartImplementationUnit)
+						hasparent.add(((LogicalPartImplementationUnit)imp).get(this));
+		for(Unit u:units)
+			if(!hasparent.contains(u))
+				ret.add(u);
+		return ret;
 		}
 
 

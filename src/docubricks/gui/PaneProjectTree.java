@@ -1,11 +1,15 @@
 package docubricks.gui;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.gui.QTreeWidget;
 import com.trolltech.qt.gui.QTreeWidgetItem;
 
+import docubricks.data.LogicalPart;
+import docubricks.data.LogicalPartImplementation;
+import docubricks.data.LogicalPartImplementationUnit;
 import docubricks.data.Unit;
 import docubricks.data.DocubricksProject;
 
@@ -43,6 +47,9 @@ public class PaneProjectTree extends QTreeWidget
 	QTreeWidgetItem itemPhy;
 	QTreeWidgetItem itemAuthors;
 	
+	
+	
+	
 	public void setProject(DocubricksProject project)
 		{
 		this.project=project;
@@ -51,12 +58,41 @@ public class PaneProjectTree extends QTreeWidget
 		itemPhy=new QTreeWidgetItem(this, Arrays.asList(new String[]{"Physical parts"}));
 		itemAuthors=new QTreeWidgetItem(this, Arrays.asList(new String[]{"Authors"}));
 
+		//Place units as a tree
+		HashSet<Unit> placedUnitsTotal=new HashSet<Unit>();
+		HashSet<Unit> placedUnitsDepth=new HashSet<Unit>();
+		for(Unit u:project.getRootUnits())
+			setProjectRec(project, placedUnitsTotal, placedUnitsDepth, u, null);
+		//Place remaining units (circular!) arbitrary
 		for(Unit u:project.units)
-			{
-			QTreeWidgetItem item=new QTreeWidgetItem(this, Arrays.asList(new String[]{"Unit: "+u.getName()}));
-			item.setData(0, Qt.ItemDataRole.UserRole, u);
-			}
+			if(!placedUnitsTotal.contains(u))
+				setProjectRec(project, placedUnitsTotal, placedUnitsDepth, u, null);
+		expandAll();
 		}
+	
+	
+	private void setProjectRec(DocubricksProject project, HashSet<Unit> placedUnitsTotal, HashSet<Unit> placedUnitsDepth, Unit toplace, QTreeWidgetItem itemParent)
+		{
+		String nodeName="Unit: "+toplace.getName();
+		QTreeWidgetItem itemThis;
+		if(itemParent==null)
+			itemThis=new QTreeWidgetItem(this, Arrays.asList(new String[]{nodeName}));
+		else
+			itemThis=new QTreeWidgetItem(itemParent, Arrays.asList(new String[]{nodeName}));
+		itemThis.setData(0, Qt.ItemDataRole.UserRole, toplace);
+		
+		//Add children
+		if(!placedUnitsDepth.contains(toplace))
+			{
+			placedUnitsDepth.add(toplace);
+			for(LogicalPart lp:toplace.logicalParts)
+				for(LogicalPartImplementation imp:lp.implementingPart)
+					if(imp instanceof LogicalPartImplementationUnit)
+						setProjectRec(project, placedUnitsTotal, placedUnitsDepth, ((LogicalPartImplementationUnit)imp).get(project), itemThis);
+			}
+		placedUnitsTotal.add(toplace);
+		}
+	
 	
 	
 	public void actionSelected()

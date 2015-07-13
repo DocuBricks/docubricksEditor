@@ -128,6 +128,7 @@ public class TabUnit extends QWidget
 
 		
 		tfName.textChanged.connect(this,"actionNameChanged()");
+		parts.sigChanged.connect(this,"actionPartsChanged()");
 		bRemove.clicked.connect(this,"actionRemove()");
 		}
 	
@@ -140,6 +141,10 @@ public class TabUnit extends QWidget
 	public void actionNameChanged()
 		{
 		unit.setName(tfName.text());
+		sigNameChanged.emit(this);
+		}
+	public void actionPartsChanged()
+		{
 		sigNameChanged.emit(this);
 		}
 	

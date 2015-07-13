@@ -47,4 +47,9 @@ public class LogicalPartImplementationUnit implements LogicalPartImplementation
 		else
 			return false;
 		}
+
+	public Unit get(DocubricksProject project)
+		{
+		return project.getUnit(id);
+		}
 	}

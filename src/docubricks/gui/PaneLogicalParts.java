@@ -35,6 +35,7 @@ public class PaneLogicalParts extends QVBoxLayout
 	private HashMap<LogicalPart, PaneOneLogicalPart> mapLogPanes=new HashMap<LogicalPart, PaneLogicalParts.PaneOneLogicalPart>();
 	
 	private QVBoxLayout laylistLogicalPart=new QVBoxLayout();
+	public Signal0 sigChanged=new Signal0();
 
 
 	
@@ -77,6 +78,7 @@ public class PaneLogicalParts extends QVBoxLayout
 		mapLogPanes.put(part, onepane);
 		laylistLogicalPart.addWidget(onepane);
 		onepane.loadvalues();
+		sigChanged.emit();
 		}
 	
 
@@ -230,12 +232,13 @@ public class PaneLogicalParts extends QVBoxLayout
 			combo.updateListOfEntries();
 			combo.sigUpdated.connect(this,"actionChangePart(ComboImplementingPart)");
 			combo.sigDeleted.connect(this,"actionDeletePart(ComboImplementingPart)");			
+			sigChanged.emit();
 			}
 		public void actionChangePart(ComboImplementingPart p)
 			{
 			int index=mapImplementationPanes.indexOf(p);
 			part.implementingPart.set(index, p.getCurrentData());
-			System.out.println("set: "+p.getCurrentData());
+			sigChanged.emit();
 			}
 
 		public void actionDeletePart(ComboImplementingPart p)
@@ -245,6 +248,7 @@ public class PaneLogicalParts extends QVBoxLayout
 			part.implementingPart.remove(index);
 			p.setVisible(false);
 			laylistImp.removeWidget(p);
+			sigChanged.emit();
 			}
 
 		/**

@@ -24,29 +24,15 @@ public class PaneProjectTree extends QTreeWidget
 	{
 	public DocubricksProject project=new DocubricksProject();
 	public Signal2<TreeSelection,Unit> sigSel=new Signal2<TreeSelection,Unit>();
-	
+
+	private QTreeWidgetItem itemPhy;
+	private QTreeWidgetItem itemAuthors;
+
 	public PaneProjectTree()
 		{
 		header().setVisible(false);
-		/**
-		 * 
-		 * TODO: need a root-item. or? can possibly just detect it!
-		 * 
-		 * can make a best-effort at building a tree. if listing sub-items which are not proper, just don't recurse further into them!
-		 * 
-		 * find roots.
-		 * find all leaves. 
-		 * mark everything else as a root
-		 * 
-		 * recurse and add unless previously added (circular!)
-		 */
-		
 		selectionModel().selectionChanged.connect(this,"actionSelected()");
 		}
-
-	QTreeWidgetItem itemPhy;
-	QTreeWidgetItem itemAuthors;
-	
 	
 	
 	
@@ -62,18 +48,21 @@ public class PaneProjectTree extends QTreeWidget
 		HashSet<Unit> placedUnitsTotal=new HashSet<Unit>();
 		HashSet<Unit> placedUnitsDepth=new HashSet<Unit>();
 		for(Unit u:project.getRootUnits())
-			setProjectRec(project, placedUnitsTotal, placedUnitsDepth, u, null);
-		//Place remaining units (circular!) arbitrary
+			setProjectRecursive(project, placedUnitsTotal, placedUnitsDepth, u, null);
+		//Place remaining units (circular!) arbitrarily
 		for(Unit u:project.units)
 			if(!placedUnitsTotal.contains(u))
-				setProjectRec(project, placedUnitsTotal, placedUnitsDepth, u, null);
+				setProjectRecursive(project, placedUnitsTotal, placedUnitsDepth, u, null);
 		expandAll();
 		}
 	
 	
-	private void setProjectRec(DocubricksProject project, HashSet<Unit> placedUnitsTotal, HashSet<Unit> placedUnitsDepth, Unit toplace, QTreeWidgetItem itemParent)
+	/**
+	 * Build tree recursively
+	 */
+	private void setProjectRecursive(DocubricksProject project, HashSet<Unit> placedUnitsTotal, HashSet<Unit> placedUnitsDepth, Unit toplace, QTreeWidgetItem itemParent)
 		{
-		String nodeName="Unit: "+toplace.getName();
+		String nodeName=tr("Unit: ")+toplace.getName();
 		QTreeWidgetItem itemThis;
 		if(itemParent==null)
 			itemThis=new QTreeWidgetItem(this, Arrays.asList(new String[]{nodeName}));
@@ -88,13 +77,16 @@ public class PaneProjectTree extends QTreeWidget
 			for(LogicalPart lp:toplace.logicalParts)
 				for(LogicalPartImplementation imp:lp.implementingPart)
 					if(imp instanceof LogicalPartImplementationUnit)
-						setProjectRec(project, placedUnitsTotal, placedUnitsDepth, ((LogicalPartImplementationUnit)imp).get(project), itemThis);
+						setProjectRecursive(project, placedUnitsTotal, placedUnitsDepth, ((LogicalPartImplementationUnit)imp).get(project), itemThis);
+			placedUnitsDepth.remove(toplace);
 			}
 		placedUnitsTotal.add(toplace);
 		}
 	
 	
-	
+	/**
+	 * Action: on selection changed
+	 */
 	public void actionSelected()
 		{
 		for(QTreeWidgetItem item:selectedItems())

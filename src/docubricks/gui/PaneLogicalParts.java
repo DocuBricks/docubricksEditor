@@ -113,25 +113,23 @@ public class PaneLogicalParts extends QVBoxLayout
 	
 	/**
 	 * Constructor for one logical part
-	 *
 	 */
 	public class PaneOneLogicalPart extends QGroupBox
 		{
+		private LogicalPart part;
+		
 		private QLineEdit tfDescription=new QLineEdit();
 		private QLineEdit tfDesignator=new QLineEdit();
 		private QLineEdit tfQuantity=new QLineEdit();
-		
-		private LogicalPart part;
 		private QPushButton bRemoveLogPart=new QPushButton(new QIcon(ImgResource.delete),"");
 		private QPushButton bAddImplementation=new QPushButton(tr("Add implementation"));
 		private QVBoxLayout lay=new QVBoxLayout();
 		private QHBoxLayout laybuttons=new QHBoxLayout();
+		private QVBoxLayout laylistImp=new QVBoxLayout();
+		private PaneMediaSet mediapane;
 
 		private LinkedList<ComboImplementingPart> mapImplementationPanes=new LinkedList<ComboImplementingPart>();
 
-		private QVBoxLayout laylistImp=new QVBoxLayout();
-
-		private PaneMediaSet mediapane;
 		
 		/**
 		 * Constructor for one logical part pane
@@ -205,7 +203,7 @@ public class PaneLogicalParts extends QVBoxLayout
 		
 		
 		/**
-		 * Remove this logical part
+		 * Action: Remove this logical part
 		 */
 		public void actionRemoveLogPart()
 			{
@@ -214,17 +212,20 @@ public class PaneLogicalParts extends QVBoxLayout
 			unit.logicalParts.remove(part);
 			}
 
+		/**
+		 * Action: Add a new implementation
+		 */
 		public void actionAddImplementation()
 			{
 			addImplementation(null);
 			}
 		
-		public void addImplementation(LogicalPartImplementation imp)
+		private void addImplementation(LogicalPartImplementation imp)
 			{
 			part.implementingPart.add(imp);
 			addImplementationWidget(imp);
 			}
-		public void addImplementationWidget(LogicalPartImplementation imp)
+		private void addImplementationWidget(LogicalPartImplementation imp)
 			{
 			ComboImplementingPart combo=new ComboImplementingPart(proj,part,imp);
 			mapImplementationPanes.add(combo);
@@ -234,6 +235,10 @@ public class PaneLogicalParts extends QVBoxLayout
 			combo.sigDeleted.connect(this,"actionDeletePart(ComboImplementingPart)");			
 			sigChanged.emit();
 			}
+		
+		/**
+		 * Action: A part has changed
+		 */
 		public void actionChangePart(ComboImplementingPart p)
 			{
 			int index=mapImplementationPanes.indexOf(p);
@@ -241,6 +246,9 @@ public class PaneLogicalParts extends QVBoxLayout
 			sigChanged.emit();
 			}
 
+		/**
+		 * Action: Delete implementation
+		 */
 		public void actionDeletePart(ComboImplementingPart p)
 			{
 			int index=mapImplementationPanes.indexOf(p);

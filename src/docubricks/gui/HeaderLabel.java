@@ -16,7 +16,5 @@ public class HeaderLabel extends QLabel
 		super(s);
 		//setObjectName("header");
 		setStyleSheet("background-color:blue; color:white; font-size: 16pt;");
-
 		}
-
 	}

@@ -1,4 +1,4 @@
-# Useful source XML editor
+# Docubricks XML editor
 
 ## Description
 

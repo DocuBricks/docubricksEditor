@@ -62,7 +62,7 @@ public class MainWindow extends QMainWindow
 		try
 			{
 			InputStream styleStream=MainWindow.class.getResourceAsStream("style.css");
-			String stylesheet=LabnoteUtil.readStreamToString(styleStream);
+			String stylesheet=IoUtil.readStreamToString(styleStream);
 			styleStream.close();
 			setStyleSheet(stylesheet);
 			}

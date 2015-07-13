@@ -23,13 +23,9 @@ public class PaneCopyright extends QVBoxLayout
 	private DocubricksProject proj;
 	private Unit unit;
 	
-
-	private QVBoxLayout layAuthors=new QVBoxLayout();
 	private ArrayList<ComboAuthorRef> combosAuthor=new ArrayList<ComboAuthorRef>();
-
-	private QComboBox tfLicense=new QComboBox(); //Default alternatives todo
-
-
+	private QVBoxLayout layAuthors=new QVBoxLayout();
+	private QComboBox tfLicense=new QComboBox();
 	private QPushButton bAddAuthor=new QPushButton(tr("Add author"));
 
 	
@@ -40,7 +36,6 @@ public class PaneCopyright extends QVBoxLayout
 		{
 		this.proj=proj;
 		this.unit=unit;
-//		this.part=part;
 
 		//Set list of licenses
 		tfLicense.addItem("");
@@ -54,7 +49,6 @@ public class PaneCopyright extends QVBoxLayout
 		setMargin(0);
 		
 		loadvalues();
-	
 		
 		int row=0;
 		layGrid.addWidget(new HeaderLabel(tr("Copyright")),row,0,1,2);
@@ -82,8 +76,6 @@ public class PaneCopyright extends QVBoxLayout
 		}
 
 	
-	
-	
 	/**
 	 * Load values from object
 	 */
@@ -95,7 +87,9 @@ public class PaneCopyright extends QVBoxLayout
 		}
 	
 	
-	
+	/**
+	 * Add widget for author
+	 */
 	private void addAuthorWidget(Author a)
 		{
 		ComboAuthorRef combo=new ComboAuthorRef(proj, a){
@@ -118,7 +112,11 @@ public class PaneCopyright extends QVBoxLayout
 		combosAuthor.add(combo);
 		layAuthors.addWidget(combo);
 		}
+
 	
+	/**
+	 * Action: add author
+	 */
 	public void actionAddAuthor()
 		{
 		Author a=null;
@@ -127,10 +125,9 @@ public class PaneCopyright extends QVBoxLayout
 		}
 
 
-	
-	
-	
-	
+	/**
+	 * Store entries to model
+	 */
 	public void storevalues()
 		{
 		unit.setLicense(tfLicense.currentText());

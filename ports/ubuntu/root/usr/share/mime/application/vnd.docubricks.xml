@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mime-type xmlns="http://www.freedesktop.org/standards/shared-mime-info" type="application/vnd.docubricks">
+  <!--Created automatically by update-mime-database. DO NOT EDIT!-->
+  <comment>Docubricks project</comment>
+  <comment xml:lang="sv">Docubricks projekt</comment>
+  <generic-icon name="image-x-generic"/>
+  <glob pattern="*.docubricks.xml"/>
+</mime-type>

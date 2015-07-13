@@ -1,0 +1,22 @@
+#! /bin/sh
+# postrm.skeleton
+# Skeleton maintainer script showing all the possible cases.
+# Written by Charles Briscoe-Smith, March-June 1998.  Public Domain.
+
+# Abort if any command returns an error value
+set -e
+
+# This script is called twice during the removal of the package; once
+# after the removal of the package's files from the system, and as
+# the final step in the removal of this package, after the package's
+# conffiles have been removed.
+
+# Ensure the menu system is updated
+if [ -x /usr/bin/update-menus ]; then
+        update-menus
+fi
+
+update-mime
+update-mime-database /usr/share/mime
+
+

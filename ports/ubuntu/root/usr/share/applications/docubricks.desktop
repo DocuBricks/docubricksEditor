@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Name=Docubricks
+Exec=docubricks %F
+Icon=/usr/share/pixmaps/docubricks_256.png
+Terminal=false
+Categories=Science;
+StartupNotify=true
+MimeType=application/vnd.docubricks;
+Name[en_US]=docubricks.desktop

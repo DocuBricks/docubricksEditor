@@ -1,0 +1,6 @@
+?package(docubricks):\
+  needs="X11"\
+  section="Applications/Science"\
+  title="Docubricks"\
+  icon="/usr/share/pixmaps/docubricks.xpm"\
+  command="/usr/bin/docubricks"

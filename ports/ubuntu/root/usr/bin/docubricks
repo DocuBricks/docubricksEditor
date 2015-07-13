@@ -1,0 +1,6 @@
+#!/bin/sh
+
+#This hack is needed on Debian, for some reason. However, it makes no difference on Ubuntu, so always run it:
+export _JAVA_OPTIONS="-Djava.library.path=/usr/lib/x86_64-linux-gnu:"`java -cp /usr/share/facsanadu/facsanadu.jar org.ecobima.labnote.util.PrintLibraryPath`
+
+java -jar /usr/share/facsanadu/docubricks.jar "$@"

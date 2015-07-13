@@ -1,0 +1,13 @@
+Package: docubricks
+Version: VERSION
+Section: contrib/science
+Priority: optional
+Architecture: all
+Depends: DEPENDENCIES
+Installed-Size: SIZE
+Maintainer: Johan Henriksson <mahogny@areta.org>
+Homepage: http://www.facsanadu.org
+Description: Tool for editing Docubricks files
+ Docubricks is a file format and a set of tools to help document open hardware
+ projects. The aim of this is to achieve greater reproducibility of sucessful
+ projects and to aid in the spreading of these.

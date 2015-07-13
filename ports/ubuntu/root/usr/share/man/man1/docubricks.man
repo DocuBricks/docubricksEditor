@@ -1,0 +1,23 @@
+.TH FACSANADU 1 "1 April 2015"
+.SH NAME
+facsanadu - Start the FACSanadu software
+.SH SYNOPSIS
+\fBfacsanadu\fP [--printcommand] [--version] 
+.SH DESCRIPTION
+\fBFACSanadu\fP is a simple program for FCS analysis
+
+.SS Options
+.TP
+\fB--version\fP
+Print version
+.TP
+\fB--printcommand\fP
+Print the full internal java command to start up FACSanadu.
+.TP
+.SH FILES
+.TP
+\fC/usr/share/facsanadu/\fR
+System-wide FACSanadu distribution
+.SH "SEE ALSO"
+http://www.facsanadu.org/
+

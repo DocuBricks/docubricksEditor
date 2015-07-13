@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+        <key>NSPrincipalClass</key>
+        <string>NSApplication</string>
+        <key>NSHighResolutionCapable</key>
+        <true/>
+	<key>CFBundleName</key>
+	<string>Docubricks</string>
+	<key>CFBundleVersion</key>
+	<string>100.0</string>
+	<key>CFBundleAllowMixedLocalizations</key>
+	<string>true</string>
+	<key>CFBundleExecutable</key>
+	<string>JavaApplicationStub</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleIconFile</key>
+	<string>docubricks.icns</string>
+	<key>CFBundleTypeRole</key>          
+	<string>Editor</string>
+	<key>CFBundleTypeExtensions</key>
+	<array>
+		<string>docubricks.xml</string>
+	</array>
+	<key>LSIsAppleDefaultForType</key>   <true/>
+	<key>Java</key>
+	<dict>
+		<key>MainClass</key>
+		<string>docubricks.gui.MainWindow</string>
+		<key>StartOnMainThread</key>
+		<true/>
+		<key>JVMVersion</key>
+		<string>1.5*</string>
+		<key>VMOptions</key>
+		<string>-d32 -XstartOnFirstThread -Xmx400m</string>
+		<key>ClassPath</key>
+		<array>
+			<string>$APP_PACKAGE/docubricks.jar</string>
+
+			<string>$APP_PACKAGE/jdom-2.0.4.jar</string>
+
+			<string>$APP_PACKAGE/qtjambi-4.5.2_01.jar</string>
+			<string>$APP_PACKAGE/qtjambi-macosx-gcc-4.5.2_01.jar</string>
+
+			<string>$APP_PACKAGE/qtjambi-4.7.0.jar</string>
+			<string>$APP_PACKAGE/qtjambi-macosx-gcc-4.7.0.jar</string>
+			<string>$APP_PACKAGE/qtjambi-util-4.7.0.jar</string>
+
+
+		</array>
+	</dict>
+</dict>
+</plist>

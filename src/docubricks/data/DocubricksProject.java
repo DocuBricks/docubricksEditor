@@ -6,11 +6,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.ProcessingInstruction;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
@@ -26,7 +28,7 @@ import org.jdom2.output.XMLOutputter;
  */
 public class DocubricksProject
 	{
-	public ArrayList<Unit> units=new ArrayList<Unit>();
+	public ArrayList<Brick> units=new ArrayList<Brick>();
 	public ArrayList<PhysicalPart> physicalParts=new ArrayList<PhysicalPart>();
 	public ArrayList<Author> authors=new ArrayList<Author>();
 	
@@ -39,7 +41,7 @@ public class DocubricksProject
 		for(;;)
 			{
 			id=(int)(Math.random()*Integer.MAX_VALUE);
-			for(Unit p:units)
+			for(Brick p:units)
 				if(p.id.equals(id))
 					continue;
 			break;
@@ -96,7 +98,7 @@ public class DocubricksProject
 			Element ep=p.toXML(basepath);
 			eroot.addContent(ep);
 			}
-		for(Unit u:units)
+		for(Brick u:units)
 			{
 			Element eu=u.toXML(basepath);
 			eroot.addContent(eu);
@@ -136,7 +138,7 @@ public class DocubricksProject
 			{
 			if(c.getName().equals("unit"))
 				{
-				Unit u=Unit.fromXML(basepath, p, c);
+				Brick u=Brick.fromXML(basepath, p, c);
 				p.units.add(u);
 				}
 			}
@@ -150,7 +152,18 @@ public class DocubricksProject
 	public void storeXML(File f) throws IOException
 		{
 		XMLOutputter xmlOutputter = new XMLOutputter(Format.getPrettyFormat());
-    xmlOutputter.output(toXML(f.getParentFile()), new FileOutputStream(f));
+
+		ProcessingInstruction pi=new ProcessingInstruction("xml-stylesheet");
+		HashMap<String, String> pid=new HashMap<String, String>();
+		pid.put("href", "docubricks.xsl");
+		pid.put("type", "text/xml");
+		pi.setData(pid);
+
+		Document doc=new Document();
+		doc.addContent(pi);
+		doc.addContent(toXML(f.getParentFile()));
+		
+    xmlOutputter.output(doc, new FileOutputStream(f));
 		}
 
 	
@@ -184,8 +197,6 @@ public class DocubricksProject
 		for(PhysicalPart p:physicalParts)
 			if(p.id.equals(id))
 				return p;
-		for(PhysicalPart p:physicalParts)
-			System.out.println("ids: "+p.id+"   vs   "+id);
 		throw new RuntimeException("Cannot find physical part "+id);
 		}
 
@@ -193,9 +204,9 @@ public class DocubricksProject
 	/**
 	 * Get unit by ID
 	 */
-	public Unit getUnit(String id)
+	public Brick getUnit(String id)
 		{
-		for(Unit p:units)
+		for(Brick p:units)
 			if(p.id.equals(id))
 				return p;
 		throw new RuntimeException("Missing unit: "+id);
@@ -205,9 +216,9 @@ public class DocubricksProject
 	/**
 	 * Create and attach a new unit
 	 */
-	public Unit createUnit()
+	public Brick createUnit()
 		{
-		Unit nu=new Unit();
+		Brick nu=new Brick();
 		nu.id=""+findFreeUnitID();
 		units.add(nu);
 		return nu;
@@ -228,7 +239,6 @@ public class DocubricksProject
 
 	public Author createAuthor()
 		{
-		System.out.println("creat "+authors);
 		Author p=new Author();
 		p.id=findFreeAuthorID();
 		authors.add(p);
@@ -248,22 +258,18 @@ public class DocubricksProject
 	/**
 	 * Get root-level units
 	 */
-	public Collection<Unit> getRootUnits()
+	public Collection<Brick> getRootUnits()
 		{
-		LinkedList<Unit> ret=new LinkedList<Unit>();
-		HashSet<Unit> hasparent=new HashSet<Unit>();
-		for(Unit u:units)
-			for(LogicalPart lp:u.logicalParts)
-				for(LogicalPartImplementation imp:lp.implementingPart)
-					if(imp instanceof LogicalPartImplementationUnit)
-						hasparent.add(((LogicalPartImplementationUnit)imp).get(this));
-		for(Unit u:units)
+		LinkedList<Brick> ret=new LinkedList<Brick>();
+		HashSet<Brick> hasparent=new HashSet<Brick>();
+		for(Brick u:units)
+			for(Function lp:u.logicalParts)
+				for(FunctionImplementation imp:lp.implementingPart)
+					if(imp instanceof FunctionImplementationBrick)
+						hasparent.add(((FunctionImplementationBrick)imp).get(this));
+		for(Brick u:units)
 			if(!hasparent.contains(u))
 				ret.add(u);
 		return ret;
 		}
-
-
-
-	
 	}

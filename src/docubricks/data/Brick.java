@@ -13,7 +13,7 @@ import org.jdom2.Element;
  * @author Johan Henriksson
  *
  */
-public class Unit
+public class Brick
 	{
 	public String id;
 	private String name="";
@@ -26,7 +26,7 @@ public class Unit
 	
 	public ArrayList<Author> authors=new ArrayList<Author>();
 	public AssemblyInstruction asmInstruction=new AssemblyInstruction();
-	public ArrayList<LogicalPart> logicalParts=new ArrayList<LogicalPart>();
+	public ArrayList<Function> logicalParts=new ArrayList<Function>();
 	
 	public MediaSet media=new MediaSet();
 	
@@ -104,9 +104,9 @@ public class Unit
 		}
 	
 	
-	public LogicalPart createLogicalPart()
+	public Function createLogicalPart()
 		{
-		LogicalPart p=new LogicalPart();
+		Function p=new Function();
 		p.id=findFreeLogicalPartID();
 		logicalParts.add(p);
 		return p;
@@ -120,7 +120,7 @@ public class Unit
 		for(;;)
 			{
 			id=""+(int)(Math.random()*Integer.MAX_VALUE);
-			for(LogicalPart p:logicalParts)
+			for(Function p:logicalParts)
 				if(p.id.equals(id))
 					continue;
 			break;
@@ -155,7 +155,7 @@ public class Unit
 				e.setAttribute("id",a.id);
 				eroot.addContent(e);
 				}
-		for(LogicalPart p:logicalParts)
+		for(Function p:logicalParts)
 			if(p!=null)
 				eroot.addContent(p.toXML(basepath));
 		
@@ -172,9 +172,9 @@ public class Unit
 		}
 	
 	
-	public static Unit fromXML(File basepath, DocubricksProject proj, Element root)
+	public static Brick fromXML(File basepath, DocubricksProject proj, Element root)
 		{
-		Unit u=new Unit();
+		Brick u=new Brick();
 		u.id=root.getAttributeValue("id");
 
 		u.name=root.getChildText("name");
@@ -197,7 +197,7 @@ public class Unit
 				}
 		for(Element child:root.getChildren())
 			if(child.getName().equals("logical_part"))
-				u.logicalParts.add(LogicalPart.fromXML(basepath, proj, child));
+				u.logicalParts.add(Function.fromXML(basepath, proj, child));
 		
 		return u;
 		}

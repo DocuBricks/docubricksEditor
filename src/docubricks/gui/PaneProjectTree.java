@@ -4,13 +4,14 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import com.trolltech.qt.core.Qt;
+import com.trolltech.qt.core.Qt.ScrollBarPolicy;
 import com.trolltech.qt.gui.QTreeWidget;
 import com.trolltech.qt.gui.QTreeWidgetItem;
 
-import docubricks.data.LogicalPart;
-import docubricks.data.LogicalPartImplementation;
-import docubricks.data.LogicalPartImplementationUnit;
-import docubricks.data.Unit;
+import docubricks.data.Function;
+import docubricks.data.FunctionImplementation;
+import docubricks.data.FunctionImplementationBrick;
+import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
 
 /**
@@ -23,7 +24,7 @@ import docubricks.data.DocubricksProject;
 public class PaneProjectTree extends QTreeWidget
 	{
 	public DocubricksProject project=new DocubricksProject();
-	public Signal2<TreeSelection,Unit> sigSel=new Signal2<TreeSelection,Unit>();
+	public Signal2<TreeSelection,Brick> sigSel=new Signal2<TreeSelection,Brick>();
 
 	private QTreeWidgetItem itemPhy;
 	private QTreeWidgetItem itemAuthors;
@@ -31,7 +32,9 @@ public class PaneProjectTree extends QTreeWidget
 	public PaneProjectTree()
 		{
 		header().setVisible(false);
+		setHorizontalScrollBarPolicy(ScrollBarPolicy.ScrollBarAsNeeded);
 		selectionModel().selectionChanged.connect(this,"actionSelected()");
+		setMinimumWidth(350);
 		}
 	
 	
@@ -45,22 +48,24 @@ public class PaneProjectTree extends QTreeWidget
 		itemAuthors=new QTreeWidgetItem(this, Arrays.asList(new String[]{"Authors"}));
 
 		//Place units as a tree
-		HashSet<Unit> placedUnitsTotal=new HashSet<Unit>();
-		HashSet<Unit> placedUnitsDepth=new HashSet<Unit>();
-		for(Unit u:project.getRootUnits())
+		HashSet<Brick> placedUnitsTotal=new HashSet<Brick>();
+		HashSet<Brick> placedUnitsDepth=new HashSet<Brick>();
+		for(Brick u:project.getRootUnits())
 			setProjectRecursive(project, placedUnitsTotal, placedUnitsDepth, u, null);
 		//Place remaining units (circular!) arbitrarily
-		for(Unit u:project.units)
+		for(Brick u:project.units)
 			if(!placedUnitsTotal.contains(u))
 				setProjectRecursive(project, placedUnitsTotal, placedUnitsDepth, u, null);
 		expandAll();
+		resizeColumnToContents(0);
+		//setMinimumWidth(header().width());
 		}
 	
 	
 	/**
 	 * Build tree recursively
 	 */
-	private void setProjectRecursive(DocubricksProject project, HashSet<Unit> placedUnitsTotal, HashSet<Unit> placedUnitsDepth, Unit toplace, QTreeWidgetItem itemParent)
+	private void setProjectRecursive(DocubricksProject project, HashSet<Brick> placedUnitsTotal, HashSet<Brick> placedUnitsDepth, Brick toplace, QTreeWidgetItem itemParent)
 		{
 		String nodeName=tr("Unit: ")+toplace.getName();
 		QTreeWidgetItem itemThis;
@@ -74,10 +79,10 @@ public class PaneProjectTree extends QTreeWidget
 		if(!placedUnitsDepth.contains(toplace))
 			{
 			placedUnitsDepth.add(toplace);
-			for(LogicalPart lp:toplace.logicalParts)
-				for(LogicalPartImplementation imp:lp.implementingPart)
-					if(imp instanceof LogicalPartImplementationUnit)
-						setProjectRecursive(project, placedUnitsTotal, placedUnitsDepth, ((LogicalPartImplementationUnit)imp).get(project), itemThis);
+			for(Function lp:toplace.logicalParts)
+				for(FunctionImplementation imp:lp.implementingPart)
+					if(imp instanceof FunctionImplementationBrick)
+						setProjectRecursive(project, placedUnitsTotal, placedUnitsDepth, ((FunctionImplementationBrick)imp).get(project), itemThis);
 			placedUnitsDepth.remove(toplace);
 			}
 		placedUnitsTotal.add(toplace);
@@ -101,8 +106,8 @@ public class PaneProjectTree extends QTreeWidget
 				}
 			else
 				{
-				Unit u=(Unit)item.data(0, Qt.ItemDataRole.UserRole);
-				sigSel.emit(TreeSelection.UNIT, u);
+				Brick u=(Brick)item.data(0, Qt.ItemDataRole.UserRole);
+				sigSel.emit(TreeSelection.BRICK, u);
 				}
 
 			}

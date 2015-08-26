@@ -4,11 +4,12 @@ import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.QUrl;
 import com.trolltech.qt.core.Qt.MouseButton;
 import com.trolltech.qt.gui.QDesktopServices;
+import com.trolltech.qt.gui.QImage;
+import com.trolltech.qt.gui.QImageReader;
 import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QMouseEvent;
 import com.trolltech.qt.gui.QPaintEvent;
 import com.trolltech.qt.gui.QPainter;
-import com.trolltech.qt.gui.QPixmap;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 
@@ -23,18 +24,38 @@ import docubricks.data.MediaFile;
  */
 public class PaneMediaFile extends QWidget
 	{
-	MediaFile mf;
+	public MediaFile mf;
+	private PaneMediaSet set;
 	
 	public class ResizableImagePane extends QWidget
 		{
-		QPixmap image;
+		QImage image;
 		
 		public ResizableImagePane()
 			{
-			image = new QPixmap(mf.f.getAbsolutePath());
-			if(image.isNull())
-				image=null;
+			QImageReader imreader=new QImageReader(mf.f.getAbsolutePath());
+			if(imreader.canRead())
+				{
+				QSize siz=imreader.size();
+				double ratio=siz.width()/(double)siz.height();
+				if(siz.width()>2000)
+					imreader.setScaledSize(new QSize((int)(600*ratio), 600));
+				}
+
 			
+			image = imreader.read();//new QPixmap(mf.f.getAbsolutePath());
+			if(image.isNull())
+				{
+				image=null;
+				System.out.println("image is null: "+mf.f);
+				}
+			/*
+			if(image!=null && image.width()>2000)
+				{
+				double ratio=image.width()/(double)image.height();
+				image=image.scaled((int)(600*ratio), 600, AspectRatioMode.KeepAspectRatio, TransformationMode.FastTransformation);
+				}
+		*/
 			
 			//If another type of data, e.g. movie, STL etc, try to render it
 			
@@ -52,7 +73,7 @@ public class PaneMediaFile extends QWidget
 				{
 				double ratio=height()/(double)image.height();
 				p.scale(ratio, ratio);
-				p.drawPixmap(0, 0, image);
+				p.drawImage(0, 0, image);
 				}
 			p.end();
 			}
@@ -84,8 +105,9 @@ public class PaneMediaFile extends QWidget
 		
 		}
 	
-	public PaneMediaFile(MediaFile mf)
+	public PaneMediaFile(PaneMediaSet set, MediaFile mf)
 		{
+		this.set=set;
 		this.mf=mf;
 		
 		ResizableImagePane p=new ResizableImagePane();
@@ -107,7 +129,7 @@ public class PaneMediaFile extends QWidget
       menu.addAction(tr("Size: ")+mf.f.length());
       menu.addSeparator();
       //TODO: crop/resize/change format - if file is a raster image
-      menu.addAction(tr("Unlink file"));
+      menu.addAction(tr("Unlink file"), this, "actionUnlink()");
       menu.exec(event.globalPos());
       }
     }
@@ -115,6 +137,11 @@ public class PaneMediaFile extends QWidget
 	public void actionSystemOpen()
 		{
 		QDesktopServices.openUrl(new QUrl(mf.f.getAbsolutePath()));
+		}
+	
+	public void actionUnlink()
+		{
+		set.unlink(this);
 		}
 	
 	}

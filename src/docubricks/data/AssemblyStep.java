@@ -15,7 +15,7 @@ import org.jdom2.Element;
 public class AssemblyStep
 	{
 	public MediaSet media=new MediaSet();
-	public ArrayList<LogicalPart> parts=new ArrayList<LogicalPart>();
+	public ArrayList<Function> parts=new ArrayList<Function>();
 	private String desc="";
 	
 	
@@ -37,7 +37,7 @@ public class AssemblyStep
 	
 	
 	
-	public void addPart(LogicalPart part)
+	public void addPart(Function part)
 		{
 		parts.add(part);
 		}

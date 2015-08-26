@@ -7,7 +7,6 @@ import com.trolltech.qt.gui.QFileDialog;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QPushButton;
-import com.trolltech.qt.gui.QTextEdit;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 import com.trolltech.qt.gui.QFileDialog.FileMode;
@@ -29,7 +28,7 @@ public class WidgetInstruction extends QWidget
 	private QPushButton bAddManySteps=new QPushButton(tr("Add steps from files"));
 	private QVBoxLayout layv=new QVBoxLayout();
 	private QVBoxLayout laysteps=new QVBoxLayout();
-	private ArrayList<WidgetStep> steps=new ArrayList<WidgetInstruction.WidgetStep>();
+	private ArrayList<WidgetStep> stepWidgets=new ArrayList<WidgetInstruction.WidgetStep>();
 	
 	private HeaderLabel labInstruction=new HeaderLabel(tr("Assembly instructions"));
 	private AssemblyInstruction instructions;
@@ -40,7 +39,7 @@ public class WidgetInstruction extends QWidget
 	 */
 	public class WidgetStep extends QWidget
 		{
-		private QTextEdit tfText=new QTextEdit();
+		private QTextEditResize tfText=new QTextEditResize();
 		private QPushButton bMenu=new QPushButton(tr("Options"));
 
 		PaneMediaSet mediapane;
@@ -65,6 +64,11 @@ public class WidgetInstruction extends QWidget
 			setLayout(lay1);
 			
 			
+			mOptions.addAction(tr("Move step up"), this, "actionMoveUp()");
+			mOptions.addAction(tr("Move step down"), this, "actionMoveDown()");
+			mOptions.addSeparator();
+			mOptions.addAction(tr("Insert step before"), this, "actionInsertStep()");
+			mOptions.addSeparator();
 			mOptions.addAction(tr("Remove step"), this, "actionRemoveStep()");
 			bMenu.setMenu(mOptions);
 	    
@@ -74,17 +78,53 @@ public class WidgetInstruction extends QWidget
 			}
 		
 		
+		public void actionInsertStep()
+			{
+			addStep(stepWidgets.indexOf(this), new AssemblyStep());
+			}
 		
 		public void actionRemoveStep()
 			{
-			int ind=steps.indexOf(this);
-			steps.remove(ind);
+			int ind=stepWidgets.indexOf(this);
+			stepWidgets.remove(ind);
 			instructions.steps.remove(ind);
 			setVisible(false);
 			laysteps.removeWidget(this);
 			}
 
 
+		public void actionMoveUp()
+			{
+			int ind=stepWidgets.indexOf(this);
+			if(ind>0)
+				{
+				ind--;
+				actionRemoveStep();
+				inswidget(ind);
+				}
+			}
+
+		public void actionMoveDown()
+			{
+			int ind=stepWidgets.indexOf(this);
+			if(ind<stepWidgets.size()-1)
+				{
+				ind++;
+				actionRemoveStep();
+				inswidget(ind);
+				}
+			}
+
+		
+		private void inswidget(int ind)
+			{
+			instructions.steps.add(ind, step);
+			stepWidgets.add(ind, this);
+			setVisible(true);
+			laysteps.insertWidget(ind, this);
+			}
+		
+		
 		public void loadvalues()
 			{
 			tfText.setText(step.getDescription());
@@ -123,25 +163,24 @@ public class WidgetInstruction extends QWidget
 	public void loadvalues()
 		{
 		for(AssemblyStep step:instructions.steps)
-			addStepWidget(step);
+			addStepWidget(stepWidgets.size(), step);
 		}
 	
 	public void storevalues()
 		{
-		for(WidgetStep ws:steps)
+		for(WidgetStep ws:stepWidgets)
 			ws.storevalues();
 		}
 	
 	public void actionAddStep()
 		{
-		AssemblyStep step=new AssemblyStep();
-		addStep(step);
+		addStep(instructions.steps.size(), new AssemblyStep());
 		}
 	
-	public void addStep(AssemblyStep step)
+	public void addStep(int index, AssemblyStep step)
 		{
-		instructions.steps.add(step);
-		addStepWidget(step);
+		instructions.steps.add(index,step);
+		addStepWidget(index, step);
 		}
 
 	public void actionAddSteps()
@@ -161,16 +200,16 @@ public class WidgetInstruction extends QWidget
 				
 				AssemblyStep step=new AssemblyStep();
 				step.media.files.add(mf);
-				addStep(step);
+				addStep(stepWidgets.size(), step);
 				}
 			}		
 		}
 
-	public void addStepWidget(AssemblyStep step)
+	public void addStepWidget(int index, AssemblyStep step)
 		{
 		WidgetStep ws=new WidgetStep(step);
-		steps.add(ws);
-		laysteps.addWidget(ws);
+		stepWidgets.add(index, ws);
+		laysteps.insertWidget(index, ws);
 		}
 	
 	}

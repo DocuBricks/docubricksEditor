@@ -45,6 +45,7 @@ public class PaneMediaSet extends QWidget
 		scroll.setWidget(w);
 		
 		bAdd.setSizePolicy(Policy.Minimum, Policy.Minimum); //really maximum!
+		bAdd.setMinimumWidth(110);
 		
 		QMenu menu=new QMenu();
 		bAdd.setMenu(menu);
@@ -88,7 +89,7 @@ public class PaneMediaSet extends QWidget
 
 	private void addMediaWidget(MediaFile mf)
 		{
-		PaneMediaFile mp=new PaneMediaFile(mf);
+		PaneMediaFile mp=new PaneMediaFile(this, mf);
 		laymedia.removeWidget(bAdd);
 		laymedia.addWidget(mp);
 		laymedia.addWidget(bAdd);
@@ -123,6 +124,14 @@ public class PaneMediaSet extends QWidget
 		{
 		for(MediaFile mf:media.files)
 			addMediaWidget(mf); //TODO questionable!
+		}
+
+
+	public void unlink(PaneMediaFile pane)
+		{
+		laymedia.removeWidget(pane);
+		mediaset.files.remove(pane.mf);
+		pane.setVisible(false);
 		}
   
 	}

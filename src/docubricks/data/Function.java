@@ -15,14 +15,14 @@ import org.jdom2.Element;
  * @author Johan Henriksson
  *
  */
-public class LogicalPart
+public class Function
 	{
 	private String description="";
 	public String designator="";
 	private String quantity="";
 	public String id;
 
-	public LinkedList<LogicalPartImplementation> implementingPart=new LinkedList<LogicalPartImplementation>();
+	public LinkedList<FunctionImplementation> implementingPart=new LinkedList<FunctionImplementation>();
 	public HashMap<String, String> mapParam=new HashMap<String, String>();
 	//param, is this a unit or phys part thing? or both?
 	public MediaSet media=new MediaSet();
@@ -62,7 +62,7 @@ public class LogicalPart
 		eroot.addContent(elWithContent("designator", designator));
 		eroot.addContent(elWithContent("quantity", ""+quantity));
 
-		for(LogicalPartImplementation imp:implementingPart)
+		for(FunctionImplementation imp:implementingPart)
 			if(imp!=null)
 				eroot.addContent(imp.toXML());
 			else
@@ -88,9 +88,9 @@ public class LogicalPart
 	/**
 	 * Deserialize from XML
 	 */
-	public static LogicalPart fromXML(File basepath, DocubricksProject proj, Element root)
+	public static Function fromXML(File basepath, DocubricksProject proj, Element root)
 		{
-		LogicalPart part=new LogicalPart();
+		Function part=new Function();
 		part.id=root.getAttributeValue("id");
 		part.description=root.getChildText("description");
 		part.designator=root.getChildText("designator");
@@ -105,9 +105,9 @@ public class LogicalPart
 				String t=e.getAttributeValue("type");
 				String id=e.getAttributeValue("id");
 				if(t.equals("unit"))
-					part.implementingPart.add(new LogicalPartImplementationUnit(id));//proj.getUnit(id)));
+					part.implementingPart.add(new FunctionImplementationBrick(id));//proj.getUnit(id)));
 				else if(t.equals("physical_part"))
-					part.implementingPart.add(new LogicalPartImplementationPhysical(proj.getPhysicalPart(id)));
+					part.implementingPart.add(new FunctionImplementationPhysical(proj.getPhysicalPart(id)));
 				else
 					throw new RuntimeException();
 				}

@@ -9,7 +9,7 @@ import org.jdom2.Element;
  * @author Johan Henriksson
  *
  */
-public interface LogicalPartImplementation
+public interface FunctionImplementation
 	{
 	/**
 	 * Serialize to XML

@@ -9,7 +9,7 @@ import org.jdom2.Element;
  * @author Johan Henriksson
  *
  */
-public class LogicalPartImplementationUnit implements LogicalPartImplementation
+public class FunctionImplementationBrick implements FunctionImplementation
 	{
 	/*
 	Unit unit;
@@ -20,7 +20,7 @@ public class LogicalPartImplementationUnit implements LogicalPartImplementation
 		}*/
 	
 	String id;
-	public LogicalPartImplementationUnit(String id)
+	public FunctionImplementationBrick(String id)
 		{
 		this.id=id;
 		}
@@ -39,16 +39,16 @@ public class LogicalPartImplementationUnit implements LogicalPartImplementation
 	@Override
 	public boolean equals(Object obj)
 		{
-		if(obj instanceof LogicalPartImplementationUnit)
+		if(obj instanceof FunctionImplementationBrick)
 			{
-			LogicalPartImplementationUnit o=(LogicalPartImplementationUnit)obj;
+			FunctionImplementationBrick o=(FunctionImplementationBrick)obj;
 			return o.id.equals(id);//==unit;
 			}
 		else
 			return false;
 		}
 
-	public Unit get(DocubricksProject project)
+	public Brick get(DocubricksProject project)
 		{
 		return project.getUnit(id);
 		}

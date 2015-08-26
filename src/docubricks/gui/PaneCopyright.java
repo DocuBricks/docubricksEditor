@@ -8,7 +8,7 @@ import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QVBoxLayout;
 
 import docubricks.data.Author;
-import docubricks.data.Unit;
+import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
 
 /**
@@ -21,7 +21,7 @@ import docubricks.data.DocubricksProject;
 public class PaneCopyright extends QVBoxLayout
 	{
 	private DocubricksProject proj;
-	private Unit unit;
+	private Brick unit;
 	
 	private ArrayList<ComboAuthorRef> combosAuthor=new ArrayList<ComboAuthorRef>();
 	private QVBoxLayout layAuthors=new QVBoxLayout();
@@ -32,7 +32,7 @@ public class PaneCopyright extends QVBoxLayout
 	/**
 	 * Constructor for list of logical parts
 	 */
-	public PaneCopyright(DocubricksProject proj, Unit unit)
+	public PaneCopyright(DocubricksProject proj, Brick unit)
 		{
 		this.proj=proj;
 		this.unit=unit;

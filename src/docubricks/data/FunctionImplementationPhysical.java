@@ -9,11 +9,11 @@ import org.jdom2.Element;
  * @author Johan Henriksson
  *
  */
-public class LogicalPartImplementationPhysical implements LogicalPartImplementation
+public class FunctionImplementationPhysical implements FunctionImplementation
 	{
 	PhysicalPart part;
 	
-	public LogicalPartImplementationPhysical(PhysicalPart p)
+	public FunctionImplementationPhysical(PhysicalPart p)
 		{
 		part=p;
 		}
@@ -32,9 +32,9 @@ public class LogicalPartImplementationPhysical implements LogicalPartImplementat
 	@Override
 	public boolean equals(Object obj)
 		{
-		if(obj instanceof LogicalPartImplementationPhysical)
+		if(obj instanceof FunctionImplementationPhysical)
 			{
-			LogicalPartImplementationPhysical o=(LogicalPartImplementationPhysical)obj;
+			FunctionImplementationPhysical o=(FunctionImplementationPhysical)obj;
 			return o.part==part;
 			}
 		else

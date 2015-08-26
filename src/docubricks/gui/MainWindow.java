@@ -23,7 +23,7 @@ import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QSizePolicy.Policy;
 import com.trolltech.qt.gui.QWidget;
 
-import docubricks.data.Unit;
+import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
 import docubricks.gui.qt.QTutil;
 import docubricks.gui.resource.ImgResource;
@@ -45,11 +45,11 @@ public class MainWindow extends QMainWindow
 	private QMenuBar menubar=new QMenuBar();
 	private TabProject tabProject;
 	private TabAuthors tabAuthors;
-	private QPushButton bAddUnit=new QPushButton(tr("New unit"));	
+	private QPushButton bAddUnit=new QPushButton(tr("New brick"));	
 	private QHBoxLayout laytab=new QHBoxLayout();
 	
 	private LinkedList<QWidget> listTab=new LinkedList<QWidget>();
-	private HashMap<Unit, QWidget> mapUnitTab=new HashMap<Unit, QWidget>();
+	private HashMap<Brick, QWidget> mapUnitTab=new HashMap<Brick, QWidget>();
 	
 	private File currentProjectFile=null;
 	
@@ -90,7 +90,7 @@ public class MainWindow extends QMainWindow
 		mHelp.addAction(tr("Website"), this, "actionWebsite()");
 
 		tree=new PaneProjectTree();
-		tree.sigSel.connect(this,"actionSelTab(TreeSelection,Unit)");
+		tree.sigSel.connect(this,"actionSelTab(TreeSelection,Brick)");
 		tree.setSizePolicy(Policy.Fixed, Policy.Expanding);
 		
 		laytab.setMargin(0);
@@ -119,7 +119,7 @@ public class MainWindow extends QMainWindow
 	/**
 	 * Action: one tab was selected
 	 */
-	public void actionSelTab(TreeSelection sel, Unit u)
+	public void actionSelTab(TreeSelection sel, Brick u)
 		{
 		//hide all tabs
 		for(QWidget t:listTab)
@@ -139,21 +139,21 @@ public class MainWindow extends QMainWindow
 	 */
 	public void actionNewUnit()
 		{
-		Unit nu=project.createUnit();
+		Brick nu=project.createUnit();
 		nu.setName("Unnamed");
 		addUnitTab(nu);
-		actionSelTab(TreeSelection.UNIT, nu);
+		actionSelTab(TreeSelection.BRICK, nu);
 		}
 	
 	
 	/**
 	 * Add a tab for given unit
 	 */
-	private void addUnitTab(final Unit nu)
+	private void addUnitTab(final Brick nu)
 		{
-		TabUnit tabUnit=new TabUnit(project, nu);
-		tabUnit.sigNameChanged.connect(this,"cbNameChanged(TabUnit)");
-		tabUnit.sigRemove.connect(this,"cbRemoved(TabUnit)");
+		TabBrick tabUnit=new TabBrick(project, nu);
+		tabUnit.sigNameChanged.connect(this,"cbNameChanged(TabBrick)");
+		tabUnit.sigRemove.connect(this,"cbRemoved(TabBrick)");
 		laytab.addWidget(tabUnit);
 		tabUnit.setVisible(false);
 		mapUnitTab.put(nu, tabUnit);
@@ -165,7 +165,7 @@ public class MainWindow extends QMainWindow
 	/**
 	 * Callback: name of a unit changed
 	 */
-	public void cbNameChanged(TabUnit u)
+	public void cbNameChanged(TabBrick u)
 		{
 		tree.setProject(project);
 		}
@@ -173,7 +173,7 @@ public class MainWindow extends QMainWindow
 	/**
 	 * Callback: unit was removed
 	 */
-	public void cbRemoved(TabUnit nu)
+	public void cbRemoved(TabBrick nu)
 		{
 		nu.setVisible(false);
 		tabProject.setVisible(true);
@@ -187,9 +187,9 @@ public class MainWindow extends QMainWindow
 	/**
 	 * TODO not tested
 	 */
-	private TabUnit getUnitTab(Unit u)  
+	private TabBrick getUnitTab(Brick u)  
 		{
-		return (TabUnit)mapUnitTab.get(u);
+		return (TabBrick)mapUnitTab.get(u);
 		}
 	
 	
@@ -267,7 +267,7 @@ public class MainWindow extends QMainWindow
 		tree.setProject(project);
 		
 		//Add all new unit tabs
-		for(Unit u:project.units)
+		for(Brick u:project.units)
 			addUnitTab(u);
 		}
 	
@@ -276,8 +276,8 @@ public class MainWindow extends QMainWindow
 	public void updatedvalues()
 		{
 		for(QWidget t:mapUnitTab.values())
-			if(t instanceof TabUnit)
-				((TabUnit)t).updateAllCombos();
+			if(t instanceof TabBrick)
+				((TabBrick)t).updateAllCombos();
 		tree.setProject(project);
 		}
 	
@@ -295,9 +295,9 @@ public class MainWindow extends QMainWindow
 			//Serialize everything
 			tabProject.storevalues();
 			tabAuthors.storevalues();
-			for(Unit u:project.units)
+			for(Brick u:project.units)
 				{
-				TabUnit tu=getUnitTab(u);
+				TabBrick tu=getUnitTab(u);
 				tu.storevalues();
 				}
 			
@@ -366,6 +366,6 @@ public class MainWindow extends QMainWindow
 	 */
 	public void actionWebsite()
 		{
-		QDesktopServices.openUrl(new QUrl("http://www.facsanadu.org"));
+		QDesktopServices.openUrl(new QUrl("http://www.docubricks.org"));  
 		}
 	}

@@ -12,9 +12,9 @@ import com.trolltech.qt.gui.QLineEdit;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QVBoxLayout;
 
-import docubricks.data.LogicalPart;
-import docubricks.data.LogicalPartImplementation;
-import docubricks.data.Unit;
+import docubricks.data.Function;
+import docubricks.data.FunctionImplementation;
+import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
 import docubricks.gui.resource.ImgResource;
 
@@ -25,14 +25,14 @@ import docubricks.gui.resource.ImgResource;
  * @author Johan Henriksson
  *
  */
-public class PaneLogicalParts extends QVBoxLayout
+public class PaneFunctions extends QVBoxLayout
 	{
 	private DocubricksProject proj;
-	private Unit unit;
+	private Brick unit;
 	
-	private HeaderLabel header=new HeaderLabel(tr("Logical parts"));
-	private QPushButton bAdd=new QPushButton(tr("Add logical part"));  //or use header? no. inconsistent
-	private HashMap<LogicalPart, PaneOneLogicalPart> mapLogPanes=new HashMap<LogicalPart, PaneLogicalParts.PaneOneLogicalPart>();
+	private HeaderLabel header=new HeaderLabel(tr("Functions"));
+	private QPushButton bAdd=new QPushButton(tr("Add function"));  //or use header? no. inconsistent
+	private HashMap<Function, PaneOneLogicalPart> mapLogPanes=new HashMap<Function, PaneFunctions.PaneOneLogicalPart>();
 	
 	private QVBoxLayout laylistLogicalPart=new QVBoxLayout();
 	public Signal0 sigChanged=new Signal0();
@@ -42,7 +42,7 @@ public class PaneLogicalParts extends QVBoxLayout
 	/**
 	 * Constructor for list of logical parts
 	 */
-	public PaneLogicalParts(DocubricksProject proj, Unit unit)
+	public PaneFunctions(DocubricksProject proj, Brick unit)
 		{
 		this.proj=proj;
 		this.unit=unit;
@@ -72,7 +72,7 @@ public class PaneLogicalParts extends QVBoxLayout
 	/**
 	 * Add a logical part
 	 */
-	public void addPartWidget(LogicalPart part)
+	public void addPartWidget(Function part)
 		{
 		PaneOneLogicalPart onepane=new PaneOneLogicalPart(part);
 		mapLogPanes.put(part, onepane);
@@ -99,7 +99,7 @@ public class PaneLogicalParts extends QVBoxLayout
 	 */
 	public void loadvalues()
 		{
-		for(LogicalPart p:unit.logicalParts)
+		for(Function p:unit.logicalParts)
 			addPartWidget(p);
 		}
 	
@@ -116,7 +116,7 @@ public class PaneLogicalParts extends QVBoxLayout
 	 */
 	public class PaneOneLogicalPart extends QGroupBox
 		{
-		private LogicalPart part;
+		private Function part;
 		
 		private QLineEdit tfDescription=new QLineEdit();
 		private QLineEdit tfDesignator=new QLineEdit();
@@ -134,7 +134,7 @@ public class PaneLogicalParts extends QVBoxLayout
 		/**
 		 * Constructor for one logical part pane
 		 */
-		public PaneOneLogicalPart(LogicalPart part)
+		public PaneOneLogicalPart(Function part)
 			{
 			this.part=part;
 			
@@ -187,11 +187,8 @@ public class PaneLogicalParts extends QVBoxLayout
 			tfDesignator.setText(part.designator);
 			tfQuantity.setText(part.getQuantity());
 			
-			for(LogicalPartImplementation imp:part.implementingPart)
-				{
-				System.out.println("addw");
+			for(FunctionImplementation imp:part.implementingPart)
 				addImplementationWidget(imp);
-				}
 			}
 		
 		public void storeValues()
@@ -220,12 +217,12 @@ public class PaneLogicalParts extends QVBoxLayout
 			addImplementation(null);
 			}
 		
-		private void addImplementation(LogicalPartImplementation imp)
+		private void addImplementation(FunctionImplementation imp)
 			{
 			part.implementingPart.add(imp);
 			addImplementationWidget(imp);
 			}
-		private void addImplementationWidget(LogicalPartImplementation imp)
+		private void addImplementationWidget(FunctionImplementation imp)
 			{
 			ComboImplementingPart combo=new ComboImplementingPart(proj,part,imp);
 			mapImplementationPanes.add(combo);

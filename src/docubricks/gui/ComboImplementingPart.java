@@ -7,12 +7,12 @@ import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QSizePolicy.Policy;
 import com.trolltech.qt.gui.QWidget;
 
-import docubricks.data.LogicalPart;
-import docubricks.data.LogicalPartImplementation;
-import docubricks.data.LogicalPartImplementationPhysical;
-import docubricks.data.LogicalPartImplementationUnit;
+import docubricks.data.Function;
+import docubricks.data.FunctionImplementation;
+import docubricks.data.FunctionImplementationPhysical;
+import docubricks.data.FunctionImplementationBrick;
 import docubricks.data.PhysicalPart;
-import docubricks.data.Unit;
+import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
 import docubricks.gui.resource.ImgResource;
 
@@ -26,7 +26,7 @@ import docubricks.gui.resource.ImgResource;
 public class ComboImplementingPart extends QWidget //later on it will be a more complex type. including delete!
 	{
 	public DocubricksProject project;
-	public LogicalPart logpart;
+	public Function logpart;
 	public Signal1<ComboImplementingPart> sigUpdated=new Signal1<ComboImplementingPart>();
 	public Signal1<ComboImplementingPart> sigDeleted=new Signal1<ComboImplementingPart>();
 
@@ -34,7 +34,7 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 	QComboBox thecombo=new QComboBox();
 	QPushButton bDelete=new QPushButton(new QIcon(ImgResource.delete),"");  //Could also be a special entry in list. but non-standard
 	
-	public ComboImplementingPart(DocubricksProject project, LogicalPart logpart, LogicalPartImplementation imp)
+	public ComboImplementingPart(DocubricksProject project, Function logpart, FunctionImplementation imp)
 		{
 		this.project=project;
 		this.logpart=logpart;
@@ -56,14 +56,14 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 
 
 	
-	public LogicalPartImplementation getCurrentData()
+	public FunctionImplementation getCurrentData()
 		{
-		return (LogicalPartImplementation)thecombo.itemData(thecombo.currentIndex());
+		return (FunctionImplementation)thecombo.itemData(thecombo.currentIndex());
 		}
 	
 	
 	
-	public void updateListOfEntries(LogicalPartImplementation curdata)
+	public void updateListOfEntries(FunctionImplementation curdata)
 		{
 		thecombo.clear();
 		
@@ -71,10 +71,10 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 		thecombo.addItem("",null);
 		
 		//All units
-		for(Unit u:project.units)
+		for(Brick u:project.units)
 			{
-			LogicalPartImplementationUnit ref=new LogicalPartImplementationUnit(u.id);
-			thecombo.addItem("Unit: "+u.getName(), ref);
+			FunctionImplementationBrick ref=new FunctionImplementationBrick(u.id);
+			thecombo.addItem("Brick: "+u.getName(), ref);
 			if(curdata!=null && curdata.equals(ref))
 				thecombo.setCurrentIndex(thecombo.count()-1);
 			}
@@ -82,8 +82,8 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 		//All physical parts
 		for(PhysicalPart p:project.physicalParts)
 			{
-			LogicalPartImplementationPhysical ref=new LogicalPartImplementationPhysical(p);
-			thecombo.addItem("Part: "+p.description, ref);
+			FunctionImplementationPhysical ref=new FunctionImplementationPhysical(p);
+			thecombo.addItem("Physical part: "+p.description, ref);
 			if(curdata!=null && curdata.equals(ref))
 				thecombo.setCurrentIndex(thecombo.count()-1);
 			}		
@@ -91,7 +91,7 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 	
 	public void updateListOfEntries()
 		{
-		LogicalPartImplementation curdata=(LogicalPartImplementation)thecombo.itemData(thecombo.currentIndex());
+		FunctionImplementation curdata=(FunctionImplementation)thecombo.itemData(thecombo.currentIndex());
 		updateListOfEntries(curdata);
 		}
 	

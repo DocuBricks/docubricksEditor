@@ -8,11 +8,10 @@ import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QLineEdit;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QScrollArea;
-import com.trolltech.qt.gui.QTextEdit;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 
-import docubricks.data.Unit;
+import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
 import docubricks.gui.resource.ImgResource;
 
@@ -24,36 +23,36 @@ import docubricks.gui.resource.ImgResource;
  * @author Johan Henriksson
  *
  */
-public class TabUnit extends QWidget
+public class TabBrick extends QWidget
 	{
 	private QLineEdit tfName=new QLineEdit();
 	private QLineEdit tfAbstract=new QLineEdit();
 
-	private QTextEdit tfLongDesc=new QTextEdit();
-	private QTextEdit tfWhy=new QTextEdit();
-	private QTextEdit tfHow=new QTextEdit();
-	private QTextEdit tfWhat=new QTextEdit();
+	private QTextEditResize tfLongDesc=new QTextEditResize();
+	private QTextEditResize tfWhy=new QTextEditResize();
+	private QTextEditResize tfHow=new QTextEditResize();
+	private QTextEditResize tfWhat=new QTextEditResize();
 	//private QTextEdit tfAuthor=new QTextEdit();
 	
 	
 	private QScrollArea scroll=new QScrollArea();
 	private WidgetInstruction wins;
-	private PaneLogicalParts parts;
+	private PaneFunctions parts;
 	PaneCopyright copyright;
 	private PaneMediaSet mediapane;
 	private QPushButton bRemove=new QPushButton(new QIcon(ImgResource.delete),"");
 
-	public Unit unit;
+	public Brick unit;
 	public DocubricksProject project;
 
-	public Signal1<TabUnit> sigNameChanged=new Signal1<TabUnit>();
-	public Signal1<TabUnit> sigRemove=new Signal1<TabUnit>();
+	public Signal1<TabBrick> sigNameChanged=new Signal1<TabBrick>();
+	public Signal1<TabBrick> sigRemove=new Signal1<TabBrick>();
 	
 
 	
 
 	
-	public TabUnit(DocubricksProject project, Unit unit)
+	public TabBrick(DocubricksProject project, Brick unit)
 		{
 		this.project=project;
 		this.unit=unit;	
@@ -83,7 +82,7 @@ public class TabUnit extends QWidget
 
 		
 		int row=0;
-		layGrid.addWidget(new HeaderLabel(tr("General unit information")),row,0,1,2);
+		layGrid.addWidget(new HeaderLabel(tr("Brick overview")),row,0,1,2);
 		row++;
 		layGrid.addWidget(new QLabel(tr("Name:")),row,0);
 		layGrid.addLayout(layMaterial,row,1);
@@ -115,7 +114,7 @@ public class TabUnit extends QWidget
 		
 
 		//List all subunits here
-		parts=new PaneLogicalParts(project, unit);
+		parts=new PaneFunctions(project, unit);
 		layGrid.addLayout(parts,row,0,1,2);
 		row++;
 		

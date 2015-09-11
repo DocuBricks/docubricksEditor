@@ -38,7 +38,7 @@ public class TabBrick extends QWidget
 	private QScrollArea scroll=new QScrollArea();
 	private WidgetInstruction wins;
 	private PaneFunctions parts;
-	PaneCopyright copyright;
+	private PaneCopyright copyright;
 	private PaneMediaSet mediapane;
 	private QPushButton bRemove=new QPushButton(new QIcon(ImgResource.delete),"");
 
@@ -118,7 +118,7 @@ public class TabBrick extends QWidget
 		layGrid.addLayout(parts,row,0,1,2);
 		row++;
 		
-		wins=new WidgetInstruction(unit.asmInstruction);
+		wins=new WidgetInstruction(project, unit, unit.asmInstruction);
 		layGrid.addWidget(wins,row,0,1,2);
 		row++;
 
@@ -145,6 +145,7 @@ public class TabBrick extends QWidget
 	public void actionPartsChanged()
 		{
 		sigNameChanged.emit(this);
+		updateAllCombos();
 		}
 	
 	
@@ -183,6 +184,7 @@ public class TabBrick extends QWidget
 		{
 		parts.updateAllCombos();
 		copyright.updateAllCombos();
+		wins.updateAllCombos();
 		}
 	
 	

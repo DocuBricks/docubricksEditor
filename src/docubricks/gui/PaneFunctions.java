@@ -99,7 +99,7 @@ public class PaneFunctions extends QVBoxLayout
 	 */
 	public void loadvalues()
 		{
-		for(Function p:unit.logicalParts)
+		for(Function p:unit.functions)
 			addPartWidget(p);
 		}
 	
@@ -196,6 +196,7 @@ public class PaneFunctions extends QVBoxLayout
 			part.setDescription(tfDescription.text());
 			part.designator=tfDesignator.text();
 			part.setQuantity(tfQuantity.text());
+			sigChanged.emit();
 			}
 		
 		
@@ -206,7 +207,7 @@ public class PaneFunctions extends QVBoxLayout
 			{
 			mapLogPanes.remove(part);
 			setVisible(false);
-			unit.logicalParts.remove(part);
+			unit.functions.remove(part);
 			}
 
 		/**

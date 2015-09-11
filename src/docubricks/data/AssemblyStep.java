@@ -19,11 +19,7 @@ public class AssemblyStep
 	private String desc="";
 	
 	
-	/*
-	public void addMedia(MediaFile f)
-		{
-		media.add(f);
-		}*/
+	public ArrayList<AssemblyStepComponent> components=new ArrayList<AssemblyStepComponent>();
 	
 	public void setDescription(String s)
 		{
@@ -51,6 +47,10 @@ public class AssemblyStep
 		eroot.addContent(elWithContent("description", desc));
 		eroot.addContent(media.toXML(basepath));
 		
+		for(AssemblyStepComponent c:components)
+			if(c.function!=null)
+				eroot.addContent(c.toXML());
+		
 		return eroot;
 		}
 	
@@ -63,11 +63,18 @@ public class AssemblyStep
 		}
 
 	
-	public static AssemblyStep fromXML(File basepath, Element root)
+	public static AssemblyStep fromXML(Brick brick, File basepath, Element root)
 		{
 		AssemblyStep step=new AssemblyStep();
 		step.desc=root.getChildText("description");
 		step.media=MediaSet.fromXML(basepath, root.getChild("media"));
+		
+		for(Element c:root.getChildren())
+			{
+			if(c.getName().equals("component"))
+				step.components.add(AssemblyStepComponent.fromXML(brick, c));
+			}
+		
 		return step;
 		}
 	

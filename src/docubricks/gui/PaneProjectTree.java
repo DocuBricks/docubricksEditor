@@ -44,7 +44,7 @@ public class PaneProjectTree extends QTreeWidget
 		this.project=project;
 		clear();
 		
-		itemPhy=new QTreeWidgetItem(this, Arrays.asList(new String[]{"Physical parts"}));
+		itemPhy=new QTreeWidgetItem(this, Arrays.asList(new String[]{"Bill of materials"}));
 		itemAuthors=new QTreeWidgetItem(this, Arrays.asList(new String[]{"Authors"}));
 
 		//Place units as a tree
@@ -67,7 +67,7 @@ public class PaneProjectTree extends QTreeWidget
 	 */
 	private void setProjectRecursive(DocubricksProject project, HashSet<Brick> placedUnitsTotal, HashSet<Brick> placedUnitsDepth, Brick toplace, QTreeWidgetItem itemParent)
 		{
-		String nodeName=tr("Unit: ")+toplace.getName();
+		String nodeName=tr("Brick: ")+toplace.getName();
 		QTreeWidgetItem itemThis;
 		if(itemParent==null)
 			itemThis=new QTreeWidgetItem(this, Arrays.asList(new String[]{nodeName}));
@@ -79,7 +79,7 @@ public class PaneProjectTree extends QTreeWidget
 		if(!placedUnitsDepth.contains(toplace))
 			{
 			placedUnitsDepth.add(toplace);
-			for(Function lp:toplace.logicalParts)
+			for(Function lp:toplace.functions)
 				for(FunctionImplementation imp:lp.implementingPart)
 					if(imp instanceof FunctionImplementationBrick)
 						setProjectRecursive(project, placedUnitsTotal, placedUnitsDepth, ((FunctionImplementationBrick)imp).get(project), itemThis);

@@ -31,7 +31,7 @@ public class FunctionImplementationBrick implements FunctionImplementation
 	public Element toXML()
 		{
 		Element e=new Element("implementation");
-		e.setAttribute("type", "unit");
+		e.setAttribute("type", "brick");
 		e.setAttribute("id", id);
 		return e;
 		}

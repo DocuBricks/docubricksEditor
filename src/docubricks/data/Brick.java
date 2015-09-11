@@ -26,7 +26,7 @@ public class Brick
 	
 	public ArrayList<Author> authors=new ArrayList<Author>();
 	public AssemblyInstruction asmInstruction=new AssemblyInstruction();
-	public ArrayList<Function> logicalParts=new ArrayList<Function>();
+	public ArrayList<Function> functions=new ArrayList<Function>();
 	
 	public MediaSet media=new MediaSet();
 	
@@ -108,7 +108,7 @@ public class Brick
 		{
 		Function p=new Function();
 		p.id=findFreeLogicalPartID();
-		logicalParts.add(p);
+		functions.add(p);
 		return p;
 		}
 	
@@ -120,19 +120,18 @@ public class Brick
 		for(;;)
 			{
 			id=""+(int)(Math.random()*Integer.MAX_VALUE);
-			for(Function p:logicalParts)
+			for(Function p:functions)
 				if(p.id.equals(id))
 					continue;
 			break;
 			}
 		return id;
 		}
-//	public void addTag(String s);  check what this really is
 	
 	
 	public Element toXML(File basepath) throws IOException
 		{
-		Element eroot=new Element("unit");
+		Element eroot=new Element("brick");
 		eroot.setAttribute("id",""+id);
 		
 		//kicking out <description> - no need for one more section
@@ -155,7 +154,7 @@ public class Brick
 				e.setAttribute("id",a.id);
 				eroot.addContent(e);
 				}
-		for(Function p:logicalParts)
+		for(Function p:functions)
 			if(p!=null)
 				eroot.addContent(p.toXML(basepath));
 		
@@ -185,9 +184,6 @@ public class Brick
 		u.how=root.getChildText("how");
 		u.license=root.getChildText("license");
 
-		u.asmInstruction=AssemblyInstruction.fromXML(basepath, root.getChild("assembly_instruction"));
-
-		u.media=MediaSet.fromXML(basepath, root.getChild("media"));
 
 		for(Element child:root.getChildren())
 			if(child.getName().equals("author"))
@@ -196,10 +192,26 @@ public class Brick
 				u.authors.add(proj.getAuthor(id));
 				}
 		for(Element child:root.getChildren())
-			if(child.getName().equals("logical_part"))
-				u.logicalParts.add(Function.fromXML(basepath, proj, child));
-		
+			if(child.getName().equals("logical_part") || child.getName().equals("function"))
+				u.functions.add(Function.fromXML(basepath, proj, child));
+
+		u.asmInstruction=AssemblyInstruction.fromXML(u, basepath, root.getChild("assembly_instruction"));
+
+		u.media=MediaSet.fromXML(basepath, root.getChild("media"));
+
 		return u;
+		}
+	
+	
+	public Function getFunction(String id)
+		{
+		for(Function f:functions)
+			{
+			System.out.println("--- "+f.id);
+			if(f.id.equals(id))
+				return f;
+			}
+		throw new RuntimeException("Cannot find function "+id);
 		}
 
 	}

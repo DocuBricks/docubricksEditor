@@ -8,33 +8,35 @@ import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QSizePolicy.Policy;
 import com.trolltech.qt.gui.QWidget;
 
-import docubricks.data.Author;
+import docubricks.data.Function;
+import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
 import docubricks.gui.resource.ImgResource;
 
 
 /**
- * Widget to select one author
+ * Widget to select one function
  * 
  * @author Johan Henriksson
  *
  */
-public class ComboAuthorRef extends QWidget //later on it will be a more complex type. including delete!
+public class ComboFunction extends QWidget //later on it will be a more complex type. including delete!
 	{
-	public DocubricksProject project;
-	public Author author;
-	//LogicalPart logpart;
-	public Signal1<ComboAuthorRef> sigUpdated=new Signal1<ComboAuthorRef>();
-	public Signal1<ComboAuthorRef> sigDeleted=new Signal1<ComboAuthorRef>();
+	public final DocubricksProject project;
+	public final Function logpart;
+	public final Signal1<ComboFunction> sigUpdated=new Signal1<ComboFunction>();
+	public final Signal1<ComboFunction> sigDeleted=new Signal1<ComboFunction>();
 
 
-	QComboBox thecombo=new QComboBox();
-	QPushButton bDelete=new QPushButton(new QIcon(ImgResource.delete),"");  //Could also be a special entry in list. but non-standard
+	private final QComboBox thecombo=new QComboBox();
+	private final QPushButton bDelete=new QPushButton(new QIcon(ImgResource.delete),"");  //Could also be a special entry in list. but non-standard
+	private final Brick brick;
 	
-	public ComboAuthorRef(DocubricksProject project, Author author)
+	public ComboFunction(DocubricksProject project, Brick brick, Function currentFunction)
 		{
 		this.project=project;
-		this.author=author;
+		this.brick=brick;
+		this.logpart=currentFunction;
 		thecombo.setSizePolicy(Policy.Expanding, Policy.Expanding);
 		bDelete.setSizePolicy(Policy.Minimum, Policy.Expanding);
 		QHBoxLayout lay=new QHBoxLayout();
@@ -43,7 +45,7 @@ public class ComboAuthorRef extends QWidget //later on it will be a more complex
 		setLayout(lay);
 		lay.setMargin(0);
 		
-		updateListOfEntries(author);	
+		updateListOfEntries(currentFunction);	
 		
 		thecombo.currentIndexChanged.connect(this,"actionChanged()");
 		bDelete.clicked.connect(this,"actionDelete()");
@@ -55,35 +57,32 @@ public class ComboAuthorRef extends QWidget //later on it will be a more complex
 
 
 	
-	public Author getCurrentAuthor()
+	public Function getCurrentData()
 		{
-		return (Author)thecombo.itemData(thecombo.currentIndex());
+		return (Function)thecombo.itemData(thecombo.currentIndex());
 		}
 	
 	
 	
-	public void updateListOfEntries(Author curdata)
+	public void updateListOfEntries(Function curdata)
 		{
 		thecombo.clear();
 		
 		//Empty selection
 		thecombo.addItem("",null);
 		
-		//All units
-		System.out.println("whoo "+project.authors);
-		for(Author u:project.authors)
+		//All functions
+		for(Function f:brick.functions)
 			{
-//			LogicalPartImplementationUnit ref=new LogicalPartImplementationUnit(u.id);
-			thecombo.addItem("Author: "+u.name+" <"+u.email+">", u);
-			if(curdata!=null && curdata==u)
+			thecombo.addItem(""+f.getDescription(), f);
+			if(curdata!=null && curdata==f)
 				thecombo.setCurrentIndex(thecombo.count()-1);
 			}
-		
 		}
 	
 	public void updateListOfEntries()
 		{
-		Author curdata=(Author)thecombo.itemData(thecombo.currentIndex());
+		Function curdata=(Function)thecombo.itemData(thecombo.currentIndex());
 		updateListOfEntries(curdata);
 		}
 	

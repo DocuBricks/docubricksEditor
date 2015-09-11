@@ -54,7 +54,7 @@ public class Function
 	 */
 	public Element toXML(File basepath) throws IOException
 		{
-		Element eroot=new Element("logical_part");
+		Element eroot=new Element("function");
 		eroot.setAttribute("id", id);
 
 		eroot.addContent(elWithContent("description", description));
@@ -104,7 +104,7 @@ public class Function
 				{
 				String t=e.getAttributeValue("type");
 				String id=e.getAttributeValue("id");
-				if(t.equals("unit"))
+				if(t.equals("unit") || t.equals("brick"))
 					part.implementingPart.add(new FunctionImplementationBrick(id));//proj.getUnit(id)));
 				else if(t.equals("physical_part"))
 					part.implementingPart.add(new FunctionImplementationPhysical(proj.getPhysicalPart(id)));
@@ -116,17 +116,6 @@ public class Function
 		return part;
 		}
 
-	
-	
-	/*
-	public void setDesignator(String s);  //assumes there is a single blueprint, or that they all agree
-	public void addDigitalPart(File f);
-
-	public void setParameter(String var, String val);
-	
-	public void addPhysicalPart(PhysicalPart p);
-	*/
-	
 	
 	
 	

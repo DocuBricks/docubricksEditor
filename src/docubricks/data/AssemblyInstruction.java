@@ -30,12 +30,12 @@ public class AssemblyInstruction
 
 
 	
-	public static AssemblyInstruction fromXML(File basepath, Element root)
+	public static AssemblyInstruction fromXML(Brick brick, File basepath, Element root)
 		{
 		AssemblyInstruction inst=new AssemblyInstruction();
 		for(Element child:root.getChildren())
 			{
-			AssemblyStep step=AssemblyStep.fromXML(basepath, child);
+			AssemblyStep step=AssemblyStep.fromXML(brick, basepath, child);
 			inst.steps.add(step);
 			}
 		

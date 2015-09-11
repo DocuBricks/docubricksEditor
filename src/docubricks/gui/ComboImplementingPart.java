@@ -1,5 +1,6 @@
 package docubricks.gui;
 
+import com.trolltech.qt.core.Qt.FocusPolicy;
 import com.trolltech.qt.gui.QComboBox;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QIcon;
@@ -50,6 +51,8 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 		
 		thecombo.currentIndexChanged.connect(this,"actionChanged()");
 		bDelete.clicked.connect(this,"actionDelete()");
+		
+		setFocusPolicy(FocusPolicy.StrongFocus);
 		}
 	
 	

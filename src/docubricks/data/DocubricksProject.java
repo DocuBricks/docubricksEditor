@@ -92,17 +92,20 @@ public class DocubricksProject
 	 */
 	public Element toXML(File basepath) throws IOException
 		{
-		Element eroot=new Element("project");
+		Element eroot=new Element("docubricks");
+		System.out.println(000);
 		for(PhysicalPart p:physicalParts)
 			{
 			Element ep=p.toXML(basepath);
 			eroot.addContent(ep);
 			}
+		System.out.println(11111);
 		for(Brick u:units)
 			{
 			Element eu=u.toXML(basepath);
 			eroot.addContent(eu);
 			}
+		System.out.println(2222);
 		for(Author a:authors)
 			{
 			Element eu=a.toXML(basepath);
@@ -136,7 +139,7 @@ public class DocubricksProject
 			}
 		for(Element c:e.getChildren())
 			{
-			if(c.getName().equals("unit"))
+			if(c.getName().equals("unit") || c.getName().equals("brick"))
 				{
 				Brick u=Brick.fromXML(basepath, p, c);
 				p.units.add(u);
@@ -263,7 +266,7 @@ public class DocubricksProject
 		LinkedList<Brick> ret=new LinkedList<Brick>();
 		HashSet<Brick> hasparent=new HashSet<Brick>();
 		for(Brick u:units)
-			for(Function lp:u.logicalParts)
+			for(Function lp:u.functions)
 				for(FunctionImplementation imp:lp.implementingPart)
 					if(imp instanceof FunctionImplementationBrick)
 						hasparent.add(((FunctionImplementationBrick)imp).get(this));

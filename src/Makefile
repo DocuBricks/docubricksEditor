@@ -78,7 +78,7 @@ winportzip: jars
 
 
 
-winport: winportzip # winportjre # winport32 winport64 winportjre
+winport: winportzip                  # winportjre # winport32 winport64 winportjre
 
 
 ############################################################################################

@@ -125,7 +125,7 @@ public class PanePhysicalParts extends QVBoxLayout
 			
 			loadvalues();
 
-			tfDescription.textEdited.connect(this,"storevalues()");
+			tfDescription.textEdited.connect(this,"editvalues()");
 			bRemovePart.clicked.connect(this,"actionRemovePhysPart()");
 			}
 		
@@ -160,6 +160,12 @@ public class PanePhysicalParts extends QVBoxLayout
 			}
 		
 		
+		public void editvalues()
+			{
+			storevalues();
+			signalUpdated.emit();
+			}
+		
 		public void storevalues()
 			{
 			part.description=tfDescription.text();
@@ -178,7 +184,6 @@ public class PanePhysicalParts extends QVBoxLayout
 				{
 				}
 			part.materialUnit=mapMaterialUnitFWD.get(comboQuantityUnit.currentText());
-			signalUpdated.emit();
 			}
 		
 		}
@@ -211,7 +216,10 @@ public class PanePhysicalParts extends QVBoxLayout
 	public void storevalues()
 		{
 		for(PaneOnePhysicalPart p:mapPanes.values())
+			{
+			System.out.println("ppp");
 			p.storevalues();
+			}
 		}
 
 	

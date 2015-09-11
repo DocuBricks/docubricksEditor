@@ -13,6 +13,8 @@ import com.trolltech.qt.gui.QFileDialog.FileMode;
 
 import docubricks.data.AssemblyInstruction;
 import docubricks.data.AssemblyStep;
+import docubricks.data.Brick;
+import docubricks.data.DocubricksProject;
 import docubricks.data.MediaFile;
 
 /**
@@ -31,7 +33,10 @@ public class WidgetInstruction extends QWidget
 	private ArrayList<WidgetStep> stepWidgets=new ArrayList<WidgetInstruction.WidgetStep>();
 	
 	private HeaderLabel labInstruction=new HeaderLabel(tr("Assembly instructions"));
-	private AssemblyInstruction instructions;
+
+	private final DocubricksProject proj;
+	private final Brick brick;
+	private final AssemblyInstruction instructions;
 			
 	/**
 	 * One instruction step
@@ -46,14 +51,18 @@ public class WidgetInstruction extends QWidget
 		
 		private QMenu mOptions=new QMenu();
 		
+		WidgetInstructionComponents components;
+		
 		AssemblyStep step;
 		public WidgetStep(AssemblyStep step)
 			{
 			this.step=step;
 			mediapane=new PaneMediaSet(step.media);
+			components=new WidgetInstructionComponents(proj, brick, step);
 			
 			QVBoxLayout layr=new QVBoxLayout();
 			layr.addWidget(tfText);
+			layr.addLayout(components);
 			layr.addWidget(bMenu);
 			layr.setMargin(0);
 			
@@ -68,6 +77,8 @@ public class WidgetInstruction extends QWidget
 			mOptions.addAction(tr("Move step down"), this, "actionMoveDown()");
 			mOptions.addSeparator();
 			mOptions.addAction(tr("Insert step before"), this, "actionInsertStep()");
+			mOptions.addSeparator();
+			mOptions.addAction(tr("Add component reference"), this, "actionAddComponent()");
 			mOptions.addSeparator();
 			mOptions.addAction(tr("Remove step"), this, "actionRemoveStep()");
 			bMenu.setMenu(mOptions);
@@ -116,6 +127,11 @@ public class WidgetInstruction extends QWidget
 			}
 
 		
+		public void actionAddComponent()
+			{
+			components.actionAddComponent();
+			}
+		
 		private void inswidget(int ind)
 			{
 			instructions.steps.add(ind, step);
@@ -135,11 +151,19 @@ public class WidgetInstruction extends QWidget
 			{
 			step.setDescription(tfText.toPlainText());
 			}
+
+
+		public void updateAllCombos()
+			{
+			components.updateAllCombos();
+			}
 		}
 
 	
-	public WidgetInstruction(AssemblyInstruction instructions)
+	public WidgetInstruction(DocubricksProject proj, Brick brick, AssemblyInstruction instructions)
 		{
+		this.proj=proj;
+		this.brick=brick;
 		this.instructions=instructions;
 
 		QHBoxLayout layh=new QHBoxLayout();
@@ -210,6 +234,13 @@ public class WidgetInstruction extends QWidget
 		WidgetStep ws=new WidgetStep(step);
 		stepWidgets.add(index, ws);
 		laysteps.insertWidget(index, ws);
+		}
+
+
+	public void updateAllCombos()
+		{
+		for(WidgetStep ws:stepWidgets)
+			ws.updateAllCombos();
 		}
 	
 	}

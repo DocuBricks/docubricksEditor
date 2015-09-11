@@ -288,18 +288,20 @@ public class MainWindow extends QMainWindow
 	 */
 	public void actionSaveProject()
 		{
-		if(currentProjectFile==null)
-			actionSaveProjectAs();
 		if(currentProjectFile!=null)
 			{
 			//Serialize everything
+			System.out.println("aaaa");
 			tabProject.storevalues();
+			System.out.println("aaab");
 			tabAuthors.storevalues();
+			System.out.println("bbb");
 			for(Brick u:project.units)
 				{
 				TabBrick tu=getUnitTab(u);
 				tu.storevalues();
 				}
+			System.out.println("cccc");
 			
 			//Write to disk
 			try
@@ -312,6 +314,8 @@ public class MainWindow extends QMainWindow
 				e.printStackTrace();
 				}
 			}
+		else
+			actionSaveProjectAs();
 		}
 
 	

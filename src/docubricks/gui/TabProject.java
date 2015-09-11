@@ -49,7 +49,6 @@ public class TabProject extends QWidget
 	public void storevalues()
 		{
 		parts.storevalues();
-		
 		}
 
 

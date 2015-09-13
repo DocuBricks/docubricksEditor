@@ -25,6 +25,7 @@ import com.trolltech.qt.gui.QWidget;
 
 import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
+import docubricks.data.PhysicalPart;
 import docubricks.gui.qt.QTutil;
 import docubricks.gui.resource.ImgResource;
 
@@ -43,13 +44,15 @@ public class MainWindow extends QMainWindow
 
 	private PaneProjectTree tree;
 	private QMenuBar menubar=new QMenuBar();
-	private TabProject tabProject;
+	//private TabProject tabProject;
 	private TabAuthors tabAuthors;
 	private QPushButton bAddUnit=new QPushButton(tr("New brick"));	
+	private QPushButton bAddPart=new QPushButton(tr("New part"));	
 	private QHBoxLayout laytab=new QHBoxLayout();
 	
 	private LinkedList<QWidget> listTab=new LinkedList<QWidget>();
 	private HashMap<Brick, QWidget> mapUnitTab=new HashMap<Brick, QWidget>();
+	private HashMap<PhysicalPart, QWidget> mapPartTab=new HashMap<PhysicalPart, QWidget>();
 	
 	private File currentProjectFile=null;
 	
@@ -90,13 +93,14 @@ public class MainWindow extends QMainWindow
 		mHelp.addAction(tr("Website"), this, "actionWebsite()");
 
 		tree=new PaneProjectTree();
-		tree.sigSel.connect(this,"actionSelTab(TreeSelection,Brick)");
+		tree.sigSel.connect(this,"actionSelTab(TreeSelection,Object)");
 		tree.setSizePolicy(Policy.Fixed, Policy.Expanding);
 		
 		laytab.setMargin(0);
 		QVBoxLayout layleft=new QVBoxLayout();
-		layleft.addWidget(tree);
 		layleft.addWidget(bAddUnit);
+		layleft.addWidget(bAddPart);
+		layleft.addWidget(tree);
 		layleft.setMargin(0);
 		
 		QHBoxLayout laytot=new QHBoxLayout();
@@ -104,6 +108,7 @@ public class MainWindow extends QMainWindow
 		laytot.addLayout(laytab);
 		
 		bAddUnit.clicked.connect(this,"actionNewUnit()");
+		bAddPart.clicked.connect(this,"actionNewPart()");
 		
 		QWidget cent=new QWidget();
 		cent.setLayout(laytot);
@@ -119,18 +124,20 @@ public class MainWindow extends QMainWindow
 	/**
 	 * Action: one tab was selected
 	 */
-	public void actionSelTab(TreeSelection sel, Brick u)
+	public void actionSelTab(TreeSelection sel, Object u)
 		{
 		//hide all tabs
 		for(QWidget t:listTab)
 			t.setVisible(false);
 		
-		if(sel==TreeSelection.PHYS)
-			tabProject.setVisible(true);
-		else if(sel==TreeSelection.AUTHORS)
+		if(sel==TreeSelection.AUTHORS)
 			tabAuthors.setVisible(true);
-		else
+		else if(u instanceof Brick)
 			mapUnitTab.get(u).setVisible(true);
+		if(sel==TreeSelection.PHYS)
+			mapPartTab.get(u).setVisible(true);
+			
+//			tabProject.setVisible(true);
 		}
 	
 
@@ -144,7 +151,15 @@ public class MainWindow extends QMainWindow
 		addUnitTab(nu);
 		actionSelTab(TreeSelection.BRICK, nu);
 		}
-	
+
+	public void actionNewPart()
+		{
+		PhysicalPart nu=project.createPhysicalPart();
+		nu.description="Unnamed";
+		addPartTab(nu);
+		actionSelTab(TreeSelection.PHYS, nu);
+		}
+
 	
 	/**
 	 * Add a tab for given unit
@@ -163,9 +178,28 @@ public class MainWindow extends QMainWindow
 
 
 	/**
+	 * Add a tab for given part
+	 */
+	private void addPartTab(final PhysicalPart nu)
+		{
+		TabPart tabPart=new TabPart(project, nu);
+		tabPart.sigNameChanged.connect(this,"cbNameChanged(TabPart)");
+		tabPart.sigRemove.connect(this,"cbRemoved(TabPart)");
+		laytab.addWidget(tabPart);
+		tabPart.setVisible(false);
+		mapPartTab.put(nu, tabPart);
+		listTab.add(tabPart);
+		tabPart.editvalues();
+		}
+
+	/**
 	 * Callback: name of a unit changed
 	 */
 	public void cbNameChanged(TabBrick u)
+		{
+		tree.setProject(project);
+		}
+	public void cbNameChanged(TabPart u)
 		{
 		tree.setProject(project);
 		}
@@ -176,10 +210,19 @@ public class MainWindow extends QMainWindow
 	public void cbRemoved(TabBrick nu)
 		{
 		nu.setVisible(false);
-		tabProject.setVisible(true);
+		//tabProject.setVisible(true);
 		mapUnitTab.remove(nu.unit);
 		listTab.remove(nu);
 		project.units.remove(nu.unit);
+		tree.setProject(project);
+		}
+	public void cbRemoved(TabPart nu)
+		{
+		nu.setVisible(false);
+		//tabProject.setVisible(true);
+		mapPartTab.remove(nu.part);
+		listTab.remove(nu);
+		project.physicalParts.remove(nu.part);
 		tree.setProject(project);
 		}
 
@@ -192,6 +235,10 @@ public class MainWindow extends QMainWindow
 		return (TabBrick)mapUnitTab.get(u);
 		}
 	
+	private TabPart getPartTab(PhysicalPart u)  
+		{
+		return (TabPart)mapPartTab.get(u);
+		}
 	
 	
 	
@@ -249,12 +296,12 @@ public class MainWindow extends QMainWindow
 		listTab.clear();
 		
 		//Update project tab
-		tabProject=new TabProject(project);
+//		tabProject=new TabProject(project);
 		tabAuthors=new TabAuthors(proj);
 		//tabwidget.addTab(tabProject, tr("Project"));
-		mapUnitTab.put(null, tabProject);
-		listTab.add(tabProject);
-		laytab.addWidget(tabProject);
+		//mapUnitTab.put(null, tabProject);  //6666!
+		//listTab.add(tabProject);
+		//laytab.addWidget(tabProject);
 		
 		mapUnitTab.put(null, tabAuthors);
 		listTab.add(tabAuthors);
@@ -262,10 +309,13 @@ public class MainWindow extends QMainWindow
 		tabAuthors.setVisible(false);
 		
 		//tabProject.setVisible(false);
-		tabProject.signalUpdated.connect(this,"updatedvalues()");
+		//tabProject.signalUpdated.connect(this,"updatedvalues()");
 		tabAuthors.signalUpdated.connect(this,"updatedvalues()");
 		tree.setProject(project);
 		
+		//Add all part tabs
+		for(PhysicalPart p:project.physicalParts)
+			addPartTab(p);
 		//Add all new unit tabs
 		for(Brick u:project.units)
 			addUnitTab(u);
@@ -291,17 +341,20 @@ public class MainWindow extends QMainWindow
 		if(currentProjectFile!=null)
 			{
 			//Serialize everything
+			/*
 			System.out.println("aaaa");
-			tabProject.storevalues();
-			System.out.println("aaab");
+			tabProject.storevalues();*/
 			tabAuthors.storevalues();
-			System.out.println("bbb");
+			for(PhysicalPart u:project.physicalParts)
+				{
+				TabPart tu=getPartTab(u);
+				tu.storevalues();
+				}
 			for(Brick u:project.units)
 				{
 				TabBrick tu=getUnitTab(u);
 				tu.storevalues();
 				}
-			System.out.println("cccc");
 			
 			//Write to disk
 			try

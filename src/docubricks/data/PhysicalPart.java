@@ -23,8 +23,11 @@ public class PhysicalPart
 	
 	public Double materialAmount;
 	public MaterialUnit materialUnit=MaterialUnit.NONE;
-	
+
+
 	public MediaSet media=new MediaSet();
+	public StepByStepInstruction instructions=new StepByStepInstruction();
+	public String manufacturingMethod="";
 
 	
 	//should link to a digital part as well. yet unclear
@@ -100,6 +103,10 @@ public class PhysicalPart
 
 		eroot.addContent(media.toXML(basepath));
 		
+		Element elIns=instructions.toXML(basepath);
+		elIns.setName("manufacturing_instruction");
+		eroot.addContent(elIns);
+
 		return eroot;
 		}
 	
@@ -129,6 +136,8 @@ public class PhysicalPart
 
 		part.media=MediaSet.fromXML(basepath, c.getChild("media"));
 		
+		part.instructions=StepByStepInstruction.fromXML(null, basepath, c.getChild("manufacturing_instruction"));
+
 		return part;
 		}
 

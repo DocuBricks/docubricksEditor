@@ -11,7 +11,7 @@ import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 import com.trolltech.qt.gui.QFileDialog.FileMode;
 
-import docubricks.data.AssemblyInstruction;
+import docubricks.data.StepByStepInstruction;
 import docubricks.data.AssemblyStep;
 import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
@@ -32,11 +32,11 @@ public class WidgetInstruction extends QWidget
 	private QVBoxLayout laysteps=new QVBoxLayout();
 	private ArrayList<WidgetStep> stepWidgets=new ArrayList<WidgetInstruction.WidgetStep>();
 	
-	private HeaderLabel labInstruction=new HeaderLabel(tr("Assembly instructions"));
-
+	private HeaderLabel labInstruction;
+	
 	private final DocubricksProject proj;
 	private final Brick brick;
-	private final AssemblyInstruction instructions;
+	private final StepByStepInstruction instructions;
 			
 	/**
 	 * One instruction step
@@ -58,11 +58,13 @@ public class WidgetInstruction extends QWidget
 			{
 			this.step=step;
 			mediapane=new PaneMediaSet(step.media);
-			components=new WidgetInstructionComponents(proj, brick, step);
+			if(brick!=null)
+				components=new WidgetInstructionComponents(proj, brick, step);
 			
 			QVBoxLayout layr=new QVBoxLayout();
 			layr.addWidget(tfText);
-			layr.addLayout(components);
+			if(components!=null)
+				layr.addLayout(components);
 			layr.addWidget(bMenu);
 			layr.setMargin(0);
 			
@@ -77,8 +79,11 @@ public class WidgetInstruction extends QWidget
 			mOptions.addAction(tr("Move step down"), this, "actionMoveDown()");
 			mOptions.addSeparator();
 			mOptions.addAction(tr("Insert step before"), this, "actionInsertStep()");
-			mOptions.addSeparator();
-			mOptions.addAction(tr("Add component reference"), this, "actionAddComponent()");
+			if(components!=null)
+				{
+				mOptions.addSeparator();
+				mOptions.addAction(tr("Add component reference"), this, "actionAddComponent()");
+				}
 			mOptions.addSeparator();
 			mOptions.addAction(tr("Remove step"), this, "actionRemoveStep()");
 			bMenu.setMenu(mOptions);
@@ -160,11 +165,13 @@ public class WidgetInstruction extends QWidget
 		}
 
 	
-	public WidgetInstruction(DocubricksProject proj, Brick brick, AssemblyInstruction instructions)
+	public WidgetInstruction(DocubricksProject proj, Brick brick, StepByStepInstruction instructions, String header)
 		{
 		this.proj=proj;
 		this.brick=brick;
 		this.instructions=instructions;
+
+		labInstruction=new HeaderLabel(header);
 
 		QHBoxLayout layh=new QHBoxLayout();
 		layh.setMargin(0);

@@ -25,7 +25,7 @@ public class PaneCopyright extends QVBoxLayout
 	
 	private ArrayList<ComboAuthorRef> combosAuthor=new ArrayList<ComboAuthorRef>();
 	private QVBoxLayout layAuthors=new QVBoxLayout();
-	private QComboBox tfLicense=new QComboBox();
+	private QComboBox comboLicense=new QComboBox();
 	private QPushButton bAddAuthor=new QPushButton(tr("Add author"));
 
 	
@@ -38,10 +38,10 @@ public class PaneCopyright extends QVBoxLayout
 		this.unit=unit;
 
 		//Set list of licenses
-		tfLicense.addItem("");
+		comboLicense.addItem("");
 		for(String s:LicensesUtil.licenses)
-			tfLicense.addItem(s);
-		tfLicense.setEditable(true);
+			comboLicense.addItem(s);
+		comboLicense.setEditable(true);
 
 		QGridLayout layGrid=new QGridLayout();
 
@@ -51,10 +51,10 @@ public class PaneCopyright extends QVBoxLayout
 		loadvalues();
 		
 		int row=0;
-		layGrid.addWidget(new HeaderLabel(tr("Copyright")),row,0,1,2);
+		layGrid.addWidget(new HeaderLabel(tr("Copyright (only fill in for top-brick unless different licenses/authors)")),row,0,1,2);
 		row++;
 		layGrid.addWidget(new QLabel(tr("License:")),row,0);
-		layGrid.addWidget(tfLicense,row,1);
+		layGrid.addWidget(comboLicense,row,1);
 		row++;
 		layGrid.addLayout(layAuthors,row,0,1,2);
 		row++;
@@ -81,7 +81,7 @@ public class PaneCopyright extends QVBoxLayout
 	 */
 	public void loadvalues()
 		{
-		tfLicense.setEditText(unit.getLicense());   //TODO not working
+		comboLicense.setEditText(unit.getLicense());   //TODO not working
 		for(Author p:unit.authors)
 			addAuthorWidget(p);
 		}
@@ -130,7 +130,7 @@ public class PaneCopyright extends QVBoxLayout
 	 */
 	public void storevalues()
 		{
-		unit.setLicense(tfLicense.currentText());
+		unit.setLicense(comboLicense.currentText());
 		}
 	
 	

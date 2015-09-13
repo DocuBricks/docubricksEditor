@@ -74,7 +74,7 @@ public class ComboFunction extends QWidget //later on it will be a more complex 
 		//All functions
 		for(Function f:brick.functions)
 			{
-			thecombo.addItem(""+f.getDescription(), f);
+			thecombo.addItem(""+f.getRepresentativeName(project), f);
 			if(curdata!=null && curdata==f)
 				thecombo.setCurrentIndex(thecombo.count()-1);
 			}

@@ -13,6 +13,7 @@ import docubricks.data.FunctionImplementation;
 import docubricks.data.FunctionImplementationBrick;
 import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
+import docubricks.data.PhysicalPart;
 
 /**
  * 
@@ -24,9 +25,8 @@ import docubricks.data.DocubricksProject;
 public class PaneProjectTree extends QTreeWidget
 	{
 	public DocubricksProject project=new DocubricksProject();
-	public Signal2<TreeSelection,Brick> sigSel=new Signal2<TreeSelection,Brick>();
+	public Signal2<TreeSelection,Object> sigSel=new Signal2<TreeSelection,Object>();
 
-	private QTreeWidgetItem itemPhy;
 	private QTreeWidgetItem itemAuthors;
 
 	public PaneProjectTree()
@@ -44,9 +44,18 @@ public class PaneProjectTree extends QTreeWidget
 		this.project=project;
 		clear();
 		
-		itemPhy=new QTreeWidgetItem(this, Arrays.asList(new String[]{"Bill of materials"}));
 		itemAuthors=new QTreeWidgetItem(this, Arrays.asList(new String[]{"Authors"}));
 
+		//Place physical parts
+		QTreeWidgetItem itemPhy=new QTreeWidgetItem(this, Arrays.asList(new String[]{"Bill of materials"}));
+		for(PhysicalPart p:project.physicalParts)
+			{
+			QTreeWidgetItem item=new QTreeWidgetItem(itemPhy, Arrays.asList(new String[]{p.description}));
+			//itemThis=new QTreeWidgetItem(this, Arrays.asList(new String[]{nodeName}));
+			item.setData(0, Qt.ItemDataRole.UserRole, p);
+				
+			}
+		
 		//Place units as a tree
 		HashSet<Brick> placedUnitsTotal=new HashSet<Brick>();
 		HashSet<Brick> placedUnitsDepth=new HashSet<Brick>();
@@ -100,14 +109,19 @@ public class PaneProjectTree extends QTreeWidget
 				{
 				sigSel.emit(TreeSelection.AUTHORS,null);
 				}
-			else if(item==itemPhy)
-				{
-				sigSel.emit(TreeSelection.PHYS,null);
-				}
 			else
 				{
-				Brick u=(Brick)item.data(0, Qt.ItemDataRole.UserRole);
-				sigSel.emit(TreeSelection.BRICK, u);
+				Object o=item.data(0, Qt.ItemDataRole.UserRole);
+				if(o instanceof PhysicalPart)
+					{
+					PhysicalPart u=(PhysicalPart)o;
+					sigSel.emit(TreeSelection.PHYS,u);
+					}
+				else if(o instanceof Brick)
+					{
+					Brick u=(Brick)o;
+					sigSel.emit(TreeSelection.BRICK, u);
+					}
 				}
 
 			}

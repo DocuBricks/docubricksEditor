@@ -40,4 +40,9 @@ public class FunctionImplementationPhysical implements FunctionImplementation
 		else
 			return false;
 		}
+
+	public String getRepresentativeName(DocubricksProject project)
+		{
+		return "Physical part: "+part.description;
+		}
 	}

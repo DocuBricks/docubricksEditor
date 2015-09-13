@@ -25,7 +25,6 @@ public class Function
 	public LinkedList<FunctionImplementation> implementingPart=new LinkedList<FunctionImplementation>();
 	public HashMap<String, String> mapParam=new HashMap<String, String>();
 	//param, is this a unit or phys part thing? or both?
-	public MediaSet media=new MediaSet();
 
 	
 	public void setDescription(String s)
@@ -68,8 +67,6 @@ public class Function
 			else
 				System.out.println("null implementation");
 
-		eroot.addContent(media.toXML(basepath));
-
 		return eroot;
 		}
 	
@@ -96,8 +93,6 @@ public class Function
 		part.designator=root.getChildText("designator");
 		part.quantity=root.getChildText("quantity");
 
-		part.media=MediaSet.fromXML(basepath, root.getChild("media"));
-
 		for(Element e:root.getChildren())
 			{
 			if(e.getName().equals("implementation"))
@@ -114,6 +109,27 @@ public class Function
 			}
 
 		return part;
+		}
+	
+	
+	public String getRepresentativeName(DocubricksProject project)
+		{
+		if(description.equals(""))
+			{
+			/*
+			for(FunctionImplementation p:implementingPart)
+				System.out.println(p);
+				System.out.println("===");
+				*/
+			for(FunctionImplementation p:implementingPart)
+				if(p!=null)
+					return p.getRepresentativeName(project);
+			return "<unnamed function>";
+			}
+		else
+			{
+			return description;
+			}
 		}
 
 	

@@ -13,7 +13,7 @@ import org.jdom2.Element;
  * @author Johan Henriksson
  *
  */
-public class AssemblyInstruction
+public class StepByStepInstruction
 	{
 	public ArrayList<AssemblyStep> steps=new ArrayList<AssemblyStep>();
 
@@ -30,15 +30,16 @@ public class AssemblyInstruction
 
 
 	
-	public static AssemblyInstruction fromXML(Brick brick, File basepath, Element root)
+	public static StepByStepInstruction fromXML(Brick brick, File basepath, Element root)
 		{
-		AssemblyInstruction inst=new AssemblyInstruction();
+		StepByStepInstruction inst=new StepByStepInstruction();
+		if(root==null)
+			return inst;
 		for(Element child:root.getChildren())
 			{
 			AssemblyStep step=AssemblyStep.fromXML(brick, basepath, child);
 			inst.steps.add(step);
 			}
-		
 		return inst;
 		}
 	}

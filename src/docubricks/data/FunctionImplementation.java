@@ -11,6 +11,8 @@ import org.jdom2.Element;
  */
 public interface FunctionImplementation
 	{
+	public String getRepresentativeName(DocubricksProject project);
+
 	/**
 	 * Serialize to XML
 	 */

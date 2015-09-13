@@ -11,13 +11,6 @@ import org.jdom2.Element;
  */
 public class FunctionImplementationBrick implements FunctionImplementation
 	{
-	/*
-	Unit unit;
-	
-	public LogicalPartImplementationUnit(Unit u)
-		{
-		this.unit=u;
-		}*/
 	
 	String id;
 	public FunctionImplementationBrick(String id)
@@ -51,5 +44,10 @@ public class FunctionImplementationBrick implements FunctionImplementation
 	public Brick get(DocubricksProject project)
 		{
 		return project.getUnit(id);
+		}
+
+	public String getRepresentativeName(DocubricksProject project)
+		{
+		return "Brick: "+get(project).getName();
 		}
 	}

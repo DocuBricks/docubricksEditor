@@ -19,13 +19,11 @@ public class Brick
 	private String name="";
 	private String vabstract="";
 	private String longdesc="";
-	private String what="";
-	private String why="";
-	private String how="";
+	private String notes="";
 	private String license="";
 	
 	public ArrayList<Author> authors=new ArrayList<Author>();
-	public AssemblyInstruction asmInstruction=new AssemblyInstruction();
+	public StepByStepInstruction asmInstruction=new StepByStepInstruction();
 	public ArrayList<Function> functions=new ArrayList<Function>();
 	
 	public MediaSet media=new MediaSet();
@@ -62,36 +60,15 @@ public class Brick
 	
 	
 	
-	public String getWhat()
+	public String getNotes()
 		{
-		return what;
-		}
-	public void setWhat(String s)
-		{
-		what=s;
-		}
-	
-	
-	
-	public String getWhy()
-		{
-		return why;
+		return notes;
 		}
 	public void setWhy(String s)
 		{
-		why=s;
+		notes=s;
 		}
 	
-	
-	
-	public String getHow()
-		{
-		return how;
-		}
-	public void setHow(String s)
-		{
-		how=s;
-		}
 	
 	
 	public String getLicense()
@@ -139,9 +116,7 @@ public class Brick
 		eroot.addContent(elWithContent("name", name));
 		eroot.addContent(elWithContent("abstract", vabstract));
 		eroot.addContent(elWithContent("long_description", longdesc));
-		eroot.addContent(elWithContent("what", what));
-		eroot.addContent(elWithContent("why", why));
-		eroot.addContent(elWithContent("how", how));
+		eroot.addContent(elWithContent("why", notes));
 		eroot.addContent(elWithContent("license", license)); //Note: done very differently in spec!
 
 		eroot.addContent(media.toXML(basepath));
@@ -179,9 +154,7 @@ public class Brick
 		u.name=root.getChildText("name");
 		u.vabstract=root.getChildText("abstract");
 		u.longdesc=root.getChildText("long_description");
-		u.what=root.getChildText("what");
-		u.why=root.getChildText("why");
-		u.how=root.getChildText("how");
+		u.notes=root.getChildText("why");
 		u.license=root.getChildText("license");
 
 
@@ -195,7 +168,7 @@ public class Brick
 			if(child.getName().equals("logical_part") || child.getName().equals("function"))
 				u.functions.add(Function.fromXML(basepath, proj, child));
 
-		u.asmInstruction=AssemblyInstruction.fromXML(u, basepath, root.getChild("assembly_instruction"));
+		u.asmInstruction=StepByStepInstruction.fromXML(u, basepath, root.getChild("assembly_instruction"));
 
 		u.media=MediaSet.fromXML(basepath, root.getChild("media"));
 

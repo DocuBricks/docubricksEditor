@@ -1,11 +1,15 @@
 package docubricks.gui;
 
+
 import com.trolltech.qt.core.Qt.ScrollBarPolicy;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QLineEdit;
+import com.trolltech.qt.gui.QMessageBox;
+import com.trolltech.qt.gui.QMessageBox.StandardButtons;
+import com.trolltech.qt.gui.QMessageBox.StandardButton;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QScrollArea;
 import com.trolltech.qt.gui.QVBoxLayout;
@@ -29,14 +33,10 @@ public class TabBrick extends QWidget
 	private QLineEdit tfAbstract=new QLineEdit();
 
 	private QTextEditResize tfLongDesc=new QTextEditResize();
-	private QTextEditResize tfWhy=new QTextEditResize();
-	private QTextEditResize tfHow=new QTextEditResize();
-	private QTextEditResize tfWhat=new QTextEditResize();
-	//private QTextEdit tfAuthor=new QTextEdit();
-	
+	private QTextEditResize tfNotes=new QTextEditResize();
 	
 	private QScrollArea scroll=new QScrollArea();
-	private WidgetInstruction wins;
+	private WidgetInstruction wInstruction;
 	private PaneFunctions parts;
 	private PaneCopyright copyright;
 	private PaneMediaSet mediapane;
@@ -93,17 +93,9 @@ public class TabBrick extends QWidget
 		layGrid.addWidget(new QLabel(tr("Description:")),row,0);
 		layGrid.addWidget(tfLongDesc,row,1);
 		row++;
-		layGrid.addWidget(new QLabel(tr("What:")),row,0);
-		layGrid.addWidget(tfWhat,row,1);
+		layGrid.addWidget(new QLabel(tr("Notes:")),row,0);
+		layGrid.addWidget(tfNotes,row,1);
 		row++;
-		layGrid.addWidget(new QLabel(tr("Why:")),row,0);
-		layGrid.addWidget(tfWhy,row,1);
-		row++;
-		layGrid.addWidget(new QLabel(tr("How:")),row,0);
-		layGrid.addWidget(tfHow,row,1);
-		row++;
-		//layGrid.addWidget(new QLabel(tr("Media:")),row,0);
-		//row++;
 		layGrid.addWidget(mediapane,row,0,1,2);
 		row++;
 
@@ -118,8 +110,8 @@ public class TabBrick extends QWidget
 		layGrid.addLayout(parts,row,0,1,2);
 		row++;
 		
-		wins=new WidgetInstruction(project, unit, unit.asmInstruction);
-		layGrid.addWidget(wins,row,0,1,2);
+		wInstruction=new WidgetInstruction(project, unit, unit.asmInstruction, tr("Assembly instructions"));
+		layGrid.addWidget(wInstruction,row,0,1,2);
 		row++;
 
 	
@@ -135,7 +127,10 @@ public class TabBrick extends QWidget
 
 	public void actionRemove()
 		{
-		sigRemove.emit(this);
+		StandardButton btn=QMessageBox.question(this, QtProgramInfo.programName, tr("Are you sure you want to delete this brick?"), 
+				new StandardButtons(StandardButton.Ok, StandardButton.Cancel));
+		if(btn.equals(StandardButton.Ok))
+			sigRemove.emit(this);
 		}
 	public void actionNameChanged()
 		{
@@ -156,12 +151,7 @@ public class TabBrick extends QWidget
 		tfName.setText(unit.getName());
 		tfAbstract.setText(unit.getAbstract());
 		tfLongDesc.setText(unit.getLongDescription());
-		tfWhy.setText(unit.getWhy());
-		tfHow.setText(unit.getHow());
-		tfWhat.setText(unit.getWhat());
-//		tfAuthor.setText(unit.authors);
-
-		
+		tfNotes.setText(unit.getNotes());
 		}
 
 
@@ -171,11 +161,8 @@ public class TabBrick extends QWidget
 		unit.setName(tfName.text());
 		unit.setAbstract(tfAbstract.text());
 		unit.setLongDescription(tfLongDesc.toPlainText());
-		unit.setWhy(tfWhy.toPlainText());
-		unit.setHow(tfHow.toPlainText());
-		unit.setWhat(tfWhat.toPlainText());
-//		unit.authors=tfAuthor.toPlainText();
-		wins.storevalues();
+		unit.setWhy(tfNotes.toPlainText());
+		wInstruction.storevalues();
 		copyright.storevalues();
 		}
 	
@@ -184,7 +171,7 @@ public class TabBrick extends QWidget
 		{
 		parts.updateAllCombos();
 		copyright.updateAllCombos();
-		wins.updateAllCombos();
+		wInstruction.updateAllCombos();
 		}
 	
 	

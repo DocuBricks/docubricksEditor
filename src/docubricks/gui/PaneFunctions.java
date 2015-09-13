@@ -30,7 +30,7 @@ public class PaneFunctions extends QVBoxLayout
 	private DocubricksProject proj;
 	private Brick unit;
 	
-	private HeaderLabel header=new HeaderLabel(tr("Functions"));
+	private HeaderLabel header=new HeaderLabel(tr("Parts for this brick"));
 	private QPushButton bAdd=new QPushButton(tr("Add function"));  //or use header? no. inconsistent
 	private HashMap<Function, PaneOneLogicalPart> mapLogPanes=new HashMap<Function, PaneFunctions.PaneOneLogicalPart>();
 	
@@ -46,7 +46,6 @@ public class PaneFunctions extends QVBoxLayout
 		{
 		this.proj=proj;
 		this.unit=unit;
-//		this.part=part;
 		
 		addWidget(header);
 		addLayout(laylistLogicalPart);
@@ -120,13 +119,12 @@ public class PaneFunctions extends QVBoxLayout
 		
 		private QLineEdit tfDescription=new QLineEdit();
 		private QLineEdit tfDesignator=new QLineEdit();
-		private QLineEdit tfQuantity=new QLineEdit();
+		private QLineEdit tfQuantity=new QLineEdit("1");
 		private QPushButton bRemoveLogPart=new QPushButton(new QIcon(ImgResource.delete),"");
 		private QPushButton bAddImplementation=new QPushButton(tr("Add implementation"));
 		private QVBoxLayout lay=new QVBoxLayout();
 		private QHBoxLayout laybuttons=new QHBoxLayout();
 		private QVBoxLayout laylistImp=new QVBoxLayout();
-		private PaneMediaSet mediapane;
 
 		private LinkedList<ComboImplementingPart> mapImplementationPanes=new LinkedList<ComboImplementingPart>();
 
@@ -143,13 +141,11 @@ public class PaneFunctions extends QVBoxLayout
 			QHBoxLayout layName=new QHBoxLayout();
 			layName.addWidget(tfDescription);
 			layName.addWidget(bRemoveLogPart);
-
-			mediapane=new PaneMediaSet(part.media);
 			
 			QGridLayout layGrid=new QGridLayout();
 			
 			int row=0;
-			layGrid.addWidget(new QLabel(tr("Name:")),row,0);
+			layGrid.addWidget(new QLabel(tr("Name of function (optional):")),row,0);
 			layGrid.addLayout(layName,row,1);
 			row++;
 			layGrid.addWidget(new QLabel(tr("Designator:")),row,0);
@@ -158,9 +154,7 @@ public class PaneFunctions extends QVBoxLayout
 			layGrid.addWidget(new QLabel(tr("Quantity:")),row,0);
 			layGrid.addWidget(tfQuantity,row,1);
 			row++;
-			layGrid.addWidget(mediapane,row,0,1,2);
-			row++;
-			layGrid.addWidget(new QLabel(tr("Implementations:")),row,0);
+			layGrid.addWidget(new QLabel(tr("Parts/Bricks implementing this function:")),row,0);
 			row++;
 			
 			

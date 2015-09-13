@@ -77,7 +77,7 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 		for(Brick u:project.units)
 			{
 			FunctionImplementationBrick ref=new FunctionImplementationBrick(u.id);
-			thecombo.addItem("Brick: "+u.getName(), ref);
+			thecombo.addItem(ref.getRepresentativeName(project), ref);
 			if(curdata!=null && curdata.equals(ref))
 				thecombo.setCurrentIndex(thecombo.count()-1);
 			}
@@ -86,7 +86,7 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 		for(PhysicalPart p:project.physicalParts)
 			{
 			FunctionImplementationPhysical ref=new FunctionImplementationPhysical(p);
-			thecombo.addItem("Physical part: "+p.description, ref);
+			thecombo.addItem(ref.getRepresentativeName(project), ref);
 			if(curdata!=null && curdata.equals(ref))
 				thecombo.setCurrentIndex(thecombo.count()-1);
 			}		

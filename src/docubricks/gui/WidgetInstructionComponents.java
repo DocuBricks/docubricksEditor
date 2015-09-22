@@ -97,7 +97,7 @@ public class WidgetInstructionComponents extends QGridLayout
 		
 		public void storeValues()
 			{
-			comp.count=Integer.parseInt(tfQuantity.text());
+			comp.quantity=Integer.parseInt(tfQuantity.text());
 			comp.function=comboFunction.getCurrentData();
 			}
 		}

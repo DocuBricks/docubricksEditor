@@ -116,7 +116,7 @@ public class Brick
 		eroot.addContent(elWithContent("name", name));
 		eroot.addContent(elWithContent("abstract", vabstract));
 		eroot.addContent(elWithContent("long_description", longdesc));
-		eroot.addContent(elWithContent("why", notes));
+		eroot.addContent(elWithContent("notes", notes));
 		eroot.addContent(elWithContent("license", license)); //Note: done very differently in spec!
 
 		eroot.addContent(media.toXML(basepath));
@@ -154,7 +154,7 @@ public class Brick
 		u.name=root.getChildText("name");
 		u.vabstract=root.getChildText("abstract");
 		u.longdesc=root.getChildText("long_description");
-		u.notes=root.getChildText("why");
+		u.notes=root.getChildText("notes");
 		u.license=root.getChildText("license");
 
 

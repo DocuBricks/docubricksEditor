@@ -1,6 +1,8 @@
 package docubricks.gui;
 
 import java.util.ArrayList;
+
+import com.trolltech.qt.core.Qt.FocusPolicy;
 import com.trolltech.qt.gui.QComboBox;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QLabel;
@@ -42,7 +44,8 @@ public class PaneCopyright extends QVBoxLayout
 		for(String s:LicensesUtil.licenses)
 			comboLicense.addItem(s);
 		comboLicense.setEditable(true);
-
+		comboLicense.setFocusPolicy(FocusPolicy.StrongFocus);
+		
 		QGridLayout layGrid=new QGridLayout();
 
 		layGrid.setMargin(0);

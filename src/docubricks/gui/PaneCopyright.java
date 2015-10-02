@@ -2,10 +2,11 @@ package docubricks.gui;
 
 import java.util.ArrayList;
 
-import com.trolltech.qt.core.Qt.FocusPolicy;
-import com.trolltech.qt.gui.QComboBox;
+import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QLabel;
+import com.trolltech.qt.gui.QLineEdit;
+import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QVBoxLayout;
 
@@ -27,9 +28,11 @@ public class PaneCopyright extends QVBoxLayout
 	
 	private ArrayList<ComboAuthorRef> combosAuthor=new ArrayList<ComboAuthorRef>();
 	private QVBoxLayout layAuthors=new QVBoxLayout();
-	private QComboBox comboLicense=new QComboBox();
+//	private QComboBox comboLicense=new QComboBox();
+	private QLineEdit tfLicense=new QLineEdit();
 	private QPushButton bAddAuthor=new QPushButton(tr("Add author"));
 
+	private QPushButton bmenu=new QPushButton(tr("Set"));
 	
 	/**
 	 * Constructor for list of logical parts
@@ -39,13 +42,44 @@ public class PaneCopyright extends QVBoxLayout
 		this.proj=proj;
 		this.unit=unit;
 
+		
+		QMenu mlic=new QMenu();
+		for(final String s:LicensesUtil.prefLicenses)
+			{
+			QAction item=new QAction(s, mlic){
+				@SuppressWarnings("unused")
+				public void ok()
+					{
+					tfLicense.setText(s);
+					}
+			};
+			item.triggered.connect(item,"ok()");
+			mlic.addAction(item);
+			}
+		QMenu mlicother=mlic.addMenu(tr("Other"));
+		for(final String s:LicensesUtil.otherLicenses)
+			{
+			QAction item=new QAction(s, mlicother){
+				@SuppressWarnings("unused")
+				public void ok()
+					{
+					tfLicense.setText(s);
+					}
+			};
+			item.triggered.connect(item,"ok()");
+			mlicother.addAction(item);
+			}
+		bmenu.setMenu(mlic);
+		
+		
+/*		
 		//Set list of licenses
 		comboLicense.addItem("");
-		for(String s:LicensesUtil.licenses)
+		for(String s:LicensesUtil.otherLicenses)
 			comboLicense.addItem(s);
 		comboLicense.setEditable(true);
 		comboLicense.setFocusPolicy(FocusPolicy.StrongFocus);
-		
+	*/	
 		QGridLayout layGrid=new QGridLayout();
 
 		layGrid.setMargin(0);
@@ -54,12 +88,13 @@ public class PaneCopyright extends QVBoxLayout
 		loadvalues();
 		
 		int row=0;
-		layGrid.addWidget(new HeaderLabel(tr("Copyright (only fill in for top-brick unless different licenses/authors)")),row,0,1,2);
+		layGrid.addWidget(new HeaderLabel(tr("Copyright (only fill in for top-brick unless different licenses/authors)")),row,0,1,3);
 		row++;
 		layGrid.addWidget(new QLabel(tr("License:")),row,0);
-		layGrid.addWidget(comboLicense,row,1);
+		layGrid.addWidget(tfLicense,row,1);
+		layGrid.addWidget(bmenu,row,2);
 		row++;
-		layGrid.addLayout(layAuthors,row,0,1,2);
+		layGrid.addLayout(layAuthors,row,0,1,3);
 		row++;
 		
 		bAddAuthor.clicked.connect(this,"actionAddAuthor()");
@@ -84,7 +119,7 @@ public class PaneCopyright extends QVBoxLayout
 	 */
 	public void loadvalues()
 		{
-		comboLicense.setEditText(unit.getLicense());   //TODO not working
+		tfLicense.setText(unit.getLicense());   //TODO not working
 		for(Author p:unit.authors)
 			addAuthorWidget(p);
 		}
@@ -133,7 +168,7 @@ public class PaneCopyright extends QVBoxLayout
 	 */
 	public void storevalues()
 		{
-		unit.setLicense(comboLicense.currentText());
+		unit.setLicense(tfLicense.text());
 		}
 	
 	

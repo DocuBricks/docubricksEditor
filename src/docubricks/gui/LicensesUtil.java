@@ -11,28 +11,32 @@ import java.util.LinkedList;
  */
 public class LicensesUtil
 	{
-	public static LinkedList<String> licenses=new LinkedList<String>();
+	public static LinkedList<String> otherLicenses=new LinkedList<String>();
+	
+	public static LinkedList<String> prefLicenses=new LinkedList<String>();
 	
 	public static void addLicense(String s)
 		{
-		licenses.add(s);
+		otherLicenses.add(s);
 		}
 	
 	static
 		{
-		licenses.add("Apache License 2.0");
-		licenses.add("BSD 3-Clause license");
-		licenses.add("BSD 2-Clause license");
-		licenses.add("CC-by-SA (Creative Commons Attribution-ShareAlike)");  //TODO more    
-		licenses.add("CERN Open Hardware License"); //TODO add version num
-		licenses.add("GPL 2 (GNU General Public License)");
-		licenses.add("GPL 3 (GNU General Public License)");
-		licenses.add("LGPL 2 (GNU Library/Lesser General Public License)");
-		licenses.add("LGPL 3 (GNU Library/Lesser General Public License)");
+		prefLicenses.add("TAPR Open Hardware License");
+		prefLicenses.add("CERN Open Hardware License"); //TODO add version num
 		
-		licenses.add("MIT license");
-		licenses.add("Mozilla Public License 2.0");
-		licenses.add("TAPR Open Hardware License");
+		
+		otherLicenses.add("Apache License 2.0");
+		otherLicenses.add("BSD 3-Clause license");
+		otherLicenses.add("BSD 2-Clause license");
+		otherLicenses.add("CC-by-SA (Creative Commons Attribution-ShareAlike)");  //TODO more    
+		otherLicenses.add("GPL 2 (GNU General Public License)");
+		otherLicenses.add("GPL 3 (GNU General Public License)");
+		otherLicenses.add("LGPL 2 (GNU Library/Lesser General Public License)");
+		otherLicenses.add("LGPL 3 (GNU Library/Lesser General Public License)");
+		
+		otherLicenses.add("MIT license");
+		otherLicenses.add("Mozilla Public License 2.0");
 /*		licenses.add("");
 		licenses.add("");
 		licenses.add("");

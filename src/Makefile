@@ -74,7 +74,6 @@ winportzip: jars
 	cd ..; cp ports/win/starter/docubricks_bundledjre.exe release/docubricks_win/docubricks.exe
 	cd ..; cp docubricks.jar lib/*jar lib/win32/*jar release/docubricks_win/
 	cd ..; cp -r ../support_programs/jre/* release/docubricks_win/
-	cd ../release/; zip -r docubricks_win docubricks_win
 
 
 
@@ -90,6 +89,7 @@ release: macport linuxport winport #docs
 	rm -f ../release/docubricks*zip 
 	cd ../release/linux64; zip -r ../docubricks_linux64.zip  docubricks
 	cd ../release/linux32; zip -r ../docubricks_linux32.zip  docubricks
+	cd ../release/; zip -r docubricks_win docubricks_win
 	#cd ports; zip -r ../../release/docs.zip            documentation
 	cd ..; cp -f src/docubricks/gui/version.txt release/qtversion.txt
 

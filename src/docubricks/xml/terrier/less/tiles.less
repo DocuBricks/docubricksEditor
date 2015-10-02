@@ -1,0 +1,38 @@
+.tile {
+  .transition-all();
+  -webkit-border-radius: @global-radius;
+  -moz-border-radius: @global-radius;
+  border-radius: @global-radius;
+
+  color: white;
+
+  display: block;
+
+  padding: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: @primary-color;
+
+  font-size: 20px;
+
+  text-align: center;
+}
+
+.tile i {
+  text-align: left;
+  float: left;
+}
+
+.tile:hover, .tile:focus {
+  background: @primary-color-dark;
+  color: white;
+}
+
+.tile.disabled {
+  background-color: transparent;
+  color: @dark-grey;
+  border: 1px dashed @dark-grey;
+
+  //color: @red;
+  //border: 1px dashed @red;
+}

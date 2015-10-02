@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -28,7 +29,7 @@ import org.jdom2.output.XMLOutputter;
  */
 public class DocubricksProject
 	{
-	public ArrayList<Brick> units=new ArrayList<Brick>();
+	public ArrayList<Brick> bricks=new ArrayList<Brick>();
 	public ArrayList<PhysicalPart> physicalParts=new ArrayList<PhysicalPart>();
 	public ArrayList<Author> authors=new ArrayList<Author>();
 	
@@ -41,7 +42,7 @@ public class DocubricksProject
 		for(;;)
 			{
 			id=(int)(Math.random()*Integer.MAX_VALUE);
-			for(Brick p:units)
+			for(Brick p:bricks)
 				if(p.id.equals(id))
 					continue;
 			break;
@@ -100,7 +101,7 @@ public class DocubricksProject
 			eroot.addContent(ep);
 			}
 		System.out.println(11111);
-		for(Brick u:units)
+		for(Brick u:bricks)
 			{
 			Element eu=u.toXML(basepath);
 			eroot.addContent(eu);
@@ -142,7 +143,7 @@ public class DocubricksProject
 			if(c.getName().equals("unit") || c.getName().equals("brick"))
 				{
 				Brick u=Brick.fromXML(basepath, p, c);
-				p.units.add(u);
+				p.bricks.add(u);
 				}
 			}
 		return p;
@@ -209,7 +210,7 @@ public class DocubricksProject
 	 */
 	public Brick getUnit(String id)
 		{
-		for(Brick p:units)
+		for(Brick p:bricks)
 			if(p.id.equals(id))
 				return p;
 		throw new RuntimeException("Missing unit: "+id);
@@ -223,7 +224,7 @@ public class DocubricksProject
 		{
 		Brick nu=new Brick();
 		nu.id=""+findFreeUnitID();
-		units.add(nu);
+		bricks.add(nu);
 		return nu;
 		}
 
@@ -265,14 +266,29 @@ public class DocubricksProject
 		{
 		LinkedList<Brick> ret=new LinkedList<Brick>();
 		HashSet<Brick> hasparent=new HashSet<Brick>();
-		for(Brick u:units)
+		for(Brick u:bricks)
 			for(Function lp:u.functions)
 				for(FunctionImplementation imp:lp.implementingPart)
 					if(imp instanceof FunctionImplementationBrick)
 						hasparent.add(((FunctionImplementationBrick)imp).get(this));
-		for(Brick u:units)
+		for(Brick u:bricks)
 			if(!hasparent.contains(u))
 				ret.add(u);
 		return ret;
+		}
+
+
+	public List<Brick> getBrickOrder()
+		{
+		/*
+		Collections.sort(units, new Comparator<Brick>()
+			{
+			public int compare(Brick a, Brick b)
+				{
+				return Integer.compare(a.order, b.order);
+				}
+			});
+		*/
+		return bricks;
 		}
 	}

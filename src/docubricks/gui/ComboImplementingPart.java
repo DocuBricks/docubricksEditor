@@ -74,7 +74,7 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 		thecombo.addItem("",null);
 		
 		//All units
-		for(Brick u:project.units)
+		for(Brick u:project.bricks)
 			{
 			FunctionImplementationBrick ref=new FunctionImplementationBrick(u.id);
 			thecombo.addItem(ref.getRepresentativeName(project), ref);

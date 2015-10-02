@@ -15,6 +15,7 @@ import com.trolltech.qt.gui.QFileDialog.AcceptMode;
 import com.trolltech.qt.gui.QFileDialog.FileMode;
 import com.trolltech.qt.gui.QDesktopServices;
 import com.trolltech.qt.gui.QHBoxLayout;
+import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMainWindow;
 import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QMenuBar;
@@ -43,6 +44,7 @@ public class MainWindow extends QMainWindow
 	public static File lastDirectory=new File(".");
 
 	private PaneProjectTree tree;
+	private ListBrickOrder listOrder=new ListBrickOrder();
 	private QMenuBar menubar=new QMenuBar();
 	//private TabProject tabProject;
 	private TabAuthors tabAuthors;
@@ -101,6 +103,8 @@ public class MainWindow extends QMainWindow
 		layleft.addWidget(bAddUnit);
 		layleft.addWidget(bAddPart);
 		layleft.addWidget(tree);
+		layleft.addWidget(new QLabel(tr("Display order:")));
+		layleft.addLayout(listOrder);
 		layleft.setMargin(0);
 		
 		QHBoxLayout laytot=new QHBoxLayout();
@@ -136,8 +140,6 @@ public class MainWindow extends QMainWindow
 			mapUnitTab.get(u).setVisible(true);
 		if(sel==TreeSelection.PHYS)
 			mapPartTab.get(u).setVisible(true);
-			
-//			tabProject.setVisible(true);
 		}
 	
 
@@ -150,6 +152,7 @@ public class MainWindow extends QMainWindow
 		nu.setName("Unnamed");
 		addUnitTab(nu);
 		actionSelTab(TreeSelection.BRICK, nu);
+		listOrder.updateContent();
 		}
 
 	public void actionNewPart()
@@ -158,6 +161,7 @@ public class MainWindow extends QMainWindow
 		nu.description="Unnamed";
 		addPartTab(nu);
 		actionSelTab(TreeSelection.PHYS, nu);
+		listOrder.updateContent();
 		}
 
 	
@@ -198,10 +202,12 @@ public class MainWindow extends QMainWindow
 	public void cbNameChanged(TabBrick u)
 		{
 		tree.setProject(project);
+		listOrder.updateContent();
 		}
 	public void cbNameChanged(TabPart u)
 		{
 		tree.setProject(project);
+		listOrder.updateContent();
 		}
 
 	/**
@@ -213,7 +219,7 @@ public class MainWindow extends QMainWindow
 		//tabProject.setVisible(true);
 		mapUnitTab.remove(nu.unit);
 		listTab.remove(nu);
-		project.units.remove(nu.unit);
+		project.bricks.remove(nu.unit);
 		tree.setProject(project);
 		}
 	public void cbRemoved(TabPart nu)
@@ -312,12 +318,13 @@ public class MainWindow extends QMainWindow
 		//tabProject.signalUpdated.connect(this,"updatedvalues()");
 		tabAuthors.signalUpdated.connect(this,"updatedvalues()");
 		tree.setProject(project);
+		listOrder.setProject(project);
 		
 		//Add all part tabs
 		for(PhysicalPart p:project.physicalParts)
 			addPartTab(p);
 		//Add all new unit tabs
-		for(Brick u:project.units)
+		for(Brick u:project.bricks)
 			addUnitTab(u);
 		}
 	
@@ -329,6 +336,7 @@ public class MainWindow extends QMainWindow
 			if(t instanceof TabBrick)
 				((TabBrick)t).updateAllCombos();
 		tree.setProject(project);
+		listOrder.setProject(project);
 		}
 	
 	
@@ -350,7 +358,7 @@ public class MainWindow extends QMainWindow
 				TabPart tu=getPartTab(u);
 				tu.storevalues();
 				}
-			for(Brick u:project.units)
+			for(Brick u:project.bricks)
 				{
 				TabBrick tu=getUnitTab(u);
 				tu.storevalues();

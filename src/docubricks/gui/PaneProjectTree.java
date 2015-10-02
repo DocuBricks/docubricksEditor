@@ -62,7 +62,7 @@ public class PaneProjectTree extends QTreeWidget
 		for(Brick u:project.getRootUnits())
 			setProjectRecursive(project, placedUnitsTotal, placedUnitsDepth, u, null);
 		//Place remaining units (circular!) arbitrarily
-		for(Brick u:project.units)
+		for(Brick u:project.bricks)
 			if(!placedUnitsTotal.contains(u))
 				setProjectRecursive(project, placedUnitsTotal, placedUnitsDepth, u, null);
 		expandAll();

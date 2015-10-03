@@ -338,10 +338,11 @@ function populatePage(db){
 */
 	
 	//Add all the bricks, in natural order
-	var flatlistbricks = flattenBricksTree(db);
+	//var listbricks = flattenBricksTree(db);
+	var listbricks = getBricksIdList(db);
 	var m = getBricksMap(db);
-	for (var i=0; i < flatlistbricks.length; i++) {
-		var thisbrick=m[flatlistbricks[i]];
+	for (var i=0; i < listbricks.length; i++) {
+		var thisbrick=m[listbricks[i]];
 		addBrick(dx, thisbrick, db);
 
 		var br=document.createElement("br");
@@ -517,10 +518,10 @@ function addBrick(dx, thisbrick, db){
 		pforeach(thisbrick.author,function(authorid){
 			if(!firstauthor)
 				p1.appendChild(document.createTextNode(", "));
-			console.log(authorid.id)
+			//console.log(authorid.id)
 			
 			var author=authormap[authorid.id];
-			p1.appendChild(document.createTextNode(author.name + " <"+author.email+">"));
+			p1.appendChild(document.createTextNode(author.name + " &lt;"+author.email+"&gt;"));
 			firstauthor=false;
 		});
 		anyLegal=true;
@@ -922,6 +923,14 @@ function XML2jsobj(node) {
 
 
 
+function getBricksIdList(db){
+	var ret=[];
+	pforeach(db["brick"],function(brick){
+		ret.push(brick.id);
+	});
+	return ret;
+	
+}
 
 
 /**

@@ -11,32 +11,42 @@ import java.util.LinkedList;
  */
 public class LicensesUtil
 	{
-	public static LinkedList<String> otherLicenses=new LinkedList<String>();
+	public static LinkedList<String> otherSoftLicenses=new LinkedList<String>();
+	public static LinkedList<String> otherHardLicenses=new LinkedList<String>();
 	
 	public static LinkedList<String> prefLicenses=new LinkedList<String>();
 	
-	public static void addLicense(String s)
+	public static String defLicense="CC-BY 3.0";
+	
+	
+	public static void addSoftLicense(String s)
 		{
-		otherLicenses.add(s);
+		otherSoftLicenses.add(s);
+		}
+	public static void addHardLicense(String s)
+		{
+		otherHardLicenses.add(s);
 		}
 	
 	static
 		{
-		prefLicenses.add("TAPR Open Hardware License");
-		prefLicenses.add("CERN Open Hardware License"); //TODO add version num
+		addHardLicense("TAPR Open Hardware License");
+		addHardLicense("CERN Open Hardware License"); //TODO add version num
 		
 		
-		otherLicenses.add("Apache License 2.0");
-		otherLicenses.add("BSD 3-Clause license");
-		otherLicenses.add("BSD 2-Clause license");
-		otherLicenses.add("CC-by-SA (Creative Commons Attribution-ShareAlike)");  //TODO more    
-		otherLicenses.add("GPL 2 (GNU General Public License)");
-		otherLicenses.add("GPL 3 (GNU General Public License)");
-		otherLicenses.add("LGPL 2 (GNU Library/Lesser General Public License)");
-		otherLicenses.add("LGPL 3 (GNU Library/Lesser General Public License)");
+		otherSoftLicenses.add("Apache License 2.0");
+		otherSoftLicenses.add("BSD 3-Clause license");
+		otherSoftLicenses.add("BSD 2-Clause license");
+		otherSoftLicenses.add("CC-BY-SA 3.0 (Creative Commons Attribution-ShareAlike)");  //TODO more    
+		otherSoftLicenses.add("GPL 2 (GNU General Public License)");
+		otherSoftLicenses.add("GPL 3 (GNU General Public License)");
+		otherSoftLicenses.add("LGPL 2 (GNU Library/Lesser General Public License)");
+		otherSoftLicenses.add("LGPL 3 (GNU Library/Lesser General Public License)");
 		
-		otherLicenses.add("MIT license");
-		otherLicenses.add("Mozilla Public License 2.0");
+		otherSoftLicenses.add("MIT license");
+		otherSoftLicenses.add("Mozilla Public License 2.0");
+		
+		prefLicenses.add(defLicense);
 /*		licenses.add("");
 		licenses.add("");
 		licenses.add("");

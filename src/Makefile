@@ -10,8 +10,15 @@ jars:
 	cd ../bin; jar cfvm ../docubricks.jar ../src/MANIFEST.STARTQTCLIENT \
 	*/*/*.class \
 	*/*/*.css \
+	*/*/*.xml \
 	*/*/*/*.class \
 	*/*/*/*.png
+
+lib:
+	cd ../bin; jar cfv ../docubricksLIB.jar \
+	*/*/*.class \
+	*/*/*/*.class
+	cd ../bin; cp ../docubricksLIB.jar ../../docubrickssite.git/docubricksSite/WebContent/WEB-INF/lib/
 
 ############################################################################################
 ############################ osx ###########################################################

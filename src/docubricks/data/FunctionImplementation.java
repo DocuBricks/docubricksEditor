@@ -2,6 +2,8 @@ package docubricks.data;
 
 import org.jdom2.Element;
 
+import net.minidev.json.JSONObject;
+
 /**
  * 
  * Implementation of a logical part
@@ -17,4 +19,6 @@ public interface FunctionImplementation
 	 * Serialize to XML
 	 */
 	public Element toXML();
+
+	public JSONObject toJSON();
 	}

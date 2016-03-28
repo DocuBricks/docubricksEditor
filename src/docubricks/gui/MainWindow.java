@@ -121,9 +121,29 @@ public class MainWindow extends QMainWindow
 		setProject(new DocubricksProject());
 		actionNewUnit();
 		
-		setMinimumSize(800, 480);
+		setMinimumSize(1200, 480);
 		show();	
+		
+		openMinimal();
 		}
+	
+	private void openMinimal()
+		{
+		try
+			{
+			InputStream is=MainWindow.class.getResourceAsStream("minimal.docubricks.xml");
+			setProject(DocubricksProject.loadXML(is, new File(".")));
+			currentProjectFile=null;
+			is.close();
+			}
+		catch (IOException e)
+			{
+			QTutil.showNotice(this, e.getMessage());
+			e.printStackTrace();
+			}
+		}		
+	
+
 	
 	/**
 	 * Action: one tab was selected
@@ -158,7 +178,7 @@ public class MainWindow extends QMainWindow
 	public void actionNewPart()
 		{
 		PhysicalPart nu=project.createPhysicalPart();
-		nu.description="Unnamed";
+		nu.name="Unnamed";
 		addPartTab(nu);
 		actionSelTab(TreeSelection.PHYS, nu);
 		listOrder.updateContent();
@@ -219,7 +239,7 @@ public class MainWindow extends QMainWindow
 		//tabProject.setVisible(true);
 		mapUnitTab.remove(nu.unit);
 		listTab.remove(nu);
-		project.bricks.remove(nu.unit);
+		project.removeBrick(nu.unit);
 		tree.setProject(project);
 		}
 	public void cbRemoved(TabPart nu)
@@ -302,12 +322,7 @@ public class MainWindow extends QMainWindow
 		listTab.clear();
 		
 		//Update project tab
-//		tabProject=new TabProject(project);
 		tabAuthors=new TabAuthors(proj);
-		//tabwidget.addTab(tabProject, tr("Project"));
-		//mapUnitTab.put(null, tabProject);  //6666!
-		//listTab.add(tabProject);
-		//laytab.addWidget(tabProject);
 		
 		mapUnitTab.put(null, tabAuthors);
 		listTab.add(tabAuthors);

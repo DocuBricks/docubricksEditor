@@ -9,6 +9,8 @@ import java.io.OutputStream;
 
 import org.jdom2.Element;
 
+import net.minidev.json.JSONObject;
+
 /**
  * 
  * A file with media
@@ -28,6 +30,15 @@ public class MediaFile
 	
 	
 	public Element toXML(File basepath) throws IOException
+		{
+		dealwithfile(basepath);
+		Element root=new Element("file");
+		root.setAttribute("url",getRelativePath(basepath.getAbsolutePath(), f.getAbsolutePath()));
+		//desc?
+		return root;
+		}
+	
+	private void dealwithfile(File basepath) throws IOException
 		{
 		//Save file if needed. i.e. if not in a subdirectory
 		String currel=getRelativePath(basepath.getAbsolutePath(), f.getAbsolutePath());
@@ -59,13 +70,7 @@ public class MediaFile
 			}
 		else
 			System.out.println("No need to save "+currel);
-		
-		Element root=new Element("file");
-		root.setAttribute("url",getRelativePath(basepath.getAbsolutePath(), f.getAbsolutePath()));
-		//desc?
-		return root;
 		}
-	
 	
 	public static MediaFile fromXML(File basepath, Element root)
 		{
@@ -128,5 +133,15 @@ public class MediaFile
     in.close();
     out.close();
     }
+
+
+	public JSONObject toJSON(File basepath) throws IOException
+		{
+		dealwithfile(basepath);
+		JSONObject root=new JSONObject();
+		root.put("url",getRelativePath(basepath.getAbsolutePath(), f.getAbsolutePath()));
+		//desc?
+		return root;
+		}
 
 	}

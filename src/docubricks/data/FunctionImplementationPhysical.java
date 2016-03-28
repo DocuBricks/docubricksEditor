@@ -2,6 +2,8 @@ package docubricks.data;
 
 import org.jdom2.Element;
 
+import net.minidev.json.JSONObject;
+
 /**
  * 
  * Implementation for a logical part: physical part
@@ -29,6 +31,15 @@ public class FunctionImplementationPhysical implements FunctionImplementation
 		return e;
 		}
 	
+	public JSONObject toJSON()
+		{
+		JSONObject e=new JSONObject();
+		e.put("type", "brick");
+		e.put("id", part.id);
+		return e;
+		}
+
+	
 	@Override
 	public boolean equals(Object obj)
 		{
@@ -43,6 +54,6 @@ public class FunctionImplementationPhysical implements FunctionImplementation
 
 	public String getRepresentativeName(DocubricksProject project)
 		{
-		return "Physical part: "+part.description;
+		return "Physical part: "+part.name;
 		}
 	}

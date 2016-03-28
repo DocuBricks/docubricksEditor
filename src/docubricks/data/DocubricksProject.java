@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,6 +18,9 @@ import org.jdom2.ProcessingInstruction;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 
 
@@ -94,19 +98,16 @@ public class DocubricksProject
 	public Element toXML(File basepath) throws IOException
 		{
 		Element eroot=new Element("docubricks");
-		System.out.println(000);
 		for(PhysicalPart p:physicalParts)
 			{
 			Element ep=p.toXML(basepath);
 			eroot.addContent(ep);
 			}
-		System.out.println(11111);
 		for(Brick u:bricks)
 			{
 			Element eu=u.toXML(basepath);
 			eroot.addContent(eu);
 			}
-		System.out.println(2222);
 		for(Author a:authors)
 			{
 			Element eu=a.toXML(basepath);
@@ -176,13 +177,19 @@ public class DocubricksProject
 	 */
 	public static DocubricksProject loadXML(File f) throws IOException
 		{
+		FileInputStream is=new FileInputStream(f);
+		DocubricksProject proj=loadXML(is, f.getParentFile());
+		is.close();
+		return proj;
+		}
+
+	public static DocubricksProject loadXML(InputStream is, File base) throws IOException
+		{
 		try
 			{
-			FileInputStream is=new FileInputStream(f);
 			SAXBuilder sax = new SAXBuilder();
 			Document doc = sax.build(is);
-			DocubricksProject proj=fromXML(f.getParentFile(), doc.getRootElement());
-			is.close();
+			DocubricksProject proj=fromXML(base, doc.getRootElement());
 			return proj;
 			}
 		catch (Exception e)
@@ -191,8 +198,7 @@ public class DocubricksProject
 			throw new IOException(e.getMessage());
 			}
 		}
-
-	
+		
 	/**
 	 * Get physical part
 	 */
@@ -290,5 +296,43 @@ public class DocubricksProject
 			});
 		*/
 		return bricks;
+		}
+
+
+	public void removeBrick(Brick unit)
+		{
+		bricks.remove(unit);
+		for(Brick b:bricks)
+			b.removeBrickRef(unit);
+		}
+	
+	
+	
+	
+	public JSONObject toJSON(File basepath) throws IOException
+		{
+		JSONObject eroot=new JSONObject();
+		JSONArray arrpart=new JSONArray();
+		JSONArray arrbricks=new JSONArray();
+		JSONArray arrauthors=new JSONArray();
+		eroot.put("parts", arrpart);
+		eroot.put("bricks", arrbricks);
+		eroot.put("authors", arrauthors);
+		for(PhysicalPart p:physicalParts)
+			{
+			JSONObject ep=p.toJSON(basepath);
+			arrpart.add(ep);
+			}
+		for(Brick u:bricks)
+			{
+			JSONObject eu=u.toJSON(basepath);
+			arrbricks.add(eu);
+			}
+		for(Author a:authors)
+			{
+			JSONObject eu=a.toJSON(basepath);
+			arrauthors.add(eu);
+			}
+		return eroot;
 		}
 	}

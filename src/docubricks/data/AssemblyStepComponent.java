@@ -2,6 +2,8 @@ package docubricks.data;
 
 import org.jdom2.Element;
 
+import net.minidev.json.JSONObject;
+
 /**
  * 
  * 
@@ -27,5 +29,13 @@ public class AssemblyStepComponent
 		comp.quantity=Integer.parseInt(root.getAttributeValue("quantity"));
 		comp.function=brick.getFunction(root.getAttributeValue("id"));
 		return comp;
+		}
+
+	public Object toJSON()
+		{
+		JSONObject e=new JSONObject();
+		e.put("quantity",""+quantity);
+		e.put("id",function.id);		
+		return e;
 		}
 	}

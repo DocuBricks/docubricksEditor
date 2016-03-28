@@ -50,7 +50,7 @@ public class PaneProjectTree extends QTreeWidget
 		QTreeWidgetItem itemPhy=new QTreeWidgetItem(this, Arrays.asList(new String[]{"Bill of materials"}));
 		for(PhysicalPart p:project.physicalParts)
 			{
-			QTreeWidgetItem item=new QTreeWidgetItem(itemPhy, Arrays.asList(new String[]{p.description}));
+			QTreeWidgetItem item=new QTreeWidgetItem(itemPhy, Arrays.asList(new String[]{p.name}));
 			//itemThis=new QTreeWidgetItem(this, Arrays.asList(new String[]{nodeName}));
 			item.setData(0, Qt.ItemDataRole.UserRole, p);
 				

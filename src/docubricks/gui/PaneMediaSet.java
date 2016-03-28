@@ -3,6 +3,7 @@ package docubricks.gui;
 import java.io.File;
 
 import com.trolltech.qt.core.QUrl;
+import com.trolltech.qt.core.Qt.AlignmentFlag;
 import com.trolltech.qt.gui.QDropEvent;
 import com.trolltech.qt.gui.QFileDialog;
 import com.trolltech.qt.gui.QHBoxLayout;
@@ -55,7 +56,7 @@ public class PaneMediaSet extends QWidget
 		
 		QVBoxLayout lay=new QVBoxLayout();
 		lay.addWidget(scroll);
-		laymedia.addWidget(bAdd);
+		laymedia.addWidget(bAdd, 1, AlignmentFlag.AlignRight);
 		lay.setMargin(0);
 		setLayout(lay);
 		
@@ -92,7 +93,7 @@ public class PaneMediaSet extends QWidget
 		PaneMediaFile mp=new PaneMediaFile(this, mf);
 		laymedia.removeWidget(bAdd);
 		laymedia.addWidget(mp);
-		laymedia.addWidget(bAdd);
+		laymedia.addWidget(bAdd, 1, AlignmentFlag.AlignRight);
 		scroll.setMinimumHeight(260);          //better way?
 		}
 	

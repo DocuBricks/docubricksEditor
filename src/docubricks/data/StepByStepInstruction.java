@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 import org.jdom2.Element;
 
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+
 /**
  * 
  * An instruction (list of steps to do something)
@@ -16,6 +19,7 @@ import org.jdom2.Element;
 public class StepByStepInstruction
 	{
 	public ArrayList<AssemblyStep> steps=new ArrayList<AssemblyStep>();
+	public String name="";
 
 	
 	public Element toXML(File basepath) throws IOException
@@ -24,7 +28,8 @@ public class StepByStepInstruction
 
 		for(AssemblyStep s:steps)
 			eroot.addContent(s.toXML(basepath));
-			
+		//eroot.setAttribute("name", name);
+
 		return eroot;
 		}
 
@@ -42,4 +47,22 @@ public class StepByStepInstruction
 			}
 		return inst;
 		}
+
+
+
+	public JSONObject toJSON(File basepath) throws IOException
+		{
+		JSONObject eroot=new JSONObject();
+		
+		JSONArray asteps=new JSONArray();
+		eroot.put("steps",asteps);
+		for(AssemblyStep s:steps)
+			asteps.add(s.toJSON(basepath));
+		//eroot.setAttribute("name", name);
+
+		return eroot;
+		}
+
+
+
 	}

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import com.trolltech.qt.gui.QFileDialog;
 import com.trolltech.qt.gui.QHBoxLayout;
+import com.trolltech.qt.gui.QIcon;
+import com.trolltech.qt.gui.QLineEdit;
 import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QVBoxLayout;
@@ -16,6 +18,7 @@ import docubricks.data.AssemblyStep;
 import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
 import docubricks.data.MediaFile;
+import docubricks.gui.resource.ImgResource;
 
 /**
  * 
@@ -26,8 +29,13 @@ import docubricks.data.MediaFile;
  */
 public class WidgetInstruction extends QWidget
 	{
+	public Signal1<StepByStepInstruction> sigDeleted=new Signal1<StepByStepInstruction>();
+	
 	private QPushButton bAddStep=new QPushButton(tr("Add step"));
 	private QPushButton bAddManySteps=new QPushButton(tr("Add steps from files"));
+	private QPushButton bRemove=new QPushButton(new QIcon(ImgResource.delete),"");
+	private QLineEdit tfName=new QLineEdit();
+	
 	private QVBoxLayout layv=new QVBoxLayout();
 	private QVBoxLayout laysteps=new QVBoxLayout();
 	private ArrayList<WidgetStep> stepWidgets=new ArrayList<WidgetInstruction.WidgetStep>();
@@ -165,7 +173,7 @@ public class WidgetInstruction extends QWidget
 		}
 
 	
-	public WidgetInstruction(DocubricksProject proj, Brick brick, StepByStepInstruction instructions, String header)
+	public WidgetInstruction(DocubricksProject proj, Brick brick, StepByStepInstruction instructions, String header, boolean isExtraInstruction)
 		{
 		this.proj=proj;
 		this.brick=brick;
@@ -175,12 +183,21 @@ public class WidgetInstruction extends QWidget
 
 		QHBoxLayout layh=new QHBoxLayout();
 		layh.setMargin(0);
-		layh.addWidget(bAddStep);
-		layh.addWidget(bAddManySteps);
+		layh.addWidget(labInstruction);
+		if(isExtraInstruction)
+			{
+			layh.addWidget(tfName);
+			layh.addWidget(bRemove);
+			}
+		
+		QHBoxLayout layButton=new QHBoxLayout();
+		layButton.setMargin(0);
+		layButton.addWidget(bAddStep);
+		layButton.addWidget(bAddManySteps);
 
-		layv.addWidget(labInstruction);
-		layv.addLayout(laysteps);
 		layv.addLayout(layh);
+		layv.addLayout(laysteps);
+		layv.addLayout(layButton);
 		layv.setMargin(0);
 		setLayout(layv);
 
@@ -188,6 +205,13 @@ public class WidgetInstruction extends QWidget
 		
 		bAddStep.clicked.connect(this,"actionAddStep()");
 		bAddManySteps.clicked.connect(this,"actionAddSteps()");
+		bRemove.clicked.connect(this,"actionDeleted()");
+		}
+	
+	
+	public void actionDeleted()
+		{
+		sigDeleted.emit(instructions);
 		}
 	
 	

@@ -1,2 +1,2 @@
 #!/bin/sh
-java -jar facsanadu.jar "$@"
+java -jar docubricks.jar "$@"

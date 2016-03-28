@@ -2,6 +2,7 @@ package docubricks.gui;
 
 import java.util.HashMap;
 
+import com.trolltech.qt.core.Qt.AlignmentFlag;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QGroupBox;
 import com.trolltech.qt.gui.QHBoxLayout;
@@ -134,7 +135,7 @@ public class PaneAuthorData extends QVBoxLayout
 		
 		addWidget(header);
 		addLayout(laylist);
-		addWidget(bAdd);
+		addWidget(bAdd, 1, AlignmentFlag.AlignRight);
 		
 		loadvalues();
 		

@@ -7,6 +7,9 @@ import java.util.LinkedList;
 
 import org.jdom2.Element;
 
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+
 
 /**
  * 
@@ -130,6 +133,29 @@ public class Function
 			{
 			return description;
 			}
+		}
+	
+	
+	public JSONObject toJSON(File basepath)
+		{
+		JSONObject eroot=new JSONObject();
+		eroot.put("id", id);
+
+		eroot.put("description", description);
+		
+		eroot.put("designator", designator);
+		eroot.put("quantity", ""+quantity);
+
+		JSONArray arrimp=new JSONArray();
+		eroot.put("implementations",arrimp);
+				
+		for(FunctionImplementation imp:implementingPart)
+			if(imp!=null)
+				arrimp.add(imp.toJSON());
+			else
+				System.out.println("null implementation");
+
+		return eroot;
 		}
 
 	

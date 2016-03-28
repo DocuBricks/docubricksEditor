@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import org.jdom2.Element;
 
+import net.minidev.json.JSONObject;
+
 /**
  * 
  * One physical part
@@ -14,7 +16,8 @@ import org.jdom2.Element;
  */
 public class PhysicalPart
 	{
-	public String description="";
+	public String name="";
+	public String description = "";
 	public String supplier="";
 	public String supplierPartNum="";
 	public String manufacturerPartNum="";
@@ -34,11 +37,11 @@ public class PhysicalPart
 	
 	public void setDescription(String s)
 		{
-		description=s;
+		name=s;
 		}
 	public String getDescription()
 		{
-		return description;
+		return name;
 		}
 	
 	
@@ -91,6 +94,7 @@ public class PhysicalPart
 		Element eroot=new Element("physical_part");
 
 		eroot.setAttribute("id", id);
+		eroot.addContent(elWithContent("name", name));
 		eroot.addContent(elWithContent("description", description));
 		
 		eroot.addContent(elWithContent("supplier", supplier));
@@ -106,7 +110,7 @@ public class PhysicalPart
 		Element elIns=instructions.toXML(basepath);
 		elIns.setName("manufacturing_instruction");
 		eroot.addContent(elIns);
-
+		
 		return eroot;
 		}
 	
@@ -124,7 +128,10 @@ public class PhysicalPart
 		PhysicalPart part=new PhysicalPart();
 		part.id=c.getAttributeValue("id");
 		
+		part.name=c.getChildText("name");
 		part.description=c.getChildText("description");
+		if(part.name==null)
+			part.name=part.description; //hack
 		part.supplier=c.getChildText("supplier");
 		part.supplierPartNum=c.getChildText("supplier_part_num");
 		part.manufacturerPartNum=c.getChildText("manufacturer_part_num");
@@ -140,6 +147,32 @@ public class PhysicalPart
 
 		return part;
 		}
-
 	
+	
+	public JSONObject toJSON(File basepath) throws IOException
+		{
+		JSONObject eroot=new JSONObject();
+
+		eroot.put("id", id);
+		eroot.put("name", name);
+		eroot.put("description", description);
+		
+		eroot.put("supplier", supplier);
+		eroot.put("supplier_part_num", supplierPartNum);
+		eroot.put("manufacturer_part_num", manufacturerPartNum);
+		eroot.put("url", url);
+
+		eroot.put("material_amount", materialAmount!=null ? ""+materialAmount : "");
+		eroot.put("material_unit", materialUnit.name());
+
+		eroot.put("files",media.toJSON(basepath));
+		
+		JSONObject elIns=instructions.toJSON(basepath);
+		eroot.put("manufacturing_instruction", elIns);
+
+		return eroot;
+		}
+	
+	
+
 	}

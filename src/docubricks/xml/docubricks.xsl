@@ -6,21 +6,24 @@
 		<meta charset="UTF-8" />
 		<title>Docubricks document</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-		
-		<link href="terrier/dist/terrier.css" rel="stylesheet" />
-		<link href="docubricks.css" rel="stylesheet" />
-		
-		<script src="terrier/jquery-1.11.3.min.js"></script>
-		<script src="docubricks.js"></script>
+		<link href="css-js-dbricks/smart-grid.css" rel="stylesheet" />
+		<link href="css-js-dbricks/dist/terrierX.css" rel="stylesheet" />
+		<link href="css-js-dbricks/docubricks.css" rel="stylesheet" />
+
+		<script src="css-js-dbricks/jquery-1.11.3.min.js"></script>
+		<script src="css-js-dbricks/CollapsibleLists.js"></script>
+		<script src="css-js-dbricks/docubricks.js"></script>
+
+
 	</head>
 
 	<!--  Original XML data goes in here  -->
 	<hiddendata class="hideclass" id="hiddendata">
 		<xsl:copy-of select="docubricks"/>
 	</hiddendata>
-	
-	
-	<!--  Bill of materials table for one brick -->
+
+
+	<!--  Bill of materials table for one brick-->
 	<hidden class="hideclass">
 		<div class="col12 colExample" id="brickbomtable">
 			<div class="divbom">
@@ -50,8 +53,8 @@
 			<td id="supplier"></td>
 		</tr>
 	</hidden>
-	
-	
+
+
 
 	<!--  Bill of materials table for the total project -->
 	<hidden class="hideclass">
@@ -85,38 +88,6 @@
 			<td id="supplier"></td>
 		</tr>
 	</hidden>
-	
-	
-	
-
-
-
-	<!--  Bill of materials table for one step -->
-	<hidden class="hideclass">
-		<div id="stepbomtable">
-			<div class="divbom">
-				<p class="p_h2" id="stepbomname">
-					Referenced components
-				</p>
-			</div>
-			<p align="center">
-				<table>
-					<thead>
-						<tr>
-							<th>DESCRIPTION</th>
-							<th>QUANTITY</th>
-						</tr>
-					</thead>
-					<tbody id="stepbombody">
-					</tbody>
-				</table>
-			</p>
-		</div>
-		<tr id="stepbomrow">
-			<td><a id="description"> </a></td>
-			<td id="quantity"></td>
-		</tr>
-	</hidden>
 
 
 	<!--  Instruction table -->
@@ -128,41 +99,26 @@
 		</div>
 		<div id="instructionstep">
 		</div>
-	</hidden>	
-
-
-
-	<!--  Left tree node -->
-	<hidden>
-		<div id="lefttreeinstance">
-			<div>
-				<a id="lefttreenode">
-				
-				</a>
-			</div>
-			<br clear="all"/>
-			<div class="lefttreesubdiv" id="lefttreesubdiv">
-			</div>
-		</div>
 	</hidden>
-
 
 
 	<!-- The visible content -->
 	<body>
 		<!-- Left side tree -->
-		<div id="ptree2" class="ptree2"></div>
+	<div id="content" class="container">
 
-		<!-- Main body -->
-		<div id="ccentre" class="container center"></div>
-		
-		<script type="text/javascript">
-			loadxml2();
-		</script> 
-	</body>
-	
-	
-	
+		<div class="row">
+			<div id="ptree2" class="columns one-fourth"></div>
+			<div id="ccentre" class="columns three-fourths offset-four"></div>
+	</div>
+</div>
+	<script type="text/javascript">
+		loadxml2();
+	</script>
+</body>
+
+
+
 </html>
 </xsl:template>
 </xsl:stylesheet>

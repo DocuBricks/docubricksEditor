@@ -1,6 +1,9 @@
 package docubricks.gui;
 
 
+import java.util.HashMap;
+
+import com.trolltech.qt.core.Qt.AlignmentFlag;
 import com.trolltech.qt.core.Qt.ScrollBarPolicy;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QHBoxLayout;
@@ -17,6 +20,7 @@ import com.trolltech.qt.gui.QWidget;
 
 import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
+import docubricks.data.StepByStepInstruction;
 import docubricks.gui.resource.ImgResource;
 
 
@@ -42,13 +46,17 @@ public class TabBrick extends QWidget
 	private PaneMediaSet mediapane;
 	private QPushButton bRemove=new QPushButton(new QIcon(ImgResource.delete),"");
 
+	private QPushButton bAddInstruction=new QPushButton("Add instruction set");
+
 	public Brick unit;
 	public DocubricksProject project;
+
+	private HashMap<StepByStepInstruction, WidgetInstruction> mapInstWid=new HashMap<StepByStepInstruction, WidgetInstruction>();
 
 	public Signal1<TabBrick> sigNameChanged=new Signal1<TabBrick>();
 	public Signal1<TabBrick> sigRemove=new Signal1<TabBrick>();
 	
-
+	QVBoxLayout layinstructions=new QVBoxLayout();
 	
 
 	
@@ -56,7 +64,6 @@ public class TabBrick extends QWidget
 		{
 		this.project=project;
 		this.unit=unit;	
-
 
 		mediapane=new PaneMediaSet(unit.media);
 		
@@ -110,8 +117,15 @@ public class TabBrick extends QWidget
 		layGrid.addLayout(parts,row,0,1,2);
 		row++;
 		
-		wInstruction=new WidgetInstruction(project, unit, unit.asmInstruction, tr("Assembly instructions"));
+
+		
+		wInstruction=new WidgetInstruction(project, unit, unit.asmInstruction, tr("Assembly instructions"), false);
 		layGrid.addWidget(wInstruction,row,0,1,2);
+		row++;
+
+		layGrid.addLayout(layinstructions, row, 0, 1, 2);
+		row++;
+		layGrid.addWidget(bAddInstruction, row, 0, 1, 2, AlignmentFlag.AlignRight);
 		row++;
 
 	
@@ -121,6 +135,7 @@ public class TabBrick extends QWidget
 		tfName.textChanged.connect(this,"actionNameChanged()");
 		parts.sigChanged.connect(this,"actionPartsChanged()");
 		bRemove.clicked.connect(this,"actionRemove()");
+		bAddInstruction.clicked.connect(this,"actionAddInstructions()");
 		}
 	
 
@@ -152,6 +167,9 @@ public class TabBrick extends QWidget
 		tfAbstract.setText(unit.getAbstract());
 		tfLongDesc.setText(unit.getLongDescription());
 		tfNotes.setText(unit.getNotes());
+
+		for(StepByStepInstruction inst:unit.instructions)
+			addInstructionWidget(inst);
 		}
 
 
@@ -161,7 +179,7 @@ public class TabBrick extends QWidget
 		unit.setName(tfName.text());
 		unit.setAbstract(tfAbstract.text());
 		unit.setLongDescription(tfLongDesc.toPlainText());
-		unit.setWhy(tfNotes.toPlainText());
+		unit.setNotes(tfNotes.toPlainText());
 		wInstruction.storevalues();
 		copyright.storevalues();
 		}
@@ -174,5 +192,30 @@ public class TabBrick extends QWidget
 		wInstruction.updateAllCombos();
 		}
 	
+	
+	public void actionAddInstructions()
+		{
+		StepByStepInstruction inst=new StepByStepInstruction();
+		unit.instructions.add(inst);
+		addInstructionWidget(inst);
+		}
+	
+	
+	
+	
+	private void addInstructionWidget(StepByStepInstruction inst)
+		{
+		WidgetInstruction i=new WidgetInstruction(project, unit, inst, "Custom instructions: ", true);
+		i.sigDeleted.connect(this,"deleteInstruction(StepByStepInstruction)");
+		layinstructions.addWidget(i);
+		mapInstWid.put(inst, i);
+		}
+	
+	public void deleteInstruction(StepByStepInstruction inst)
+		{
+		mapInstWid.get(inst).hide();
+		layinstructions.removeWidget(mapInstWid.get(inst));
+		mapInstWid.remove(inst);
+		}
 	
 	}

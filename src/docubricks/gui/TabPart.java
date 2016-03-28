@@ -3,6 +3,7 @@ package docubricks.gui;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
+import com.trolltech.qt.core.Qt.ScrollBarPolicy;
 import com.trolltech.qt.gui.QComboBox;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QHBoxLayout;
@@ -11,6 +12,7 @@ import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QLineEdit;
 import com.trolltech.qt.gui.QMessageBox;
 import com.trolltech.qt.gui.QPushButton;
+import com.trolltech.qt.gui.QScrollArea;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
 import com.trolltech.qt.gui.QMessageBox.StandardButton;
@@ -55,7 +57,7 @@ public class TabPart extends QWidget
 	public Signal1<TabPart> sigNameChanged=new Signal1<TabPart>();
 	public Signal1<TabPart> sigRemove=new Signal1<TabPart>();
 	
-	private QLineEdit tfDescription=new QLineEdit();
+	private QLineEdit tfName=new QLineEdit();
 	private QLineEdit tfSupplier=new QLineEdit();
 	private QLineEdit tfSupplierPartNum=new QLineEdit();
 	private QLineEdit tfManufacturerPartNum=new QLineEdit();
@@ -74,7 +76,9 @@ public class TabPart extends QWidget
 	private TreeMap<String, MaterialUnit> mapMaterialUnitFWD=new TreeMap<String, MaterialUnit>();
 
 	private QComboBox comboManufacturingMethod=new QComboBox();
+	private QScrollArea scroll=new QScrollArea();
 
+	private QTextEditResize tfDesc=new QTextEditResize();
 	
 	/**
 	 * Constructor for one logical part pane
@@ -84,9 +88,22 @@ public class TabPart extends QWidget
 		this.part=part;
 		this.proj=proj;
 		
-		QVBoxLayout lay=new QVBoxLayout();
-		setLayout(lay);
+		QVBoxLayout lay1=new QVBoxLayout();
+		lay1.addWidget(scroll);
+		scroll.setHorizontalScrollBarPolicy(ScrollBarPolicy.ScrollBarAlwaysOff);
+		scroll.setVerticalScrollBarPolicy(ScrollBarPolicy.ScrollBarAlwaysOn);
+		scroll.setWidgetResizable(true);
+		lay1.setMargin(0);
+		setLayout(lay1);
 
+		
+		QVBoxLayout lay=new QVBoxLayout();
+		QWidget scrollwid=new QWidget();
+		scrollwid.setObjectName("form");
+		scrollwid.setLayout(lay);
+		scroll.setWidget(scrollwid);
+
+		
 		//Set list of licenses
 		comboManufacturingMethod.addItem("");
 		for(String s:manufacturingMethods)
@@ -101,14 +118,14 @@ public class TabPart extends QWidget
 		
 		
 		mediapane=new PaneMediaSet(part.media);
-		wInstruction=new WidgetInstruction(proj, null, part.instructions, tr("Manufacturing instructions"));
+		wInstruction=new WidgetInstruction(proj, null, part.instructions, tr("Manufacturing instructions"), false);
 		
 		QHBoxLayout layMaterial=new QHBoxLayout();
 		layMaterial.addWidget(tfMaterialAmount);
 		layMaterial.addWidget(comboQuantityUnit);
 
 		QHBoxLayout layName=new QHBoxLayout();
-		layName.addWidget(tfDescription);
+		layName.addWidget(tfName);
 		layName.addWidget(bRemovePart);
 
 		QGridLayout layGrid=new QGridLayout();
@@ -135,6 +152,10 @@ public class TabPart extends QWidget
 		layGrid.addWidget(new QLabel(tr("Material usage:")),row,0);
 		layGrid.addLayout(layMaterial,row,1);
 		row++;
+		layGrid.addWidget(new QLabel(tr("Description:")),row,0);
+		layGrid.addWidget(tfDesc,row,1);
+		row++;
+		
 		layGrid.addWidget(new QLabel(tr("Media:")),row,0);
 		row++;
 		layGrid.addWidget(mediapane,row,0,1,2);
@@ -148,7 +169,7 @@ public class TabPart extends QWidget
 		
 		loadvalues();
 
-		tfDescription.textEdited.connect(this,"editvalues()");
+		tfName.textEdited.connect(this,"editvalues()");
 		bRemovePart.clicked.connect(this,"actionRemovePhysPart()");
 		}
 	
@@ -170,12 +191,13 @@ public class TabPart extends QWidget
 	
 	public void loadvalues()
 		{
-		tfDescription.setText(part.description);
+		tfName.setText(part.name);
 		comboManufacturingMethod.setEditText(part.manufacturingMethod);
 		tfSupplier.setText(part.supplier);
 		tfSupplierPartNum.setText(part.supplierPartNum);
 		tfManufacturerPartNum.setText(part.manufacturerPartNum);
 		tfURL.setText(part.url);
+		tfDesc.setText(part.description);
 		if(part.materialAmount!=null)
 			tfMaterialAmount.setText(""+part.materialAmount);
 		int i=0;
@@ -196,12 +218,13 @@ public class TabPart extends QWidget
 	
 	public void storevalues()
 		{
-		part.description=tfDescription.text();
+		part.name=tfName.text();
 		part.supplier=tfSupplier.text();
 		part.supplierPartNum=tfSupplierPartNum.text();
 		part.manufacturerPartNum=tfManufacturerPartNum.text();
 		part.url=tfURL.text();
 		part.manufacturingMethod=comboManufacturingMethod.currentText();
+		part.description=tfDesc.toPlainText();
 		
 		String ma=tfMaterialAmount.text();
 		part.materialAmount=null;

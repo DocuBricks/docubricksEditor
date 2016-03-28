@@ -6,6 +6,9 @@ import java.util.LinkedList;
 
 import org.jdom2.Element;
 
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+
 /**
  * 
  * Set of media files
@@ -32,5 +35,14 @@ public class MediaSet
 		for(Element e:root.getChildren())
 			media.files.add(MediaFile.fromXML(basepath, e));
 		return media;
+		}
+
+	public JSONArray toJSON(File basepath) throws IOException
+		{
+		JSONArray root=new JSONArray();
+				
+		for(MediaFile mf:files)
+			root.add(mf.toJSON(basepath));
+		return root;
 		}
 	}

@@ -66,8 +66,10 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 	
 	
 	
+	boolean ischanging=false;
 	public void updateListOfEntries(FunctionImplementation curdata)
 		{
+		ischanging=true;
 		thecombo.clear();
 		
 		//Empty selection
@@ -90,6 +92,7 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 			if(curdata!=null && curdata.equals(ref))
 				thecombo.setCurrentIndex(thecombo.count()-1);
 			}		
+		ischanging=false;
 		}
 	
 	public void updateListOfEntries()
@@ -101,11 +104,13 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 	
 	public void actionDelete()
 		{
-		sigDeleted.emit(this);
+		if(!ischanging)
+			sigDeleted.emit(this);
 		}
 
 	public void actionChanged()
 		{
-		sigUpdated.emit(this);
+		if(!ischanging)
+			sigUpdated.emit(this);
 		}	
 	}

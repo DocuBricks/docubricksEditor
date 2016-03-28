@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 import org.jdom2.Element;
 
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+
 /**
  * 
  * 
@@ -76,6 +79,24 @@ public class AssemblyStep
 			}
 		
 		return step;
+		}
+	
+	
+	public JSONObject toJSON(File basepath) throws IOException
+		{
+		JSONObject eroot=new JSONObject();
+
+	//	eroot.addContent(elWithContent("id", ""+id));
+		eroot.put("description", desc);
+		eroot.put("files",media.toJSON(basepath));
+		
+		JSONArray arrcomp=new JSONArray();
+		eroot.put("components", arrcomp);
+		for(AssemblyStepComponent c:components)
+			if(c.function!=null)
+				arrcomp.add(c.toJSON());
+		
+		return eroot;
 		}
 	
 	

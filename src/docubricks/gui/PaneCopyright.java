@@ -2,6 +2,7 @@ package docubricks.gui;
 
 import java.util.ArrayList;
 
+import com.trolltech.qt.core.Qt.AlignmentFlag;
 import com.trolltech.qt.gui.QAction;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QLabel;
@@ -28,7 +29,6 @@ public class PaneCopyright extends QVBoxLayout
 	
 	private ArrayList<ComboAuthorRef> combosAuthor=new ArrayList<ComboAuthorRef>();
 	private QVBoxLayout layAuthors=new QVBoxLayout();
-//	private QComboBox comboLicense=new QComboBox();
 	private QLineEdit tfLicense=new QLineEdit();
 	private QPushButton bAddAuthor=new QPushButton(tr("Add author"));
 
@@ -56,10 +56,10 @@ public class PaneCopyright extends QVBoxLayout
 			item.triggered.connect(item,"ok()");
 			mlic.addAction(item);
 			}
-		QMenu mlicother=mlic.addMenu(tr("Other"));
-		for(final String s:LicensesUtil.otherLicenses)
+		QMenu mlicotherSoft=mlic.addMenu(tr("Other software licenses"));
+		for(final String s:LicensesUtil.otherSoftLicenses)
 			{
-			QAction item=new QAction(s, mlicother){
+			QAction item=new QAction(s, mlicotherSoft){
 				@SuppressWarnings("unused")
 				public void ok()
 					{
@@ -67,8 +67,22 @@ public class PaneCopyright extends QVBoxLayout
 					}
 			};
 			item.triggered.connect(item,"ok()");
-			mlicother.addAction(item);
+			mlicotherSoft.addAction(item);
 			}
+		QMenu mlicotherHard=mlic.addMenu(tr("Other hardware licenses"));
+		for(final String s:LicensesUtil.otherHardLicenses)
+			{
+			QAction item=new QAction(s, mlicotherHard){
+				@SuppressWarnings("unused")
+				public void ok()
+					{
+					tfLicense.setText(s);
+					}
+			};
+			item.triggered.connect(item,"ok()");
+			mlicotherHard.addAction(item);
+			}
+
 		bmenu.setMenu(mlic);
 		
 		
@@ -100,7 +114,7 @@ public class PaneCopyright extends QVBoxLayout
 		bAddAuthor.clicked.connect(this,"actionAddAuthor()");
 		
 		addLayout(layGrid);
-		addWidget(bAddAuthor);
+		addWidget(bAddAuthor, 1, AlignmentFlag.AlignRight);
 		}
 	
 

@@ -3,6 +3,7 @@ package docubricks.gui;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import com.trolltech.qt.core.Qt.AlignmentFlag;
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QGroupBox;
 import com.trolltech.qt.gui.QHBoxLayout;
@@ -30,7 +31,7 @@ public class PaneFunctions extends QVBoxLayout
 	private DocubricksProject proj;
 	private Brick unit;
 	
-	private HeaderLabel header=new HeaderLabel(tr("Parts for this brick"));
+	private HeaderLabel header=new HeaderLabel(tr("Contents of this brick"));
 	private QPushButton bAdd=new QPushButton(tr("Add function"));  //or use header? no. inconsistent
 	private HashMap<Function, PaneOneLogicalPart> mapLogPanes=new HashMap<Function, PaneFunctions.PaneOneLogicalPart>();
 	
@@ -49,7 +50,7 @@ public class PaneFunctions extends QVBoxLayout
 		
 		addWidget(header);
 		addLayout(laylistLogicalPart);
-		addWidget(bAdd);
+		addWidget(bAdd, 1, AlignmentFlag.AlignRight);
 		
 		laylistLogicalPart.setMargin(0);
 		setMargin(0);
@@ -158,7 +159,7 @@ public class PaneFunctions extends QVBoxLayout
 			row++;
 			
 			
-			laybuttons.addWidget(bAddImplementation);
+			laybuttons.addWidget(bAddImplementation,1, AlignmentFlag.AlignLeft);
 			
 			lay.addLayout(layGrid);
 			lay.addLayout(laylistImp);

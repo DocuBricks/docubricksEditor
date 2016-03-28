@@ -2,6 +2,8 @@ package docubricks.data;
 
 import org.jdom2.Element;
 
+import net.minidev.json.JSONObject;
+
 /**
  * 
  * Implementation for a logical part: unit
@@ -28,6 +30,16 @@ public class FunctionImplementationBrick implements FunctionImplementation
 		e.setAttribute("id", id);
 		return e;
 		}
+	
+
+	public JSONObject toJSON()
+		{
+		JSONObject e=new JSONObject();
+		e.put("type", "brick");
+		e.put("id", id);
+		return e;
+		}
+
 	
 	@Override
 	public boolean equals(Object obj)

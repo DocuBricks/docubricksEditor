@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import org.jdom2.Element;
 
+import net.minidev.json.JSONObject;
+
 /**
  * 
  * Information about one author
@@ -56,6 +58,19 @@ public class Author
 		part.affiliation=c.getChildText("affiliation");
 	
 		return part;
+		}
+
+
+	public JSONObject toJSON(File basepath)
+		{
+		JSONObject eroot=new JSONObject();
+		eroot.put("id", id);
+		eroot.put("name", name);
+		
+		eroot.put("email", email);
+		eroot.put("orcid", orcid);
+		eroot.put("affiliation", affiliation);
+		return eroot;
 		}
 	
 	

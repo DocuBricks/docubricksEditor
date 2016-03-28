@@ -5,6 +5,7 @@ import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QListWidget;
 import com.trolltech.qt.gui.QListWidgetItem;
 import com.trolltech.qt.gui.QPushButton;
+import com.trolltech.qt.gui.QSizePolicy.Policy;
 import com.trolltech.qt.gui.QVBoxLayout;
 
 import docubricks.data.Brick;
@@ -12,9 +13,7 @@ import docubricks.data.DocubricksProject;
 
 public class ListBrickOrder extends QVBoxLayout
 	{
-	
-	DocubricksProject proj=new DocubricksProject();
-	
+	private DocubricksProject proj=new DocubricksProject();
 	private QListWidget wlist=new QListWidget();
 	private QPushButton bUp=new QPushButton(tr("Up"));
 	private QPushButton bDown=new QPushButton(tr("Down"));
@@ -28,6 +27,11 @@ public class ListBrickOrder extends QVBoxLayout
 		lay.addWidget(bUp);
 		addWidget(wlist);
 		addLayout(lay);
+		wlist.setSizePolicy(Policy.Minimum, Policy.MinimumExpanding);
+		bDown.setSizePolicy(Policy.Minimum, Policy.Minimum);
+		bUp.setSizePolicy(Policy.Minimum, Policy.Minimum);
+		
+		//setSizePolicy(Policy.MinimumExpanding, Policy.MinimumExpanding);
 		
 		bDown.clicked.connect(this,"actionDown()");
 		bUp.clicked.connect(this,"actionUp()");
@@ -77,6 +81,7 @@ public class ListBrickOrder extends QVBoxLayout
 	
 	public void updateContent()	
 		{
+		System.out.println("update content");
 		Brick sel=getSelectedBrick();
 		wlist.model().removeRows(0, wlist.model().rowCount());
 		for(Brick brick:proj.bricks)

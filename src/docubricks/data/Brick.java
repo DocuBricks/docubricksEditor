@@ -225,7 +225,7 @@ public class Brick
 	public JSONObject toJSON(File basepath) throws IOException
 		{
 		JSONObject eroot=new JSONObject();
-		eroot.put("id",""+id);
+		//eroot.put("id",""+id);
 		
 		//kicking out <description> - no need for one more section
 		

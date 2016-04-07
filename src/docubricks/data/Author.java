@@ -64,7 +64,7 @@ public class Author
 	public JSONObject toJSON(File basepath)
 		{
 		JSONObject eroot=new JSONObject();
-		eroot.put("id", id);
+		//eroot.put("id", id);
 		eroot.put("name", name);
 		
 		eroot.put("email", email);

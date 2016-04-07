@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import org.jdom2.Element;
 
 import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
 
 /**
  * 

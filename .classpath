@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="lib/jdom-2.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/vecmath.jar"/>
+	<classpathentry kind="lib" path="lib/linux64/qtjambi-4.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/linux64/qtjambi-linux64-gcc-4.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/linux64/qtjambi-util-4.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/javax.servlet_3.0.0.v201112011016.jar"/>
+	<classpathentry kind="lib" path="lib/javax.servlet.jsp_2.2.0.v201112011158.jar"/>
+	<classpathentry kind="lib" path="json-smart-1.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

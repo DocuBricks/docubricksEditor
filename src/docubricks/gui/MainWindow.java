@@ -26,7 +26,7 @@ import com.trolltech.qt.gui.QWidget;
 
 import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
-import docubricks.data.PhysicalPart;
+import docubricks.data.Part;
 import docubricks.gui.qt.QTutil;
 import docubricks.gui.resource.ImgResource;
 
@@ -54,7 +54,7 @@ public class MainWindow extends QMainWindow
 	
 	private LinkedList<QWidget> listTab=new LinkedList<QWidget>();
 	private HashMap<Brick, QWidget> mapUnitTab=new HashMap<Brick, QWidget>();
-	private HashMap<PhysicalPart, QWidget> mapPartTab=new HashMap<PhysicalPart, QWidget>();
+	private HashMap<Part, QWidget> mapPartTab=new HashMap<Part, QWidget>();
 	
 	private File currentProjectFile=null;
 	
@@ -177,7 +177,7 @@ public class MainWindow extends QMainWindow
 
 	public void actionNewPart()
 		{
-		PhysicalPart nu=project.createPhysicalPart();
+		Part nu=project.createPart();
 		nu.name="Unnamed";
 		addPartTab(nu);
 		actionSelTab(TreeSelection.PHYS, nu);
@@ -204,7 +204,7 @@ public class MainWindow extends QMainWindow
 	/**
 	 * Add a tab for given part
 	 */
-	private void addPartTab(final PhysicalPart nu)
+	private void addPartTab(final Part nu)
 		{
 		TabPart tabPart=new TabPart(project, nu);
 		tabPart.sigNameChanged.connect(this,"cbNameChanged(TabPart)");
@@ -248,7 +248,7 @@ public class MainWindow extends QMainWindow
 		//tabProject.setVisible(true);
 		mapPartTab.remove(nu.part);
 		listTab.remove(nu);
-		project.physicalParts.remove(nu.part);
+		project.parts.remove(nu.part);
 		tree.setProject(project);
 		}
 
@@ -261,7 +261,7 @@ public class MainWindow extends QMainWindow
 		return (TabBrick)mapUnitTab.get(u);
 		}
 	
-	private TabPart getPartTab(PhysicalPart u)  
+	private TabPart getPartTab(Part u)  
 		{
 		return (TabPart)mapPartTab.get(u);
 		}
@@ -336,7 +336,7 @@ public class MainWindow extends QMainWindow
 		listOrder.setProject(project);
 		
 		//Add all part tabs
-		for(PhysicalPart p:project.physicalParts)
+		for(Part p:project.parts)
 			addPartTab(p);
 		//Add all new unit tabs
 		for(Brick u:project.bricks)
@@ -368,7 +368,7 @@ public class MainWindow extends QMainWindow
 			System.out.println("aaaa");
 			tabProject.storevalues();*/
 			tabAuthors.storevalues();
-			for(PhysicalPart u:project.physicalParts)
+			for(Part u:project.parts)
 				{
 				TabPart tu=getPartTab(u);
 				tu.storevalues();

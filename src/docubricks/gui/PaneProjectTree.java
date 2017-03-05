@@ -13,7 +13,7 @@ import docubricks.data.FunctionImplementation;
 import docubricks.data.FunctionImplementationBrick;
 import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
-import docubricks.data.PhysicalPart;
+import docubricks.data.Part;
 
 /**
  * 
@@ -46,9 +46,9 @@ public class PaneProjectTree extends QTreeWidget
 		
 		itemAuthors=new QTreeWidgetItem(this, Arrays.asList(new String[]{"Authors"}));
 
-		//Place physical parts
+		//Place parts
 		QTreeWidgetItem itemPhy=new QTreeWidgetItem(this, Arrays.asList(new String[]{"Bill of materials"}));
-		for(PhysicalPart p:project.physicalParts)
+		for(Part p:project.parts)
 			{
 			QTreeWidgetItem item=new QTreeWidgetItem(itemPhy, Arrays.asList(new String[]{p.name}));
 			//itemThis=new QTreeWidgetItem(this, Arrays.asList(new String[]{nodeName}));
@@ -112,9 +112,9 @@ public class PaneProjectTree extends QTreeWidget
 			else
 				{
 				Object o=item.data(0, Qt.ItemDataRole.UserRole);
-				if(o instanceof PhysicalPart)
+				if(o instanceof Part)
 					{
-					PhysicalPart u=(PhysicalPart)o;
+					Part u=(Part)o;
 					sigSel.emit(TreeSelection.PHYS,u);
 					}
 				else if(o instanceof Brick)

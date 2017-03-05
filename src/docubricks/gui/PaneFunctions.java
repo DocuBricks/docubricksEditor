@@ -31,7 +31,7 @@ public class PaneFunctions extends QVBoxLayout
 	private DocubricksProject proj;
 	private Brick unit;
 	
-	private HeaderLabel header=new HeaderLabel(tr("Contents of this brick"));
+	private HeaderLabel header=new HeaderLabel(tr("Components of this brick"));
 	private QPushButton bAdd=new QPushButton(tr("Add function"));  //or use header? no. inconsistent
 	private HashMap<Function, PaneOneLogicalPart> mapLogPanes=new HashMap<Function, PaneFunctions.PaneOneLogicalPart>();
 	
@@ -119,7 +119,6 @@ public class PaneFunctions extends QVBoxLayout
 		private Function part;
 		
 		private QLineEdit tfDescription=new QLineEdit();
-		private QLineEdit tfDesignator=new QLineEdit();
 		private QLineEdit tfQuantity=new QLineEdit("1");
 		private QPushButton bRemoveLogPart=new QPushButton(new QIcon(ImgResource.delete),"");
 		private QPushButton bAddImplementation=new QPushButton(tr("Add implementation"));
@@ -146,11 +145,8 @@ public class PaneFunctions extends QVBoxLayout
 			QGridLayout layGrid=new QGridLayout();
 			
 			int row=0;
-			layGrid.addWidget(new QLabel(tr("Name of function (optional):")),row,0);
+			layGrid.addWidget(new QLabel(tr("Function of component (optional name):")),row,0);
 			layGrid.addLayout(layName,row,1);
-			row++;
-			layGrid.addWidget(new QLabel(tr("Designator:")),row,0);
-			layGrid.addWidget(tfDesignator,row,1);
 			row++;
 			layGrid.addWidget(new QLabel(tr("Quantity:")),row,0);
 			layGrid.addWidget(tfQuantity,row,1);
@@ -169,7 +165,6 @@ public class PaneFunctions extends QVBoxLayout
 			bAddImplementation.clicked.connect(this,"actionAddImplementation()");
 			
 			tfDescription.textChanged.connect(this,"storeValues()");
-			tfDesignator.textChanged.connect(this,"storeValues()");
 			tfQuantity.textChanged.connect(this,"storeValues()");
 			}
 
@@ -179,7 +174,6 @@ public class PaneFunctions extends QVBoxLayout
 		public void loadvalues()
 			{
 			tfDescription.setText(part.getDescription());
-			tfDesignator.setText(part.designator);
 			tfQuantity.setText(part.getQuantity());
 			
 			for(FunctionImplementation imp:part.implementingPart)
@@ -189,7 +183,6 @@ public class PaneFunctions extends QVBoxLayout
 		public void storeValues()
 			{
 			part.setDescription(tfDescription.text());
-			part.designator=tfDesignator.text();
 			part.setQuantity(tfQuantity.text());
 			sigChanged.emit();
 			}

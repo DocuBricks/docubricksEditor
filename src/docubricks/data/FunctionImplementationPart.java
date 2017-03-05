@@ -11,11 +11,11 @@ import net.minidev.json.JSONObject;
  * @author Johan Henriksson
  *
  */
-public class FunctionImplementationPhysical implements FunctionImplementation
+public class FunctionImplementationPart implements FunctionImplementation
 	{
-	PhysicalPart part;
+	Part part;
 	
-	public FunctionImplementationPhysical(PhysicalPart p)
+	public FunctionImplementationPart(Part p)
 		{
 		part=p;
 		}
@@ -43,9 +43,9 @@ public class FunctionImplementationPhysical implements FunctionImplementation
 	@Override
 	public boolean equals(Object obj)
 		{
-		if(obj instanceof FunctionImplementationPhysical)
+		if(obj instanceof FunctionImplementationPart)
 			{
-			FunctionImplementationPhysical o=(FunctionImplementationPhysical)obj;
+			FunctionImplementationPart o=(FunctionImplementationPart)obj;
 			return o.part==part;
 			}
 		else

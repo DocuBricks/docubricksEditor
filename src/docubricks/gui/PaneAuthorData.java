@@ -94,13 +94,13 @@ public class PaneAuthorData extends QVBoxLayout
 			}
 		
 		/**
-		 * Remove this physical part
+		 * Remove this author
 		 */
 		public void actionRemoveAuthor()
 			{
 			mapPanes.remove(part);
 			setVisible(false);
-			proj.physicalParts.remove(part);
+			proj.parts.remove(part);
 			signalUpdated.emit();
 			}
 		

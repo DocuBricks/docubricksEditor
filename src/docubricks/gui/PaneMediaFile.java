@@ -3,6 +3,7 @@ package docubricks.gui;
 import com.trolltech.qt.core.QSize;
 import com.trolltech.qt.core.QUrl;
 import com.trolltech.qt.core.Qt.MouseButton;
+import com.trolltech.qt.gui.QColor;
 import com.trolltech.qt.gui.QDesktopServices;
 import com.trolltech.qt.gui.QImage;
 import com.trolltech.qt.gui.QImageReader;
@@ -12,6 +13,7 @@ import com.trolltech.qt.gui.QPaintEvent;
 import com.trolltech.qt.gui.QPainter;
 import com.trolltech.qt.gui.QVBoxLayout;
 import com.trolltech.qt.gui.QWidget;
+import com.trolltech.qt.gui.QImage.Format;
 
 import docubricks.data.MediaFile;
 
@@ -47,6 +49,16 @@ public class PaneMediaFile extends QWidget
 			if(image.isNull())
 				{
 				image=null;
+				
+				String s=mf.f.getName();
+				QPainter p=new QPainter();
+				int w=s.length()*10;
+				System.out.println(w);
+				image=new QImage(w, w, Format.Format_ARGB32);
+				p.begin(image);
+				p.fillRect(0, 0, image.width(), image.height(), QColor.white);
+				p.drawText(5, image.height()/2+10, s);
+				p.end();
 				System.out.println("image is null: "+mf.f);
 				}
 			/*

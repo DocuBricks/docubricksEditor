@@ -33,7 +33,7 @@ import net.minidev.json.JSONObject;
 public class DocubricksProject
 	{
 	public ArrayList<Brick> bricks=new ArrayList<Brick>();
-	public ArrayList<PhysicalPart> physicalParts=new ArrayList<PhysicalPart>();
+	public ArrayList<Part> parts=new ArrayList<Part>();
 	public ArrayList<Author> authors=new ArrayList<Author>();
 	
 	/**
@@ -55,15 +55,15 @@ public class DocubricksProject
 	
 	
 	/**
-	 * Find a free ID for a physical part
+	 * Find a free ID for a part
 	 */
-	private String findFreePhysPartID()
+	private String findFreePartID()
 		{
 		String id;
 		for(;;)
 			{
 			id=""+(int)(Math.random()*Integer.MAX_VALUE);
-			for(PhysicalPart p:physicalParts)
+			for(Part p:parts)
 				if(p.id.equals(id))
 					continue;
 			break;
@@ -73,7 +73,7 @@ public class DocubricksProject
 
 	
 	/**
-	 * Find a free ID for a physical part
+	 * Find a free ID for an author
 	 */
 	private String findFreeAuthorID()
 		{
@@ -97,7 +97,7 @@ public class DocubricksProject
 	public Element toXML(File basepath) throws IOException
 		{
 		Element eroot=new Element("docubricks");
-		for(PhysicalPart p:physicalParts)
+		for(Part p:parts)
 			{
 			Element ep=p.toXML(basepath);
 			eroot.addContent(ep);
@@ -132,10 +132,10 @@ public class DocubricksProject
 			}
 		for(Element c:e.getChildren())
 			{
-			if(c.getName().equals("physical_part"))
+			if(c.getName().equals("physical_part") || c.getName().equals("part"))
 				{
-				PhysicalPart part=PhysicalPart.fromXML(basepath, c);
-				p.physicalParts.add(part);
+				Part part=Part.fromXML(basepath, c);
+				p.parts.add(part);
 				}
 			}
 		for(Element c:e.getChildren())
@@ -199,14 +199,14 @@ public class DocubricksProject
 		}
 		
 	/**
-	 * Get physical part
+	 * Get part
 	 */
-	public PhysicalPart getPhysicalPart(String id)
+	public Part getPart(String id)
 		{
-		for(PhysicalPart p:physicalParts)
+		for(Part p:parts)
 			if(p.id.equals(id))
 				return p;
-		throw new RuntimeException("Cannot find physical part "+id);
+		throw new RuntimeException("Cannot find part "+id);
 		}
 
 
@@ -235,13 +235,13 @@ public class DocubricksProject
 
 	
 	/**
-	 * Create physical part
+	 * Create part
 	 */
-	public PhysicalPart createPhysicalPart()
+	public Part createPart()
 		{
-		PhysicalPart p=new PhysicalPart();
-		p.id=findFreePhysPartID();
-		physicalParts.add(p);
+		Part p=new Part();
+		p.id=findFreePartID();
+		parts.add(p);
 		return p;
 		}
 
@@ -317,7 +317,7 @@ public class DocubricksProject
 		eroot.put("parts", arrpart);
 		eroot.put("bricks", arrbricks);
 		eroot.put("authors", arrauthors);
-		for(PhysicalPart p:physicalParts)
+		for(Part p:parts)
 			{
 			JSONObject ep=p.toJSON(basepath);
 			arrpart.put(""+p.id,ep);

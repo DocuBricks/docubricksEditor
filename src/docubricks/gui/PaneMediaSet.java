@@ -7,6 +7,7 @@ import com.trolltech.qt.core.Qt.AlignmentFlag;
 import com.trolltech.qt.gui.QDropEvent;
 import com.trolltech.qt.gui.QFileDialog;
 import com.trolltech.qt.gui.QHBoxLayout;
+import com.trolltech.qt.gui.QLabel;
 import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QScrollArea;
@@ -30,8 +31,9 @@ public class PaneMediaSet extends QWidget
 	private QHBoxLayout laymedia=new QHBoxLayout();
 	private QScrollArea scroll=new QScrollArea();
 
+	QLabel labDrop=new QLabel(tr("Drag-drop files here"));
 	
-	QPushButton bAdd=new QPushButton("Add media");
+	QPushButton bAdd=new QPushButton("Add media or\ndesign file");
 	MediaSet mediaset;
 	
 	public PaneMediaSet(MediaSet mediaset)
@@ -56,6 +58,7 @@ public class PaneMediaSet extends QWidget
 		
 		QVBoxLayout lay=new QVBoxLayout();
 		lay.addWidget(scroll);
+		laymedia.addWidget(labDrop, 1, AlignmentFlag.AlignLeft);
 		laymedia.addWidget(bAdd, 1, AlignmentFlag.AlignRight);
 		lay.setMargin(0);
 		setLayout(lay);
@@ -91,6 +94,8 @@ public class PaneMediaSet extends QWidget
 	private void addMediaWidget(MediaFile mf)
 		{
 		PaneMediaFile mp=new PaneMediaFile(this, mf);
+		laymedia.removeWidget(labDrop);
+		labDrop.setVisible(false);
 		laymedia.removeWidget(bAdd);
 		laymedia.addWidget(mp);
 		laymedia.addWidget(bAdd, 1, AlignmentFlag.AlignRight);

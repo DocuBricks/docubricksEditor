@@ -19,7 +19,7 @@ import com.trolltech.qt.gui.QMessageBox.StandardButton;
 import com.trolltech.qt.gui.QMessageBox.StandardButtons;
 
 import docubricks.data.MaterialUnit;
-import docubricks.data.PhysicalPart;
+import docubricks.data.Part;
 import docubricks.data.DocubricksProject;
 import docubricks.gui.resource.ImgResource;
 
@@ -51,7 +51,7 @@ public class TabPart extends QWidget
 	
 	
 	private DocubricksProject proj;
-	public PhysicalPart part;
+	public Part part;
 	
 	public Signal0 signalUpdated=new Signal0();
 	public Signal1<TabPart> sigNameChanged=new Signal1<TabPart>();
@@ -83,7 +83,7 @@ public class TabPart extends QWidget
 	/**
 	 * Constructor for one logical part pane
 	 */
-	public TabPart(DocubricksProject proj, PhysicalPart part)
+	public TabPart(DocubricksProject proj, Part part)
 		{
 		this.part=part;
 		this.proj=proj;
@@ -156,7 +156,7 @@ public class TabPart extends QWidget
 		layGrid.addWidget(tfDesc,row,1);
 		row++;
 		
-		layGrid.addWidget(new QLabel(tr("Media:")),row,0);
+		layGrid.addWidget(new QLabel(tr("Design files and media:")),row,0);
 		row++;
 		layGrid.addWidget(mediapane,row,0,1,2);
 		row++;
@@ -170,19 +170,19 @@ public class TabPart extends QWidget
 		loadvalues();
 
 		tfName.textEdited.connect(this,"editvalues()");
-		bRemovePart.clicked.connect(this,"actionRemovePhysPart()");
+		bRemovePart.clicked.connect(this,"actionRemovePart()");
 		}
 	
 	/**
-	 * Remove this physical part
+	 * Remove this part
 	 */
-	public void actionRemovePhysPart()
+	public void actionRemovePart()
 		{
 		StandardButton btn=QMessageBox.question(this, QtProgramInfo.programName, tr("Are you sure you want to delete this part?"), 
 				new StandardButtons(StandardButton.Ok, StandardButton.Cancel));
 		if(btn.equals(StandardButton.Ok))
 			{
-			proj.physicalParts.remove(part);
+			proj.parts.remove(part);
 			sigRemove.emit(this);
 			}
 

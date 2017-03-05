@@ -9,12 +9,12 @@ import net.minidev.json.JSONObject;
 
 /**
  * 
- * One physical part
+ * A part
  * 
  * @author Johan Henriksson
  *
  */
-public class PhysicalPart
+public class Part
 	{
 	public String name="";
 	public String description = "";
@@ -91,7 +91,8 @@ public class PhysicalPart
 	
 	public Element toXML(File basepath) throws IOException
 		{
-		Element eroot=new Element("physical_part");
+//		Element eroot=new Element("physical_part");
+		Element eroot=new Element("part");
 
 		eroot.setAttribute("id", id);
 		eroot.addContent(elWithContent("name", name));
@@ -123,9 +124,9 @@ public class PhysicalPart
 		}
 	
 	
-	public static PhysicalPart fromXML(File basepath, Element c)
+	public static Part fromXML(File basepath, Element c)
 		{
-		PhysicalPart part=new PhysicalPart();
+		Part part=new Part();
 		part.id=c.getAttributeValue("id");
 		
 		part.name=c.getChildText("name");

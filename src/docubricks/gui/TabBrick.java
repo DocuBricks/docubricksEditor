@@ -180,8 +180,11 @@ public class TabBrick extends QWidget
 		unit.setAbstract(tfAbstract.text());
 		unit.setLongDescription(tfLongDesc.toPlainText());
 		unit.setNotes(tfNotes.toPlainText());
-		wInstruction.storevalues();
 		copyright.storevalues();
+		
+		wInstruction.storevalues();
+		for(WidgetInstruction i:mapInstWid.values())
+			i.storevalues();
 		}
 	
 

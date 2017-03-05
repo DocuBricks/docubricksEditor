@@ -10,9 +10,9 @@ import com.trolltech.qt.gui.QWidget;
 
 import docubricks.data.Function;
 import docubricks.data.FunctionImplementation;
-import docubricks.data.FunctionImplementationPhysical;
+import docubricks.data.FunctionImplementationPart;
 import docubricks.data.FunctionImplementationBrick;
-import docubricks.data.PhysicalPart;
+import docubricks.data.Part;
 import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
 import docubricks.gui.resource.ImgResource;
@@ -84,10 +84,10 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 				thecombo.setCurrentIndex(thecombo.count()-1);
 			}
 		
-		//All physical parts
-		for(PhysicalPart p:project.physicalParts)
+		//All parts
+		for(Part p:project.parts)
 			{
-			FunctionImplementationPhysical ref=new FunctionImplementationPhysical(p);
+			FunctionImplementationPart ref=new FunctionImplementationPart(p);
 			thecombo.addItem(ref.getRepresentativeName(project), ref);
 			if(curdata!=null && curdata.equals(ref))
 				thecombo.setCurrentIndex(thecombo.count()-1);

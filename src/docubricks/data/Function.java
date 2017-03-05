@@ -21,7 +21,6 @@ import net.minidev.json.JSONObject;
 public class Function
 	{
 	private String description="";
-	public String designator="";
 	private String quantity="";
 	public String id;
 
@@ -61,7 +60,6 @@ public class Function
 
 		eroot.addContent(elWithContent("description", description));
 		
-		eroot.addContent(elWithContent("designator", designator));
 		eroot.addContent(elWithContent("quantity", ""+quantity));
 
 		for(FunctionImplementation imp:implementingPart)
@@ -93,7 +91,6 @@ public class Function
 		Function part=new Function();
 		part.id=root.getAttributeValue("id");
 		part.description=root.getChildText("description");
-		part.designator=root.getChildText("designator");
 		part.quantity=root.getChildText("quantity");
 
 		for(Element e:root.getChildren())
@@ -104,8 +101,8 @@ public class Function
 				String id=e.getAttributeValue("id");
 				if(t.equals("unit") || t.equals("brick"))
 					part.implementingPart.add(new FunctionImplementationBrick(id));//proj.getUnit(id)));
-				else if(t.equals("physical_part"))
-					part.implementingPart.add(new FunctionImplementationPhysical(proj.getPhysicalPart(id)));
+				else if(t.equals("physical_part") || t.equals("part"))
+					part.implementingPart.add(new FunctionImplementationPart(proj.getPart(id)));
 				else
 					throw new RuntimeException();
 				}
@@ -143,7 +140,6 @@ public class Function
 
 		eroot.put("description", description);
 		
-		eroot.put("designator", designator);
 		eroot.put("quantity", ""+quantity);
 
 		JSONArray arrimp=new JSONArray();

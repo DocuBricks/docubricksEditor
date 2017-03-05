@@ -211,18 +211,21 @@ public class WidgetInstruction extends QWidget
 	
 	public void actionDeleted()
 		{
+		brick.instructions.remove(instructions);
 		sigDeleted.emit(instructions);
 		}
 	
 	
 	public void loadvalues()
 		{
+		tfName.setText(instructions.name);
 		for(AssemblyStep step:instructions.steps)
 			addStepWidget(stepWidgets.size(), step);
 		}
 	
 	public void storevalues()
 		{
+		instructions.name=tfName.text();
 		for(WidgetStep ws:stepWidgets)
 			ws.storevalues();
 		}

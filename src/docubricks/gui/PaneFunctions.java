@@ -17,6 +17,7 @@ import docubricks.data.Function;
 import docubricks.data.FunctionImplementation;
 import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
+import docubricks.gui.qt.QLineEditTODO;
 import docubricks.gui.resource.ImgResource;
 
 /**
@@ -118,8 +119,8 @@ public class PaneFunctions extends QVBoxLayout
 		{
 		private Function part;
 		
-		private QLineEdit tfDescription=new QLineEdit();
-		private QLineEdit tfQuantity=new QLineEdit("1");
+		private QLineEditTODO tfDescription=new QLineEditTODO();
+		private QLineEditTODO tfQuantity=new QLineEditTODO("1");
 		private QPushButton bRemoveLogPart=new QPushButton(new QIcon(ImgResource.delete),"");
 		private QPushButton bAddImplementation=new QPushButton(tr("Add implementation"));
 		private QVBoxLayout lay=new QVBoxLayout();

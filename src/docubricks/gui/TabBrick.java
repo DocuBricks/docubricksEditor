@@ -21,6 +21,7 @@ import com.trolltech.qt.gui.QWidget;
 import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
 import docubricks.data.StepByStepInstruction;
+import docubricks.gui.qt.QLineEditTODO;
 import docubricks.gui.resource.ImgResource;
 
 
@@ -33,8 +34,8 @@ import docubricks.gui.resource.ImgResource;
  */
 public class TabBrick extends QWidget
 	{
-	private QLineEdit tfName=new QLineEdit();
-	private QLineEdit tfAbstract=new QLineEdit();
+	private QLineEditTODO tfName=new QLineEditTODO();
+	private QLineEditTODO tfAbstract=new QLineEditTODO();
 
 	private QTextEditResize tfLongDesc=new QTextEditResize();
 	private QTextEditResize tfNotes=new QTextEditResize();

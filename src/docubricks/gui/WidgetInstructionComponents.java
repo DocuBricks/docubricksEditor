@@ -10,6 +10,7 @@ import docubricks.data.AssemblyStep;
 import docubricks.data.AssemblyStepComponent;
 import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
+import docubricks.gui.qt.QLineEditTODO;
 
 /**
  * 
@@ -48,7 +49,7 @@ public class WidgetInstructionComponents extends QGridLayout
 	public class OneComponentRef
 		{
 		private ComboFunction comboFunction;
-		private QLineEdit tfQuantity=new QLineEdit("1");
+		private QLineEditTODO tfQuantity=new QLineEditTODO("1");
 		private AssemblyStepComponent comp;
 
 		public OneComponentRef(AssemblyStepComponent comp)

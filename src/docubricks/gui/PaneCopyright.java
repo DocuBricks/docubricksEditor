@@ -14,6 +14,7 @@ import com.trolltech.qt.gui.QVBoxLayout;
 import docubricks.data.Author;
 import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
+import docubricks.gui.qt.QLineEditTODO;
 
 /**
  * 
@@ -29,7 +30,7 @@ public class PaneCopyright extends QVBoxLayout
 	
 	private ArrayList<ComboAuthorRef> combosAuthor=new ArrayList<ComboAuthorRef>();
 	private QVBoxLayout layAuthors=new QVBoxLayout();
-	private QLineEdit tfLicense=new QLineEdit();
+	private QLineEditTODO tfLicense=new QLineEditTODO();
 	private QPushButton bAddAuthor=new QPushButton(tr("Add author"));
 
 	private QPushButton bmenu=new QPushButton(tr("Set"));

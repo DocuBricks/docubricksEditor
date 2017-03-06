@@ -14,6 +14,7 @@ import com.trolltech.qt.gui.QVBoxLayout;
 
 import docubricks.data.Author;
 import docubricks.data.DocubricksProject;
+import docubricks.gui.qt.QLineEditTODO;
 import docubricks.gui.resource.ImgResource;
 
 /**
@@ -41,10 +42,10 @@ public class PaneAuthorData extends QVBoxLayout
 	 */
 	public class PaneOneAuthor extends QGroupBox
 		{
-		private QLineEdit tfName=new QLineEdit();
-		private QLineEdit tfEmail=new QLineEdit();
-		private QLineEdit tfAffiliation=new QLineEdit();
-		private QLineEdit tfOrcid=new QLineEdit();
+		private QLineEditTODO tfName=new QLineEditTODO();
+		private QLineEditTODO tfEmail=new QLineEditTODO();
+		private QLineEditTODO tfAffiliation=new QLineEditTODO();
+		private QLineEditTODO tfOrcid=new QLineEditTODO();
 
 		
 		private Author part;

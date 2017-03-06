@@ -21,6 +21,7 @@ import com.trolltech.qt.gui.QMessageBox.StandardButtons;
 import docubricks.data.MaterialUnit;
 import docubricks.data.Part;
 import docubricks.data.DocubricksProject;
+import docubricks.gui.qt.QLineEditTODO;
 import docubricks.gui.resource.ImgResource;
 
 /**
@@ -57,11 +58,11 @@ public class TabPart extends QWidget
 	public Signal1<TabPart> sigNameChanged=new Signal1<TabPart>();
 	public Signal1<TabPart> sigRemove=new Signal1<TabPart>();
 	
-	private QLineEdit tfName=new QLineEdit();
-	private QLineEdit tfSupplier=new QLineEdit();
-	private QLineEdit tfSupplierPartNum=new QLineEdit();
-	private QLineEdit tfManufacturerPartNum=new QLineEdit();
-	private QLineEdit tfURL=new QLineEdit();
+	private QLineEditTODO tfName=new QLineEditTODO();
+	private QLineEditTODO tfSupplier=new QLineEditTODO();
+	private QLineEditTODO tfSupplierPartNum=new QLineEditTODO();
+	private QLineEditTODO tfManufacturerPartNum=new QLineEditTODO();
+	private QLineEditTODO tfURL=new QLineEditTODO();
 
 	private QLineEdit tfMaterialAmount=new QLineEdit();
 	private QComboBox comboQuantityUnit=new QComboBox();

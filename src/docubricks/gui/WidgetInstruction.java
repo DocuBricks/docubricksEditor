@@ -18,6 +18,7 @@ import docubricks.data.AssemblyStep;
 import docubricks.data.Brick;
 import docubricks.data.DocubricksProject;
 import docubricks.data.MediaFile;
+import docubricks.gui.qt.QLineEditTODO;
 import docubricks.gui.resource.ImgResource;
 
 /**
@@ -34,7 +35,7 @@ public class WidgetInstruction extends QWidget
 	private QPushButton bAddStep=new QPushButton(tr("Add step"));
 	private QPushButton bAddManySteps=new QPushButton(tr("Add steps from files"));
 	private QPushButton bRemove=new QPushButton(new QIcon(ImgResource.delete),"");
-	private QLineEdit tfName=new QLineEdit();
+	private QLineEditTODO tfName=new QLineEditTODO();
 	
 	private QVBoxLayout layv=new QVBoxLayout();
 	private QVBoxLayout laysteps=new QVBoxLayout();

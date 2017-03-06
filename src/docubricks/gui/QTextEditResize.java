@@ -61,6 +61,11 @@ public class QTextEditResize extends QTextEdit
 			pw = pw.parentWidget();
 			}
 
+		if(document().toPlainText().toLowerCase().contains("todo"))
+			setStyleSheet("background-color:yellow;");
+		else
+			setStyleSheet("");
+
 		}
 
 	}

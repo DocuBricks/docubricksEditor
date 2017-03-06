@@ -17,6 +17,12 @@ public class QLineEditTODO extends QLineEdit
 		textChanged.connect(this,"updateStyle()");
 		}
 
+	public QLineEditTODO(String string)
+		{
+		this();
+		setText(string);
+		}
+
 	public void updateStyle()
 		{
 		if(text().toLowerCase().contains("todo"))

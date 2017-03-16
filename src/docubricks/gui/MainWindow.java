@@ -297,6 +297,7 @@ public class MainWindow extends QMainWindow
 			try
 				{
 				setProject(DocubricksProject.loadXML(f));
+				System.out.println(project.toJSON(f.getParentFile()));
 				currentProjectFile=f;
 				}
 			catch (IOException e)

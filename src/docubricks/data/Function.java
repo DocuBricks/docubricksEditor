@@ -21,7 +21,7 @@ import net.minidev.json.JSONObject;
 public class Function
 	{
 	private String description="";
-	private String quantity="";
+//	private String quantity="";
 	public String id;
 
 	public LinkedList<FunctionImplementation> implementingPart=new LinkedList<FunctionImplementation>();
@@ -39,7 +39,7 @@ public class Function
 		}
 
 	
-	
+	/*
 	public void setQuantity(String num)
 		{
 		quantity=num;
@@ -47,7 +47,7 @@ public class Function
 	public String getQuantity()
 		{
 		return quantity;
-		}
+		}*/
 	
 
 	/**
@@ -60,7 +60,7 @@ public class Function
 
 		eroot.addContent(elWithContent("description", description));
 		
-		eroot.addContent(elWithContent("quantity", ""+quantity));
+//		eroot.addContent(elWithContent("quantity", ""+quantity));
 
 		for(FunctionImplementation imp:implementingPart)
 			if(imp!=null)
@@ -91,7 +91,7 @@ public class Function
 		Function part=new Function();
 		part.id=root.getAttributeValue("id");
 		part.description=root.getChildText("description");
-		part.quantity=root.getChildText("quantity");
+//		part.quantity=root.getChildText("quantity");
 
 		for(Element e:root.getChildren())
 			{
@@ -99,10 +99,13 @@ public class Function
 				{
 				String t=e.getAttributeValue("type");
 				String id=e.getAttributeValue("id");
+				int quantity=1;
+				if(e.getAttribute("quantity")!=null)
+					quantity=Integer.parseInt(e.getAttributeValue("quantity"));
 				if(t.equals("unit") || t.equals("brick"))
-					part.implementingPart.add(new FunctionImplementationBrick(id));//proj.getUnit(id)));
+					part.implementingPart.add(new FunctionImplementationBrick(id,quantity));//proj.getUnit(id)));
 				else if(t.equals("physical_part") || t.equals("part"))
-					part.implementingPart.add(new FunctionImplementationPart(proj.getPart(id)));
+					part.implementingPart.add(new FunctionImplementationPart(proj.getPart(id),quantity));
 				else
 					throw new RuntimeException();
 				}
@@ -140,7 +143,7 @@ public class Function
 
 		eroot.put("description", description);
 		
-		eroot.put("quantity", ""+quantity);
+//		eroot.put("quantity", ""+quantity);
 
 		JSONArray arrimp=new JSONArray();
 		eroot.put("implementations",arrimp);

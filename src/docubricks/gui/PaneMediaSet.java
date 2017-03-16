@@ -31,9 +31,9 @@ public class PaneMediaSet extends QWidget
 	private QHBoxLayout laymedia=new QHBoxLayout();
 	private QScrollArea scroll=new QScrollArea();
 
-	QLabel labDrop=new QLabel(tr("Drag-drop files here"));
+	QLabel labDrop=new QLabel(tr("Drag-drop media or design files here"));
 	
-	QPushButton bAdd=new QPushButton("Add media or\ndesign file");
+	QPushButton bAdd=new QPushButton("Add file");
 	MediaSet mediaset;
 	
 	public PaneMediaSet(MediaSet mediaset)
@@ -43,9 +43,11 @@ public class PaneMediaSet extends QWidget
 		laymedia.setMargin(0);
 		QWidget w=new QWidget();
 		w.setLayout(laymedia);
-		scroll.setMinimumHeight(30);          
+		scroll.setMinimumHeight(60);          
 		scroll.setWidgetResizable(true);
 		scroll.setWidget(w);
+		
+		bAdd.setMinimumHeight(30);
 		
 		bAdd.setSizePolicy(Policy.Minimum, Policy.Minimum); //really maximum!
 		bAdd.setMinimumWidth(110);

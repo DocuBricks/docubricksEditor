@@ -4,7 +4,6 @@ import java.util.LinkedList;
 
 import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QLineEdit;
 
 import docubricks.data.AssemblyStep;
 import docubricks.data.AssemblyStepComponent;

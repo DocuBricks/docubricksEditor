@@ -1,7 +1,11 @@
 package docubricks.gui;
 
+import com.trolltech.qt.core.QEvent;
+import com.trolltech.qt.core.QObject;
+import com.trolltech.qt.core.Qt;
 import com.trolltech.qt.core.Qt.FocusPolicy;
 import com.trolltech.qt.gui.QComboBox;
+import com.trolltech.qt.gui.QFocusEvent;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QPushButton;
@@ -48,7 +52,8 @@ public class ComboAuthorRef extends QWidget //later on it will be a more complex
 		thecombo.currentIndexChanged.connect(this,"actionChanged()");
 		bDelete.clicked.connect(this,"actionDelete()");
 		
-		setFocusPolicy(FocusPolicy.StrongFocus);
+		thecombo.setFocusPolicy(FocusPolicy.NoFocus);
+		//thecombo.installEventFilter(this);
 		}
 	
 	
@@ -97,4 +102,28 @@ public class ComboAuthorRef extends QWidget //later on it will be a more complex
 		{
 		sigUpdated.emit(this);
 		}	
+	
+	
+	
+	
+	
+	////////// For ignoring 
+	public void focusInEvent(QFocusEvent ev)
+		{
+		setFocusPolicy(Qt.FocusPolicy.WheelFocus);
+		}
+	public void focusOutEvent(QFocusEvent ev)
+		{
+		setFocusPolicy(Qt.FocusPolicy.StrongFocus);
+		}
+	public boolean eventFilter(QObject o, QEvent e )
+		{
+	  if(e.type() == QEvent.Type.Wheel)
+	  	{
+	  	e.ignore();
+      return true;
+	  	}
+	  else
+	  	return super.eventFilter( o, e );
+		}
 	}

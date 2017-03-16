@@ -11,13 +11,14 @@ import net.minidev.json.JSONObject;
  * @author Johan Henriksson
  *
  */
-public class FunctionImplementationPart implements FunctionImplementation
+public class FunctionImplementationPart extends FunctionImplementation
 	{
 	Part part;
 	
-	public FunctionImplementationPart(Part p)
+	public FunctionImplementationPart(Part p, int quantity)
 		{
 		part=p;
+		this.quantity=quantity;
 		}
 	
 	/**
@@ -26,7 +27,8 @@ public class FunctionImplementationPart implements FunctionImplementation
 	public Element toXML()
 		{
 		Element e=new Element("implementation");
-		e.setAttribute("type", "physical_part");
+		e.setAttribute("type", "part");
+		e.setAttribute("quantity", ""+quantity);
 		e.setAttribute("id", part.id);
 		return e;
 		}
@@ -34,7 +36,8 @@ public class FunctionImplementationPart implements FunctionImplementation
 	public JSONObject toJSON()
 		{
 		JSONObject e=new JSONObject();
-		e.put("type", "brick");
+		e.put("type", "part");
+		e.put("quantity", quantity);
 		e.put("id", part.id);
 		return e;
 		}
@@ -54,6 +57,6 @@ public class FunctionImplementationPart implements FunctionImplementation
 
 	public String getRepresentativeName(DocubricksProject project)
 		{
-		return "Physical part: "+part.name;
+		return "Part: "+part.name;
 		}
 	}

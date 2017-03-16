@@ -11,14 +11,16 @@ import net.minidev.json.JSONObject;
  * @author Johan Henriksson
  *
  */
-public interface FunctionImplementation
+public abstract class FunctionImplementation
 	{
-	public String getRepresentativeName(DocubricksProject project);
+	public abstract String getRepresentativeName(DocubricksProject project);
 
+	public int quantity=1;
+	
 	/**
 	 * Serialize to XML
 	 */
-	public Element toXML();
+	public abstract Element toXML();
 
-	public JSONObject toJSON();
+	public abstract JSONObject toJSON();
 	}

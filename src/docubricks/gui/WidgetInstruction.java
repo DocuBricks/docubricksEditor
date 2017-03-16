@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import com.trolltech.qt.gui.QFileDialog;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QIcon;
-import com.trolltech.qt.gui.QLineEdit;
 import com.trolltech.qt.gui.QMenu;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QVBoxLayout;

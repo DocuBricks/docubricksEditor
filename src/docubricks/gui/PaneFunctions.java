@@ -9,7 +9,6 @@ import com.trolltech.qt.gui.QGroupBox;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QLineEdit;
 import com.trolltech.qt.gui.QPushButton;
 import com.trolltech.qt.gui.QVBoxLayout;
 
@@ -120,7 +119,7 @@ public class PaneFunctions extends QVBoxLayout
 		private Function part;
 		
 		private QLineEditTODO tfDescription=new QLineEditTODO();
-		private QLineEditTODO tfQuantity=new QLineEditTODO("1");
+//		private QLineEditTODO tfQuantity=new QLineEditTODO("1");
 		private QPushButton bRemoveLogPart=new QPushButton(new QIcon(ImgResource.delete),"");
 		private QPushButton bAddImplementation=new QPushButton(tr("Add implementation"));
 		private QVBoxLayout lay=new QVBoxLayout();
@@ -149,10 +148,10 @@ public class PaneFunctions extends QVBoxLayout
 			layGrid.addWidget(new QLabel(tr("Function of component (optional name):")),row,0);
 			layGrid.addLayout(layName,row,1);
 			row++;
-			layGrid.addWidget(new QLabel(tr("Quantity:")),row,0);
+/*			layGrid.addWidget(new QLabel(tr("Quantity:")),row,0);
 			layGrid.addWidget(tfQuantity,row,1);
-			row++;
-			layGrid.addWidget(new QLabel(tr("Parts/Bricks implementing this function:")),row,0);
+			row++;*/
+			layGrid.addWidget(new QLabel(tr("Parts/Bricks that all can perform this function, and their quantities:")),row,0);
 			row++;
 			
 			
@@ -166,7 +165,7 @@ public class PaneFunctions extends QVBoxLayout
 			bAddImplementation.clicked.connect(this,"actionAddImplementation()");
 			
 			tfDescription.textChanged.connect(this,"storeValues()");
-			tfQuantity.textChanged.connect(this,"storeValues()");
+	//		tfQuantity.textChanged.connect(this,"storeValues()");
 			}
 
 		/**
@@ -175,7 +174,7 @@ public class PaneFunctions extends QVBoxLayout
 		public void loadvalues()
 			{
 			tfDescription.setText(part.getDescription());
-			tfQuantity.setText(part.getQuantity());
+//			tfQuantity.setText(part.getQuantity());
 			
 			for(FunctionImplementation imp:part.implementingPart)
 				addImplementationWidget(imp);
@@ -184,7 +183,7 @@ public class PaneFunctions extends QVBoxLayout
 		public void storeValues()
 			{
 			part.setDescription(tfDescription.text());
-			part.setQuantity(tfQuantity.text());
+//			part.setQuantity(tfQuantity.text());
 			sigChanged.emit();
 			}
 		

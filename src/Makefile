@@ -18,7 +18,7 @@ lib:
 	cd ../bin; jar cfv ../docubricksLIB.jar \
 	*/*/*.class \
 	*/*/*/*.class
-	cd ../bin; cp ../docubricksLIB.jar ../../docubrickssite.git/docubricksSite/WebContent/WEB-INF/lib/
+	cd ../bin; cp ../docubricksLIB.jar ../../docubricksSite/WebContent/WEB-INF/lib/
 
 ############################################################################################
 ############################ osx ###########################################################
@@ -111,7 +111,7 @@ upload:
 	cd ../release; scp *.dmg *.zip *.deb qtversion.txt mahogny@www.endrov.net:/home/mahogny/hp/temp
 
 uploadwin:
-	cd ../release; scp *.exe 177655_mahogny@ssh.binero.se:/storage/content/55/177655/docubricks.se/public_html/release/
+	cd ../release; scp docubricks_win.zip mahogny@www.endrov.net:/home/mahogny/hp/temp
 
 
 timestamp:

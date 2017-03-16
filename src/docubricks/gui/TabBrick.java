@@ -1,6 +1,7 @@
 package docubricks.gui;
 
 
+
 import java.util.HashMap;
 
 import com.trolltech.qt.core.Qt.AlignmentFlag;
@@ -9,7 +10,6 @@ import com.trolltech.qt.gui.QGridLayout;
 import com.trolltech.qt.gui.QHBoxLayout;
 import com.trolltech.qt.gui.QIcon;
 import com.trolltech.qt.gui.QLabel;
-import com.trolltech.qt.gui.QLineEdit;
 import com.trolltech.qt.gui.QMessageBox;
 import com.trolltech.qt.gui.QMessageBox.StandardButtons;
 import com.trolltech.qt.gui.QMessageBox.StandardButton;

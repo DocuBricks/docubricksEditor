@@ -11,13 +11,14 @@ import net.minidev.json.JSONObject;
  * @author Johan Henriksson
  *
  */
-public class FunctionImplementationBrick implements FunctionImplementation
+public class FunctionImplementationBrick extends FunctionImplementation
 	{
 	
 	String id;
-	public FunctionImplementationBrick(String id)
+	public FunctionImplementationBrick(String id, int quantity)
 		{
 		this.id=id;
+		this.quantity=quantity;
 		}
 	
 	/**
@@ -27,6 +28,7 @@ public class FunctionImplementationBrick implements FunctionImplementation
 		{
 		Element e=new Element("implementation");
 		e.setAttribute("type", "brick");
+		e.setAttribute("quantity", ""+quantity);
 		e.setAttribute("id", id);
 		return e;
 		}
@@ -36,6 +38,7 @@ public class FunctionImplementationBrick implements FunctionImplementation
 		{
 		JSONObject e=new JSONObject();
 		e.put("type", "brick");
+		e.put("quantity", quantity);
 		e.put("id", id);
 		return e;
 		}

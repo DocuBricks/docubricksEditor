@@ -32,7 +32,7 @@ public class PaneFunctions extends QVBoxLayout
 	private Brick unit;
 	
 	private HeaderLabel header=new HeaderLabel(tr("Components of this brick"));
-	private QPushButton bAdd=new QPushButton(tr("Add function"));  //or use header? no. inconsistent
+	private QPushButton bAdd=new QPushButton(tr("Add set of components"));  //or use header? no. inconsistent
 	private HashMap<Function, PaneOneLogicalPart> mapLogPanes=new HashMap<Function, PaneFunctions.PaneOneLogicalPart>();
 	
 	private QVBoxLayout laylistLogicalPart=new QVBoxLayout();
@@ -121,7 +121,7 @@ public class PaneFunctions extends QVBoxLayout
 		private QLineEditTODO tfDescription=new QLineEditTODO();
 //		private QLineEditTODO tfQuantity=new QLineEditTODO("1");
 		private QPushButton bRemoveLogPart=new QPushButton(new QIcon(ImgResource.delete),"");
-		private QPushButton bAddImplementation=new QPushButton(tr("Add implementation"));
+		private QPushButton bAddImplementation=new QPushButton(tr("Add component"));
 		private QVBoxLayout lay=new QVBoxLayout();
 		private QHBoxLayout laybuttons=new QHBoxLayout();
 		private QVBoxLayout laylistImp=new QVBoxLayout();
@@ -145,13 +145,13 @@ public class PaneFunctions extends QVBoxLayout
 			QGridLayout layGrid=new QGridLayout();
 			
 			int row=0;
-			layGrid.addWidget(new QLabel(tr("Function of component (optional name):")),row,0);
+			layGrid.addWidget(new QLabel(tr("Purpose of components (optional name):")),row,0);
 			layGrid.addLayout(layName,row,1);
 			row++;
 /*			layGrid.addWidget(new QLabel(tr("Quantity:")),row,0);
 			layGrid.addWidget(tfQuantity,row,1);
 			row++;*/
-			layGrid.addWidget(new QLabel(tr("Parts/Bricks that all can perform this function, and their quantities:")),row,0);
+			layGrid.addWidget(new QLabel(tr("Parts/Bricks that provide this function, and their quantities:")),row,0);
 			row++;
 			
 			

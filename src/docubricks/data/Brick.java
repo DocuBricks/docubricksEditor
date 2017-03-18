@@ -229,6 +229,7 @@ public class Brick
 		
 		//kicking out <description> - no need for one more section
 		
+		eroot.put("id", id);
 		eroot.put("name", name);
 		eroot.put("abstract", vabstract);
 		eroot.put("long_description", longdesc);

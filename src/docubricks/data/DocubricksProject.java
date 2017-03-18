@@ -19,6 +19,7 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 
 
@@ -311,26 +312,26 @@ public class DocubricksProject
 	public JSONObject toJSON(File basepath) throws IOException
 		{
 		JSONObject eroot=new JSONObject();
-		JSONObject arrpart=new JSONObject();
-		JSONObject arrbricks=new JSONObject();
-		JSONObject arrauthors=new JSONObject();
+		JSONArray arrpart=new JSONArray();
+		JSONArray arrbricks=new JSONArray();
+		JSONArray arrauthors=new JSONArray();
 		eroot.put("parts", arrpart);
 		eroot.put("bricks", arrbricks);
 		eroot.put("authors", arrauthors);
 		for(Part p:parts)
 			{
 			JSONObject ep=p.toJSON(basepath);
-			arrpart.put(""+p.id,ep);
+			arrpart.add(ep);
 			}
 		for(Brick u:bricks)
 			{
 			JSONObject eu=u.toJSON(basepath);
-			arrbricks.put(""+u.id,eu);
+			arrbricks.add(eu);
 			}
 		for(Author a:authors)
 			{
 			JSONObject eu=a.toJSON(basepath);
-			arrauthors.put(""+a.id,eu);
+			arrauthors.add(eu);
 			}
 		return eroot;
 		}

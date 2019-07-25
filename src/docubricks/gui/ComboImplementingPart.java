@@ -57,7 +57,8 @@ public class ComboImplementingPart extends QWidget //later on it will be a more 
 		
 		spQuantity.setRange(0, 1000);
 		spQuantity.setSingleStep(1);
-		spQuantity.setValue(imp.quantity);
+		if(imp!=null)
+			spQuantity.setValue(imp.quantity);
 		
 		updateListOfEntries(imp);	
 

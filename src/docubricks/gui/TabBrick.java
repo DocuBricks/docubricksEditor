@@ -70,7 +70,7 @@ public class TabBrick extends QWidget
 		
 		QVBoxLayout laytot=new QVBoxLayout();
 		laytot.addWidget(scroll);
-		scroll.setHorizontalScrollBarPolicy(ScrollBarPolicy.ScrollBarAlwaysOff);
+		scroll.setHorizontalScrollBarPolicy(ScrollBarPolicy.ScrollBarAlwaysOn);
 		scroll.setVerticalScrollBarPolicy(ScrollBarPolicy.ScrollBarAlwaysOn);
 		scroll.setWidgetResizable(true);
 		laytot.setMargin(0);

@@ -40,8 +40,9 @@ public class PaneMediaFile extends QWidget
 				{
 				QSize siz=imreader.size();
 				double ratio=siz.width()/(double)siz.height();
-				if(siz.width()>2000)
-					imreader.setScaledSize(new QSize((int)(600*ratio), 600));
+				int maxw=400;
+				if(siz.width()>maxw)
+					imreader.setScaledSize(new QSize((int)(maxw*ratio), maxw));
 				}
 
 			

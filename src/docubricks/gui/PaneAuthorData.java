@@ -47,7 +47,7 @@ public class PaneAuthorData extends QVBoxLayout
 		private QLineEditTODO tfOrcid=new QLineEditTODO();
 
 		
-		private Author part;
+		private Author author;
 		private QPushButton bRemovePart=new QPushButton(new QIcon(ImgResource.delete),"");
 		private QVBoxLayout lay=new QVBoxLayout();
 		private QHBoxLayout laybuttons=new QHBoxLayout();
@@ -56,9 +56,9 @@ public class PaneAuthorData extends QVBoxLayout
 		/**
 		 * Constructor for one author pane
 		 */
-		public PaneOneAuthor(Author part)
+		public PaneOneAuthor(Author a)
 			{
-			this.part=part;
+			this.author=a;
 			
 			
 			setLayout(lay);
@@ -98,27 +98,27 @@ public class PaneAuthorData extends QVBoxLayout
 		 */
 		public void actionRemoveAuthor()
 			{
-			mapPanes.remove(part);
+			mapPanes.remove(author);
 			setVisible(false);
-			proj.parts.remove(part);
+			proj.authors.remove(author);
 			signalUpdated.emit();
 			}
 		
 		public void loadvalues()
 			{
-			tfName.setText(part.name);
-			tfEmail.setText(part.email);
-			tfAffiliation.setText(part.affiliation);
-			tfOrcid.setText(part.orcid);
+			tfName.setText(author.name);
+			tfEmail.setText(author.email);
+			tfAffiliation.setText(author.affiliation);
+			tfOrcid.setText(author.orcid);
 			}
 		
 		
 		public void storevalues()
 			{
-			part.name=tfName.text();
-			part.email=tfEmail.text();
-			part.affiliation=tfAffiliation.text();
-			part.orcid=tfOrcid.text();
+			author.name=tfName.text();
+			author.email=tfEmail.text();
+			author.affiliation=tfAffiliation.text();
+			author.orcid=tfOrcid.text();
 			signalUpdated.emit();
 			}
 		

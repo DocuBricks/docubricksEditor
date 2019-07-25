@@ -362,6 +362,15 @@ public class MainWindow extends QMainWindow
 	 */
 	public void actionSaveProject()
 		{
+		
+		if(ImageCompressor.needCompression(project))
+			{
+			System.out.println("Compressing");
+			ImageCompressor.compress(project);
+			}
+		
+		
+		
 		if(currentProjectFile!=null)
 			{
 			//Serialize everything

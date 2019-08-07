@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -334,5 +335,20 @@ public class DocubricksProject
 			arrauthors.add(eu);
 			}
 		return eroot;
+		}
+
+
+	public Collection<File> getReferencedFiles()
+		{
+		TreeSet<File> files=new TreeSet<File>();
+
+		for(Part p:parts)
+			p.getReferencedFiles(files);
+		for(Brick u:bricks)
+			u.getReferencedFiles(files);
+		for(Author a:authors)
+			a.getReferencedFiles(files);
+		
+		return files;
 		}
 	}

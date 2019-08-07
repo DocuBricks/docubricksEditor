@@ -3,6 +3,7 @@ package docubricks.data;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import org.jdom2.Element;
@@ -267,6 +268,16 @@ public class Brick
 		
 
 		return eroot;	
+		}
+	
+	public void getReferencedFiles(Collection<File> files)
+		{
+		for(Author a:authors)
+			a.getReferencedFiles(files);
+		asmInstruction.getReferencedFiles(files);
+		media.getReferencedFiles(files);
+		for(StepByStepInstruction inst:instructions)
+			inst.getReferencedFiles(files);
 		}
 
 	}

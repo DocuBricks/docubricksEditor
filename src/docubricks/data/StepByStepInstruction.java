@@ -3,6 +3,7 @@ package docubricks.data;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.jdom2.Element;
 
@@ -61,6 +62,14 @@ public class StepByStepInstruction
 		//eroot.setAttribute("name", name);
 
 		return eroot;
+		}
+
+
+
+	public void getReferencedFiles(Collection<File> files)
+		{
+		for(AssemblyStep step:steps)
+			step.getReferencedFiles(files);
 		}
 
 

@@ -3,6 +3,7 @@ package docubricks.data;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.jdom2.Element;
 
@@ -97,6 +98,11 @@ public class AssemblyStep
 				arrcomp.add(c.toJSON());
 		
 		return eroot;
+		}
+	
+	public void getReferencedFiles(Collection<File> files)
+		{
+		media.getReferencedFiles(files);
 		}
 	
 	

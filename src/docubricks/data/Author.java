@@ -2,6 +2,8 @@ package docubricks.data;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.jdom2.Element;
 
@@ -71,6 +73,11 @@ public class Author
 		eroot.put("orcid", orcid);
 		eroot.put("affiliation", affiliation);
 		return eroot;
+		}
+
+
+	public void getReferencedFiles(Collection<File> files)
+		{
 		}
 	
 	

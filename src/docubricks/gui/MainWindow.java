@@ -1,11 +1,19 @@
 package docubricks.gui;
 
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+//import org.apache.commons.io.FileUtils;
 
 import com.trolltech.qt.core.QCoreApplication;
 import com.trolltech.qt.core.QUrl;
@@ -87,6 +95,7 @@ public class MainWindow extends QMainWindow
 		mFile.addAction(tr("Open project"), this, "actionOpenProject()");
 		mFile.addAction(tr("Save project"), this, "actionSaveProject()");
 		mFile.addAction(tr("Save project as"), this, "actionSaveProjectAs()");
+		//mFile.addAction(tr("Export ZIP for upload"), this, "actionZIP()");
 		mFile.addSeparator();
 		mFile.addAction(tr("Exit"), this, "close()");
 		menubar.addSeparator();
@@ -393,6 +402,8 @@ public class MainWindow extends QMainWindow
 			try
 				{
 				project.storeXML(currentProjectFile);
+				
+				actionZIP();
 				}
 			catch (IOException e)
 				{
@@ -426,8 +437,52 @@ public class MainWindow extends QMainWindow
 		}
 
 	
+	/**
+	 * Store as a zip file
+	 */
+	public void actionZIP() throws IOException
+		{
+		File tempzip=new File(currentProjectFile.getParentFile(),currentProjectFile.getName()+".zip");
+    
+		
+		ArrayList<File> refFiles=new ArrayList<File>(project.getReferencedFiles());
+		refFiles.add(currentProjectFile);
+		
+    //Output file 
+    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(tempzip));
+  	//zipDirectoryHelper(dir.getRoot(), dir.getRoot(), zos);
+
+    File rootDirectory=currentProjectFile.getParentFile();
+    for(File file:refFiles)
+    	{
+			FileInputStream fi = new FileInputStream(file);
+
+			//creating structure and avoiding duplicate file names
+			String name = file.getAbsolutePath().replace(rootDirectory.getAbsolutePath(), "");
+			System.out.println(name);
+			if(name.startsWith("/"))
+				name=name.substring(1);
+			while(name.startsWith("./"))
+				name=name.substring(2);
+			
+			zos.putNextEntry(new ZipEntry(name));
+			int count;
+			BufferedInputStream origin = new BufferedInputStream(fi,2048);
+			byte[] data = new byte[2048];
+			while ((count = origin.read(data, 0 , 2048)) != -1)
+				zos.write(data, 0, count);
+			origin.close();
+      zos.closeEntry();
+    	}
+    
+    
+    //TODO what about the XSLT? put it in too?
+    zos.close();
+		}
 		
 	
+
+
 
 	
 	/**

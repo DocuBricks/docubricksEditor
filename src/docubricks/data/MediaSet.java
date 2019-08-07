@@ -2,6 +2,8 @@ package docubricks.data;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import org.jdom2.Element;
@@ -43,5 +45,13 @@ public class MediaSet
 		for(MediaFile mf:files)
 			root.add(mf.toJSON(basepath));
 		return root;
+		}
+
+	public void getReferencedFiles(Collection<File> files2)
+		{
+		for(MediaFile f:files)
+			{
+			files2.add(f.f);
+			}
 		}
 	}
